@@ -58,7 +58,7 @@ public class MapFragment extends Fragment {
 
 
         addPolygon(points,"-1212",2.0f);
-        mapview.getMap().getMapObjects().addPlacemark(new Point(lat,lon),ImageProvider.fromResource(getActivity(),R.drawable.ic_baseline_location_on_24));
+        mapview.getMap().getMapObjects().addPlacemark(new Point(lat,lon));
         addPlacemark(lat,lon);
 
 

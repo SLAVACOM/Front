@@ -35,20 +35,22 @@ public class Adapter_appeal extends RecyclerView.Adapter {
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        TextView name,content,time;
+        TextView name,content,time,theme;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            name = itemView.findViewById(R.id.TV_name_Appeal);
-            content = itemView.findViewById(R.id.TV_content_Appeal);
-            time = itemView.findViewById(R.id.time_appeal);
+            theme = itemView.findViewById(R.id.tv_appeal_theme);
+            name = itemView.findViewById(R.id.tv_appeal_name);
+            content = itemView.findViewById(R.id.tv_appeal_content);
+            time = itemView.findViewById(R.id.tv_my_appeal_time);
 
         }
 
         public void bindView(int position){
             Appeal appeal = Data.APPEALS_LIST.get(position);
-            name.setText(appeal.getFrom());
-            content.setText(appeal.getContent());
+            name.setText("От кого: "+appeal.getFrom());
+            content.setText("Обращение: "+ appeal.getContent());
             time.setText(appeal.getTime());
+            theme.setText("Тема: " + appeal.getTheme());
 
         }
 

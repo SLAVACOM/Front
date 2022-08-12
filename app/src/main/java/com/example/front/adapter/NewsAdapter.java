@@ -1,6 +1,5 @@
 package com.example.front.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,11 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.front.R;
-import com.example.front.data.Bus;
 import com.example.front.data.Data;
 import com.example.front.data.News;
-
-import java.util.List;
 
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> {
@@ -46,7 +42,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             time = itemView.findViewById(R.id.time_news);
-            event = itemView.findViewById(R.id.news_news);
+            event = itemView.findViewById(R.id.tv_appeal1);
             zagal = itemView.findViewById(R.id.news_zag);
         }
         public void bindView(int position){

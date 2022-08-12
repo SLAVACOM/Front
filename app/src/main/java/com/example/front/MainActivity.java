@@ -1,5 +1,6 @@
 package com.example.front;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.front.CONST.CONST;
 import com.example.front.data.Appeal;
 import com.example.front.data.Data;
 import com.example.front.data.Event;
@@ -21,35 +23,31 @@ import com.example.front.data.News;
 import com.example.front.ui.Map.MapFragment;
 import com.example.front.ui.User.UserFragment;
 import com.example.front.ui.appeal.AppealFragment;
+import com.example.front.ui.appeal.MyAppealFragment;
 import com.example.front.ui.bus.FragmentBus;
 import com.example.front.ui.event.EventFragment;
+import com.example.front.ui.my_file.MyFileFragment;
 import com.example.front.ui.news.NewsFragment;
 import com.google.android.material.navigation.NavigationView;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
+import com.yandex.mapkit.MapKitFactory;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
-    Fragment fragment =new NewsFragment();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!CONST.API_SET) {
+            MapKitFactory.setApiKey((String) BuildConfig.YandexAPIKey);
+            MapKitFactory.initialize(this);
+            CONST.API_SET=true;
+        }
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        getSupportActionBar(toolbar);
-        fragmentManager = getSupportFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.nav_host_fragment_content_main,fragment);
-        fragmentTransaction.commit();
-
 
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
@@ -58,7 +56,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.nav_host_fragment_content_main,new NewsFragment()).addToBackStack(null).commit();
         data();
 
 
@@ -70,9 +70,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    private void getSupportActionBar(Toolbar toolbar) {
-    }
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         return super.onOptionsItemSelected(item);
@@ -80,11 +77,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        DrawerLayout layout = findViewById(R.id.nav_view);
+        DrawerLayout layout = findViewById(R.id.drawer_layout);
         if (layout.isDrawerOpen(GravityCompat.START)){
             layout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+        }
+    }
+    private static void removeAllFragments(FragmentManager fragmentManager) {
+        while (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStackImmediate();
         }
     }
 
@@ -93,13 +95,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
         Fragment fragment = null;
         switch (id){
-            case R.id.nav_home:
+            case R.id.nav_map:
                 fragment =  new MapFragment();
                 break;
             case R.id.nav_news:
                 fragment = new NewsFragment();
+
                 break;
-            case R.id.nav_slideshow:
+            case R.id.nav_bus:
                 fragment = new FragmentBus();
                 break;
             case R.id.nav_event:
@@ -108,22 +111,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_appeal:
                 fragment = new AppealFragment();
                 break;
+            case R.id.nav_my_appeal:
+                fragment = new MyAppealFragment();
+                break;
+            case R.id.nav_my_file:
+                fragment= new MyFileFragment();
+                break;
             case R.id.nav_user:
                 fragment = new UserFragment();
                 break;
+            default:
+                DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+                drawerLayout.closeDrawer(GravityCompat.START);
+                startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+                return true;
         }
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
-        fragmentManager = getSupportFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction = getSupportFragmentManager().beginTransaction();
         drawerLayout.closeDrawer(GravityCompat.START);
-        fragmentTransaction.replace(R.id.nav_host_fragment_content_main,fragment);
-        fragmentTransaction.commit();
+        removeAllFragments(fragmentManager);
+        fragmentTransaction.replace(R.id.nav_host_fragment_content_main,fragment).addToBackStack(null).commit();
         return true;
 
     }
 
+
     private void data(){
-        Appeal appeal = new Appeal("dfdsfsfsdfsdfsdfvcsdc vfsfdvcdvc sdvgsdvds ivfsdbhny vbfsdbvfsd ","sdasdsa dsad","10:54");
+        Appeal appeal = new Appeal("dfdsfsfsdfsdfsdfvcsdc ","vfsfdvcdvc sdvgsdvds ivfsdbhny vbfsdbvfsd sdasdsa dsad","SLAVACOM","10:54");
         News news = new News("sl[dpskdfghbfgbfchbnfhnfcvhnbfgvghnvnbhvghjngvh","sdjsojn","18:10" +
                 "");
         Event event = new Event("shjngvh","sdhgjggggggggggggggggggggjsojn","18:10" +
@@ -142,40 +156,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Data.APPEALS_LIST.add(appeal);
     }
 
-//    private void Json(){
-//        try {
-//            JSONObject object = new JSONObject(JsonDataFromAsset("user.json"));
-//          /  JSONArray jsonArray = object.getJSONArray("users");
-//            for (int i = 0; i < jsonArray.length(); i++) {
-//
-//                JSONObject userData = jsonArray.getJSONObject(i);
-//                name.add(userData.getString("name"));
-//                email.add(userData.getString("email"));
-//            }
-//        }catch (JSONException e){
-//            e.printStackTrace();
-//        }
-//        HelperAdapter
-//
-//
-//    }
-//
-//    private String JsonDataFromAsset(String fileName) throws IOException {
-//        String json = null;
-//        try {
-//            InputStream inputStream = getAssets().open(fileName);
-//            int sizeOFile = inputStream.available();
-//            byte[] bufferData = new byte[sizeOFile];
-//            inputStream.read(bufferData);
-//            inputStream.close();
-//            json = new String(bufferData,"UTF-8");
-//        }catch (IOException e){
-//            e.printStackTrace();
-//            return null;
-//       }
-//        return json;
-//
-//    }
+
 }
-//
-//

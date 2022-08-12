@@ -22,7 +22,7 @@ public class NewsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_news,container,false);
         adapter = new NewsAdapter();
-        recyclerView = view.findViewById(R.id.recycler_appeal);
+        recyclerView = view.findViewById(R.id.recycler_my_appeal);
         recyclerView.setAdapter(adapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);

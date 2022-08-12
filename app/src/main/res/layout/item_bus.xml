@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="12dp"
     tools:visibility="visible">
 
 
@@ -12,6 +11,9 @@
         android:id="@+id/imageView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="2dp"
         android:background="@drawable/ic_recycler"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,7 +24,7 @@
         app:srcCompat="@drawable/ic_recycler" />
 
     <TextView
-        android:id="@+id/event_zag"
+        android:id="@+id/tv_event_zag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -42,7 +44,7 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.89"
-        app:layout_constraintStart_toEndOf="@+id/event_zag"
+        app:layout_constraintStart_toEndOf="@+id/tv_event_zag"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -56,7 +58,7 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/event_zag"
+        app:layout_constraintTop_toBottomOf="@+id/tv_event_zag"
         app:layout_constraintVertical_bias="0.31" />
 
     <TextView
@@ -82,7 +84,7 @@
         android:background="@drawable/ic_bus"
         android:scaleX="2.5"
         android:scaleY="2.5"
-        app:layout_constraintBottom_toTopOf="@+id/event_zag"
+        app:layout_constraintBottom_toTopOf="@+id/tv_event_zag"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
         app:layout_constraintStart_toStartOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="@+id/imageView"

@@ -40,7 +40,7 @@ public class Adapter_bus extends RecyclerView.Adapter {
             super(itemView);
             time_1 = itemView.findViewById(R.id.bus_time1);
             time_2 = itemView.findViewById(R.id.bus_time2);
-            bus_st1 = itemView.findViewById(R.id.event_zag);
+            bus_st1 = itemView.findViewById(R.id.tv_event_zag);
             bus_st2 = itemView.findViewById(R.id.bus_st2);
         }
 

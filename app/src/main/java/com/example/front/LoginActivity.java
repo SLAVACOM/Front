@@ -1,20 +1,25 @@
 package com.example.front;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.front.CONST.CONST;
-import com.example.front.ui.main.LoginFragment;
-import com.example.front.ui.news.NewsFragment;
-import com.yandex.mapkit.MapKitFactory;
+import com.example.front.retrofit.RetrofitClient;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -22,8 +27,7 @@ public class LoginActivity extends AppCompatActivity {
 
     String UserId = "";
 
-
-
+    EditText login,password;
 
     Button button;
     FragmentManager fragmentManager;
@@ -35,16 +39,33 @@ public class LoginActivity extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
-
+        password = findViewById(R.id.etv_login_password);
+        login = findViewById(R.id.etv_login_login);
         button= findViewById(R.id.bt_login);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                startActivity(intent);
-                finish();
+                Call<ResponseBody> call = RetrofitClient.getInstance().getApi().login(login.getText().toString(),password.getText().toString());
+                call.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        Log.d(CONST.SERVER_LOG,response.message());
+                        Log.d(CONST.SERVER_LOG,""+response.code());
+                        if (response.code()==200){
+                            Toast.makeText(getApplicationContext(), "Успешно", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }else {
+                            Toast.makeText(LoginActivity.this, "Неверные данные!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
 
-
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Log.d(CONST.SERVER_LOG,"ERROR: "+t.getMessage());
+                    }
+                });
             }
         });
     }

@@ -4,4 +4,6 @@ public class CONST {
     public static final String USER_ID = "USER_ID";
 
     public static Boolean API_SET = false;
+
+    public static String SERVER_LOG = "SERVER_LOG";
 }

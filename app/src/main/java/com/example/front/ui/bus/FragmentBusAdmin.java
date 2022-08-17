@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,9 +17,10 @@ import com.example.front.R;
 import com.example.front.adapter.Adapter_bus;
 import com.example.front.data.Bus;
 import com.example.front.data.DataData;
-import com.example.front.retrofit.Data;
 import com.example.front.retrofit.RetrofitClient;
 import com.example.front.retrofit.maper.BusMapper;
+import com.example.front.ui.appeal.AppealAddFragment;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -30,20 +33,38 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class FragmentBus extends Fragment {
+public class FragmentBusAdmin extends Fragment {
     private Adapter_bus adapterBus;
-    public RecyclerView recyclerView;
-
+    private RecyclerView recyclerView;
+    private FloatingActionButton addbutton;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_bus,container,false);
+
+        View view = inflater.inflate(R.layout.fragment_bus_admin,container,false);
         adapterBus = new Adapter_bus();
+        addbutton = view.findViewById(R.id.floatingActionButton_addBus);
         recyclerView = view.findViewById(R.id.recycler_bus);
         recyclerView.setAdapter(adapterBus);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
+        addbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.nav_host_fragment_content_main,new FragmentBusAdd()).addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
+
+        return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
         Call<JsonObject> getBus = RetrofitClient.getInstance().getApi().getBusList();
         getBus.enqueue(new Callback<JsonObject>() {
             @Override
@@ -72,7 +93,5 @@ public class FragmentBus extends Fragment {
 
             }
         });
-
-        return view;
     }
 }

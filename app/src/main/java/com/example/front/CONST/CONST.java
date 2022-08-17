@@ -6,4 +6,6 @@ public class CONST {
     public static Boolean API_SET = false;
 
     public static String SERVER_LOG = "SERVER_LOG";
+
+    public static final String SERVER_URl ="http://sugai.ru/";
 }

@@ -9,8 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.front.R;
-import com.example.front.data.Data;
+import com.example.front.data.DataData;
 import com.example.front.data.Event;
+import com.example.front.retrofit.EventJSON;
+import com.example.front.retrofit.HistoryJSON;
 
 public class AdapterEvents extends RecyclerView.Adapter<AdapterEvents.MyViewHolder> {
 
@@ -32,7 +34,7 @@ public class AdapterEvents extends RecyclerView.Adapter<AdapterEvents.MyViewHold
 
     @Override
     public int getItemCount() {
-        return Data.EVENT_LIST.size();
+        return DataData.EVENT_JSON_LIST.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
@@ -41,13 +43,13 @@ public class AdapterEvents extends RecyclerView.Adapter<AdapterEvents.MyViewHold
             super(itemView);
             time = itemView.findViewById(R.id.tv_event_time);
             content = itemView.findViewById(R.id.tv_event_content);
-            zagal = itemView.findViewById(R.id.tv_event_zag);
+            zagal = itemView.findViewById(R.id.tv_event_title);
         }
         public void bindView(int position){
-            Event event = Data.EVENT_LIST.get(position);
-            time.setText(event.getTime());
-            content.setText(event.getContent());
-            zagal.setText(event.getZagal());
+             EventJSON event = DataData.EVENT_JSON_LIST.get(position);
+            time.setText(""+event.getCreated_at());
+            content.setText(""+event.getPlace());
+            zagal.setText(""+event.getTitle());
 
         }
     }

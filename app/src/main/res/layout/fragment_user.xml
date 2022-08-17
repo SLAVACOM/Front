@@ -3,9 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:visibility="visible">
+    android:layout_height="wrap_content">
 
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatBt_editProf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:src="@drawable/ic_baseline_mode_edit_24"
+        app:backgroundTint="#1E88E5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -19,46 +30,33 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/ic_recycler" />
-
-    <ImageView
-        android:id="@+id/imageViewProfile"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/ic_person"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/imageView"
-        tools:srcCompat="@drawable/ic_person" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <ImageView
         android:id="@+id/iv_prof_QrCode"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="30dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/ic_person"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/imageView"
-        tools:srcCompat="@drawable/ic_person" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView" />
 
     <TextView
         android:id="@+id/tv_prof_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="20dp"
         android:fontFamily="sans-serif"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewProfile" />
+        app:layout_constraintTop_toBottomOf="@+id/iv_prof_QrCode" />
 
     <TextView
-        android:id="@+id/tv_prof_firstname"
+        android:id="@+id/tv_prof_second_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -70,6 +68,30 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_prof_name" />
 
     <TextView
+        android:id="@+id/tv_prof_last_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="20dp"
+        android:fontFamily="sans-serif"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tv_prof_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_prof_second_name" />
+
+    <TextView
+        android:id="@+id/tv_prof_role"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="20dp"
+        android:fontFamily="sans-serif"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tv_prof_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_prof_last_name" />
+
+    <TextView
         android:id="@+id/tv_prof_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -78,8 +100,8 @@
         android:fontFamily="sans-serif"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/tv_prof_firstname"
-        app:layout_constraintTop_toBottomOf="@+id/tv_prof_firstname" />
+        app:layout_constraintStart_toStartOf="@+id/tv_prof_second_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_prof_role" />
 
     <TextView
         android:id="@+id/tv_prof_balance"
@@ -87,14 +109,28 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="32dp"
         android:fontFamily="sans-serif"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/tv_prof_number"
         app:layout_constraintTop_toBottomOf="@+id/tv_prof_email" />
+
+    <TextView
+        android:id="@+id/tv_prof_card_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="32dp"
+        android:fontFamily="sans-serif"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tv_prof_number"
+        app:layout_constraintTop_toBottomOf="@+id/tv_prof_balance"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/tv_prof_email"

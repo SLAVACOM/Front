@@ -5,20 +5,25 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.front.CONST.CONST;
 import com.example.front.R;
+import com.example.front.data.DataData;
+import com.example.front.retrofit.Data;
+import com.example.front.retrofit.MapObject;
 import com.yandex.mapkit.Animation;
 import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.geometry.LinearRing;
 import com.yandex.mapkit.geometry.Point;
 import com.yandex.mapkit.geometry.Polygon;
 import com.yandex.mapkit.map.CameraPosition;
-import com.yandex.mapkit.map.MapObject;
 import com.yandex.mapkit.map.MapObjectCollection;
 import com.yandex.mapkit.map.PlacemarkAnimation;
 import com.yandex.mapkit.map.PlacemarkMapObject;
@@ -56,10 +61,24 @@ public class MapFragment extends Fragment {
         points.add(new Point(55.53537221009383,47.56775142114878));
         points.add(new Point(55.54711210254822,47.55800259087905));
 
+        for (int i = 0; i < DataData.MAP_OBJECTS.size(); i++) {
+            Log.d(CONST.SERVER_LOG, ""+DataData.MAP_OBJECTS.get(i));
+            MapObject mapObject = DataData.MAP_OBJECTS.get(i);
+            ArrayList<Point> Points = new ArrayList<>();
+            if (mapObject.getType().equals("polygon")){
+                for (int j = 0; j < mapObject.getCoords().size(); j++) {
+                    Log.d(CONST.SERVER_LOG,""+mapObject.getCoords().get(i).getLat());
+                    Points.add(new Point(mapObject.getCoords().get(i).getLat(),mapObject.getCoords().get(i).getLng()));
+                }
+                mapObjects = mapview.getMap().getMapObjects().addCollection();
+                PolygonMapObject triangle = mapObjects.addPolygon(
+                        new Polygon(new LinearRing(Points), new ArrayList<LinearRing>()));
+                triangle.setFillColor(-1212);
+            }
+        }
 
-        addPolygon(points,"-1212",2.0f);
-        mapview.getMap().getMapObjects().addPlacemark(new Point(lat,lon));
-        addPlacemark(lat,lon);
+
+
 
 
         return view;

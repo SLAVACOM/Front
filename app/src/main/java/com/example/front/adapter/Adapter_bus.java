@@ -10,7 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.front.R;
 import com.example.front.data.Bus;
-import com.example.front.data.Data;
+import com.example.front.data.DataData;
+import com.example.front.retrofit.BusJSON;
 
 
 public class Adapter_bus extends RecyclerView.Adapter {
@@ -31,25 +32,23 @@ public class Adapter_bus extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return Data.BUS_LIST.size();
+        return DataData.BUS_JSON_LIST.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        TextView time_1,time_2, bus_st1,bus_st2;
+        TextView time, bus_title,bus_place;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            time_1 = itemView.findViewById(R.id.bus_time1);
-            time_2 = itemView.findViewById(R.id.bus_time2);
-            bus_st1 = itemView.findViewById(R.id.tv_event_zag);
-            bus_st2 = itemView.findViewById(R.id.bus_st2);
+            time = itemView.findViewById(R.id.bus_time);
+            bus_title = itemView.findViewById(R.id.tv_event_title);
+            bus_place = itemView.findViewById(R.id.bus_place);
         }
 
         public void bindView(int position){
-            Bus bus = Data.BUS_LIST.get(position);
-            time_1.setText(bus.getTime1());
-            time_2.setText(bus.getTime_2());
-            bus_st1.setText(bus.getName_1());
-            bus_st2.setText(bus.getName_2());
+            BusJSON bus = DataData.BUS_JSON_LIST.get(position);
+            time.setText(bus.getTime());
+            bus_title.setText(bus.getTitle());
+            bus_place.setText(bus.getPlace());
 
         }
 

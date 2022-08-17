@@ -1,5 +1,7 @@
 package com.example.front.retrofit;
 
+import com.google.gson.JsonObject;
+
 import java.io.File;
 
 import okhttp3.ResponseBody;
@@ -17,7 +19,7 @@ public interface Api {
     @FormUrlEncoded
     @Headers({"Accept: application/json"})
     @POST("api/auth/login/")
-    Call<ResponseBody> login(@Field("email")String email,@Field("password") String password);
+    Call<JsonObject> login(@Field("email")String email, @Field("password") String password);
 
 
     @Headers({"Accept: application/json"})
@@ -25,27 +27,24 @@ public interface Api {
                                     @Field("phone") String phone,@Field("last_name") String last_name);
 
     @POST("api/auth/logout/")
-    @Headers("Authorization: Bearer {{token}")
-    Call<ResponseBody> logout();
+    Call<ResponseBody> logout(@Header("Authorization") String authHeader);
 
     @FormUrlEncoded
     @Headers({"Accept: application/json"})
     @POST("api/auth/reset")
     Call<ResponseBody> reset_password(@Field("email") String email);
 
-    @Headers("Authorization: Bearer {{token}}")
     @POST("api/auth/profile")
-    Call<ResponseBody> view_profil_data();
+    Call<JsonObject> view_profil_data(@Header("Authorization") String authHeader);
 
     @FormUrlEncoded
     @POST("api/auth/profile")
-    @Headers({"Accept: application/json","Authorization: Bearer {{token}}"})
-    Call<ResponseBody> editProfile(@Field("_method") String method, @Field("name") String name, @Field("second_name") String second_name,
-                                   @Field("last_name")String last_name, @Field("password") String password,@Field("password_confirmation") String password_confirmation);
+    @Headers({"Accept: application/json"})
+    Call<JsonObject> editProfile(@Header("Authorization") String authHeader,@Field("_method") String method, @Field("name") String name, @Field("second_name") String second_name,
+                                      @Field("last_name")String last_name, @Field("password") String password, @Field("password_confirmation") String password_confirmation);
 
     @GET("api/user/event")
-    @Headers({"Authorization: Bearer {{token}}"})
-    Call<ResponseBody> getEventHistory();
+    Call<JsonObject> getEventHistory(@Header("Authorization") String authHeader);
 
 
 
@@ -59,22 +58,21 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("api/post")
-    @Headers({"Accept: application/json","Authorization: Bearer {{token}}"})
-    Call<ResponseBody> addNews(@Field("title") String title, @Field("description") String description);
+    @Headers({"Accept: application/json"})
+    Call<ResponseBody> addNews(@Header("Authorization") String authHeader,@Field("title") String title, @Field("description") String description);
 
 
     @FormUrlEncoded
     @POST("api/post/{{post_id}}")
-    @Headers({"Accept: application/json","Authorization: Bearer {{token}}"})
-    Call<ResponseBody> editNews(@Field("_method") String method,@Field("title") String title, @Field("description") String description,@Field("post_photos[0]") File file,@Field("post_photos[1]") File file1,@Field("delete_photos[0]") int id);
+    @Headers({"Accept: application/json"})
+    Call<ResponseBody> editNews(@Header("Authorization") String authHeader,@Field("_method") String method,@Field("title") String title, @Field("description") String description,@Field("post_photos[0]") File file,@Field("post_photos[1]") File file1,@Field("delete_photos[0]") int id);
 
 
     @DELETE("api/post/{{post_id}}")
-    @Headers({"Authorization: Bearer {{token}}"})
-    Call<ResponseBody> deleteNews();
+    Call<ResponseBody> deleteNews(@Header("Authorization") String authHeader);
 
     @GET("api/post")
-    Call<ResponseBody> getNewsList();
+    Call<JsonObject> getNewsList();
 
 
 
@@ -90,39 +88,33 @@ public interface Api {
 
     @FormUrlEncoded
     @POST("api/user/post")
-    @Headers({"Accept: application/json","Authorization: Bearer {{token}}"})
-    Call<ResponseBody> addUserRespons(@Field("title") String title,@Field("description") String description);
+    @Headers({"Accept: application/json"})
+    Call<ResponseBody> addUserRespons(@Header("Authorization") String authHeader,@Field("title") String title,@Field("description") String description);
 
 
     @FormUrlEncoded
     @POST("api/user/post/{{user_post_id}}")
-    @Headers({"Accept: application/json","Authorization: Bearer {{token}}"})
-    Call<ResponseBody> editUserRespons(@Field("_method") String method,@Field("title") String title, @Field("description") String description,@Field("post_photos[0]") File file,@Field("post_photos[1]") File file1,@Field("delete_photos[0]") int id);
+    @Headers({"Accept: application/json"})
+    Call<ResponseBody> editUserRespons(@Header("Authorization") String authHeader,@Field("_method") String method,@Field("title") String title, @Field("description") String description,@Field("post_photos[0]") File file,@Field("post_photos[1]") File file1,@Field("delete_photos[0]") int id);
 
     @DELETE("api/user/post/{{user_post_id}}")
-    @Headers({"Authorization: Bearer {{token}}"})
-    Call<ResponseBody> deleteUserRespons();
+    Call<ResponseBody> deleteUserRespons(@Header("Authorization") String authHeader);
 
     @POST("api/user/post/{{user_post_id}}/accept")
-    @Headers({"Authorization: Bearer {{token}}"})
-    Call<ResponseBody> userResponsStatusExecution();
+    Call<ResponseBody> userResponsStatusExecution(@Header("Authorization") String authHeader);
 
     @POST("api/user/post/{{user_post_id}}/confirm")
-    @Headers({"Authorization: Bearer {{token}}"})
-    Call<ResponseBody> userResponsStatusExecuted();
+    Call<ResponseBody> userResponsStatusExecuted(@Header("Authorization") String authHeader);
 
     @POST("api/user/post/{{user_post_id}}/dislike")
-    @Headers({"Authorization: Bearer {{token}}"})
-    Call<ResponseBody> userResponsDislike();
+    Call<ResponseBody> userResponsDislike(@Header("Authorization") String authHeader);
 
     @POST("api/user/post/{{user_post_id}}/like")
-    @Headers({"Authorization: Bearer {{token}}"})
-    Call<ResponseBody> userResponsLike();
+    Call<ResponseBody> userResponsLike(@Header("Authorization") String authHeader);
 
     @FormUrlEncoded
     @GET("api/user/post/")
-    @Headers({"Authorization: Bearer {{token}}"})
-    Call<ResponseBody> getResponsList(@Field("mode") String mode);
+    Call<ResponseBody> getResponsList(@Header("Authorization") String authHeader,@Field("mode") String mode);
 
 
 
@@ -154,20 +146,19 @@ public interface Api {
     Call<ResponseBody> deleteEvent();
 
     @GET("api/event")
-    Call<ResponseBody> getEventList();
+    Call<JsonObject> getEventList();
 
 
-
+    @FormUrlEncoded
     @POST("api/bus/event")
-    @Headers({"Accept: application/json","Authorization: Bearer {{token}}"})
-    Call<ResponseBody> addBusEvent(@Field("title") String title,@Field("place")String place,@Field("time")String time);
+    @Headers({"Accept: application/json"})
+    Call<JsonObject> addBusEvent(@Header("Authorization") String token,@Field("title") String title,@Field("place")String place,@Field("time")String time);
 
     @DELETE("api/bus/event/{{bus_event_id}}")
-    @Headers({"Authorization: Bearer {{token}}"})
-    Call<ResponseBody> deleteBusEvent();
+    Call<JsonObject> deleteBusEvent(@Header("Authorization") String token);
 
-    @GET("api/type")
-    Call<ResponseBody> getBusList();
+    @GET("api/bus/event")
+    Call<JsonObject> getBusList();
 
 
 
@@ -260,7 +251,7 @@ public interface Api {
     Call<ResponseBody> deleteMapObject();
 
     @GET("api/mapObject")
-    Call<ResponseBody> getMapObject();
+    Call<JsonObject> getMapObject();
 
 
 

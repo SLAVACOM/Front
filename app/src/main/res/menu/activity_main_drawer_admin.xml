@@ -26,7 +26,21 @@
             android:icon="@drawable/ic_file"
             android:title="@string/appeal_fragment" />
 
+        <item
+        android:id="@+id/nav_my_appeal"
+        android:icon="@drawable/ic_file"
+        android:title="@string/appeal_type" />
 
+
+        <item
+            android:id="@+id/nav_user_list"
+            android:icon="@drawable/ic_file"
+            android:title="@string/user_list" />
+
+        <item
+            android:id="@+id/nav_response_to_admin"
+            android:icon="@drawable/support_agent_24"
+            android:title="@string/response_to_admin" />
         <item
             android:id="@+id/nav_response_to_lib"
             android:icon="@drawable/collections_bookmark_24"

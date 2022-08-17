@@ -8,34 +8,86 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.front.R;
+import com.example.front.data.DataData;
+import com.example.front.retrofit.User;
+import com.example.front.ui.appeal.AppealAddFragment;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 
 public class UserFragment extends Fragment {
-    TextView name, ferstname, email,phone,balance;
-    ImageView imageView, qrCode;
-    String url = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=";
+    private TextView name, lastname,secondname, curator,cardId,email,phone,balance;
+    private FloatingActionButton editBt;
+    private ImageView qrCode;
+    private String url = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=";
+
+
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        url =  url+"SLAVCOM";
+        User user= DataData.user;
+        url =  url+user.getId();
 
         View view = inflater.inflate(R.layout.fragment_user,container,false);
         name = view.findViewById(R.id.tv_prof_name);
         phone = view.findViewById(R.id.tv_prof_number);
         balance = view.findViewById(R.id.tv_prof_balance);
         email =view.findViewById(R.id.tv_prof_email);
-        ferstname = view.findViewById(R.id.tv_prof_firstname);
-        imageView = view.findViewById(R.id.imageViewProfile);
+        secondname = view.findViewById(R.id.tv_prof_second_name);
+        lastname = view.findViewById(R.id.tv_prof_last_name);
+        cardId = view.findViewById(R.id.tv_prof_card_id);
         qrCode = view.findViewById(R.id.iv_prof_QrCode);
-        name.setText("Имя: "+"Святослав");
-        phone.setText("Номер телефона: "+"89370136981");
-        email.setText("Почта: "+ "slavacom121@gmail.com");
-        ferstname.setText("Фамилия:" +"Иванов");
-        balance.setText("Баланс: "+"777");
+        curator = view.findViewById(R.id.tv_prof_role);
+        editBt = view.findViewById(R.id.floatBt_editProf);
+
+
+        name.setText("Имя: "+ user.getName());
+        email.setText("Почта: "+ user.getEmail());
+        if (user.getSecond_name()!=null) secondname.setText("Фамилия:" +user.getSecond_name());
+        if (user.getLast_name()!=null){
+            lastname.setText("Фамилия:" +user.getLast_name());
+            if (user.isCurator()){
+                lastname.setText("Роль администратора: да");
+            } else {
+                lastname.setText("Роль администратора: нет");
+            }
+            phone.setText("Номер телефона: "+user.getPhone());
+            balance.setText("Баланс: "+user.getPoints());
+            if (user.getCard_id()!=0)
+                cardId.setText("Номер карты: " + user.getCard_id());
+
+
+        }
+        else {
+            if (user.isCurator()){
+                lastname.setText("Роль администратора: да");
+            } else {
+                lastname.setText("Роль администратора: нет");
+            }
+            curator.setText("Номер телефона: "+user.getPhone());
+            phone.setText("Почта: "+user.getEmail());
+            email.setText("Баланс: "+ user.getPoints());
+            if (user.getCard_id()!=0)
+                balance.setText("Номер карты: " + user.getCard_id());
+        }
         loadQrCode(url);
+
+
+        editBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.nav_host_fragment_content_main,new UserEditFragment()).addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
         return view;
     }
 

@@ -13,7 +13,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.front.R;
 import com.example.front.data.Appeal;
-import com.example.front.data.Data;
+import com.example.front.data.DataData;
 
 
 public class AppealAddFragment extends Fragment {
@@ -36,7 +36,7 @@ public class AppealAddFragment extends Fragment {
             public void onClick(View view) {
                 if (appeal_content.getText().toString().length()>=CONTENT_LENGTH && appeal_theme.getText().toString().length()>=THEM_LENGTH){
 
-                Data.APPEALS_LIST.add(new Appeal(appeal_theme.getText().toString(),appeal_content.getText().toString(),"SLAVACOM","18:00"));
+                DataData.APPEALS_LIST.add(new Appeal(appeal_theme.getText().toString(),appeal_content.getText().toString(),"SLAVACOM","18:00"));
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 fragmentManager.popBackStack();
                 }else{

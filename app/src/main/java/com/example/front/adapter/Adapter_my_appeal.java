@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.front.R;
 import com.example.front.data.Appeal;
-import com.example.front.data.Data;
+import com.example.front.data.DataData;
 
 
 public class Adapter_my_appeal extends RecyclerView.Adapter {
@@ -31,7 +31,7 @@ public class Adapter_my_appeal extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return Data.APPEALS_LIST.size();
+        return DataData.APPEALS_LIST.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -45,7 +45,7 @@ public class Adapter_my_appeal extends RecyclerView.Adapter {
         }
 
         public void bindView(int position){
-            Appeal appeal = Data.APPEALS_LIST.get(position);
+            Appeal appeal = DataData.APPEALS_LIST.get(position);
             theme.setText("Тема: "+ appeal.getTheme());
             content.setText("Обращение: "+appeal.getContent());
             time.setText(appeal.getTime());

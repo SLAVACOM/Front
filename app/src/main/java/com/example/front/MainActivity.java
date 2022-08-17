@@ -1,7 +1,9 @@
 package com.example.front;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -17,25 +19,80 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.front.CONST.CONST;
 import com.example.front.data.Appeal;
-import com.example.front.data.Data;
+import com.example.front.data.DataData;
 import com.example.front.data.Event;
 import com.example.front.data.News;
+import com.example.front.retrofit.RetrofitClient;
+import com.example.front.retrofit.maper.MapObjectMapper;
 import com.example.front.ui.Map.MapFragment;
 import com.example.front.ui.User.UserFragment;
 import com.example.front.ui.appeal.AppealFragment;
 import com.example.front.ui.appeal.MyAppealFragment;
 import com.example.front.ui.bus.FragmentBus;
+import com.example.front.ui.bus.FragmentBusAdmin;
 import com.example.front.ui.event.EventFragment;
+import com.example.front.ui.hisory.HistoryFragment;
 import com.example.front.ui.my_file.MyFileFragment;
 import com.example.front.ui.news.NewsFragment;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.yandex.mapkit.MapKitFactory;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
 
+    SharedPreferences sharedPreferences;
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+
+
+
+        Call<JsonObject> getMapObject = RetrofitClient.getInstance().getApi().getMapObject();
+        getMapObject.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.code()==200){
+                    try {
+                        JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
+                        JSONArray jsonArray = jsonObject.getJSONArray("data");
+                        DataData.MAP_OBJECTS.clear();
+
+                        for (int i = 0; i < jsonArray.length() ; i++) {
+                            JSONObject object = jsonArray.getJSONObject(i);
+                            DataData.MAP_OBJECTS.add(MapObjectMapper.MapObjectFromJson(object));
+
+                        }
+                        Log.d(CONST.SERVER_LOG,""+DataData.MAP_OBJECTS.toString());
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+
+            }
+        });
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +116,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.nav_host_fragment_content_main,new NewsFragment()).addToBackStack(null).commit();
-        data();
-
 
     }
 
@@ -103,7 +158,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 break;
             case R.id.nav_bus:
+                if (!DataData.user.isCurator())
                 fragment = new FragmentBus();
+                else
+                    fragment = new FragmentBusAdmin();
+
                 break;
             case R.id.nav_event:
                 fragment = new EventFragment();
@@ -114,12 +173,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_my_appeal:
                 fragment = new MyAppealFragment();
                 break;
-            case R.id.nav_my_file:
+            case R.id.nav_user_list:
                 fragment= new MyFileFragment();
                 break;
             case R.id.nav_user:
                 fragment = new UserFragment();
                 break;
+            case R.id.nav_history:
+                fragment = new HistoryFragment();
+                break;
+            case R.id.nav_exit:
+                saveUserToken("121");
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+                return true;
             default:
                 DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
                 drawerLayout.closeDrawer(GravityCompat.START);
@@ -135,25 +202,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    private String loadUserId(){
+        sharedPreferences = getPreferences(0);
+        String UserToken =sharedPreferences.getString(CONST.USER_ID,"");
+        return UserToken;
+    }
 
-    private void data(){
-        Appeal appeal = new Appeal("dfdsfsfsdfsdfsdfvcsdc ","vfsfdvcdvc sdvgsdvds ivfsdbhny vbfsdbvfsd sdasdsa dsad","SLAVACOM","10:54");
-        News news = new News("sl[dpskdfghbfgbfchbnfhnfcvhnbfgvghnvnbhvghjngvh","sdjsojn","18:10" +
-                "");
-        Event event = new Event("shjngvh","sdhgjggggggggggggggggggggjsojn","18:10" +
-                "");
-        Data.NEWS_LIST.add(news);
-        Data.NEWS_LIST.add(news);
-        Data.NEWS_LIST.add(news);
-        Data.NEWS_LIST.add(news);
-        Data.EVENT_LIST.add(event);
-        Data.EVENT_LIST.add(event);
-        Data.EVENT_LIST.add(event);
-        Data.EVENT_LIST.add(event);
-        Data.APPEALS_LIST.add(appeal);
-        Data.APPEALS_LIST.add(appeal);
-        Data.APPEALS_LIST.add(appeal);
-        Data.APPEALS_LIST.add(appeal);
+    private void saveUserToken(String userToken){
+        sharedPreferences = getPreferences(0);
+        sharedPreferences.edit().putString(CONST.USER_ID,userToken).commit();
+        Log.d(CONST.SERVER_LOG,"Токен cохранён: "+userToken);
     }
 
 

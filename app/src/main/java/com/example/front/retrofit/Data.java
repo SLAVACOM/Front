@@ -8,8 +8,23 @@ public class Data {
     private String created_at;
     private String updated_at;
     private Photos photos;
+    private User author;
+    private String date;
 
-    public Data() {
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
     }
 
     public int getId() {

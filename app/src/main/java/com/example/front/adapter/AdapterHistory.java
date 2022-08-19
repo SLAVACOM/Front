@@ -45,8 +45,8 @@ public class AdapterHistory extends RecyclerView.Adapter<AdapterHistory.MyViewHo
         public void bindView(int position){
             HistoryJSON historyJSON = DataData.HISTORY_JSON_LIST.get(position);
             time.setText(historyJSON.getCreated_at());
-            points.setText(String.valueOf(historyJSON.getPoints())+" баллов благодарности");
-            mapId.setText("Место: "+String.valueOf(historyJSON.getMap_object_id()));
+            points.setText(historyJSON.getPoints()+" баллов благодарности");
+            mapId.setText("Место: "+historyJSON.getMap_object().getName());
 
         }
 

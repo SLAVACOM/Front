@@ -61,21 +61,6 @@ public class MapFragment extends Fragment {
         points.add(new Point(55.53537221009383,47.56775142114878));
         points.add(new Point(55.54711210254822,47.55800259087905));
 
-        for (int i = 0; i < DataData.MAP_OBJECTS.size(); i++) {
-            Log.d(CONST.SERVER_LOG, ""+DataData.MAP_OBJECTS.get(i));
-            MapObject mapObject = DataData.MAP_OBJECTS.get(i);
-            ArrayList<Point> Points = new ArrayList<>();
-            if (mapObject.getType().equals("polygon")){
-                for (int j = 0; j < mapObject.getCoords().size(); j++) {
-                    Log.d(CONST.SERVER_LOG,""+mapObject.getCoords().get(i).getLat());
-                    Points.add(new Point(mapObject.getCoords().get(i).getLat(),mapObject.getCoords().get(i).getLng()));
-                }
-                mapObjects = mapview.getMap().getMapObjects().addCollection();
-                PolygonMapObject triangle = mapObjects.addPolygon(
-                        new Polygon(new LinearRing(Points), new ArrayList<LinearRing>()));
-                triangle.setFillColor(-1212);
-            }
-        }
 
 
 

@@ -18,17 +18,13 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.front.CONST.CONST;
-import com.example.front.data.Appeal;
 import com.example.front.data.DataData;
-import com.example.front.data.Event;
-import com.example.front.data.News;
 import com.example.front.retrofit.RetrofitClient;
 import com.example.front.retrofit.maper.MapObjectMapper;
 import com.example.front.ui.Map.MapFragment;
 import com.example.front.ui.User.UserFragment;
 import com.example.front.ui.appeal.AppealFragment;
 import com.example.front.ui.appeal.MyAppealFragment;
-import com.example.front.ui.bus.FragmentBus;
 import com.example.front.ui.bus.FragmentBusAdmin;
 import com.example.front.ui.event.EventFragment;
 import com.example.front.ui.hisory.HistoryFragment;
@@ -158,10 +154,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 break;
             case R.id.nav_bus:
-                if (!DataData.user.isCurator())
-                fragment = new FragmentBus();
-                else
-                    fragment = new FragmentBusAdmin();
+                fragment = new FragmentBusAdmin();
 
                 break;
             case R.id.nav_event:

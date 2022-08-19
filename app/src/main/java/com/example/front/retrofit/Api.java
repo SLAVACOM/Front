@@ -3,6 +3,7 @@ package com.example.front.retrofit;
 import com.google.gson.JsonObject;
 
 import java.io.File;
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -13,6 +14,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface Api {
 
@@ -44,7 +46,7 @@ public interface Api {
                                       @Field("last_name")String last_name, @Field("password") String password, @Field("password_confirmation") String password_confirmation);
 
     @GET("api/user/event")
-    Call<JsonObject> getEventHistory(@Header("Authorization") String authHeader);
+    Call<ListRESPONSE<HistoryJSON>> getEventHistory(@Header("Authorization") String authHeader);
 
 
 
@@ -71,6 +73,8 @@ public interface Api {
     @DELETE("api/post/{{post_id}}")
     Call<ResponseBody> deleteNews(@Header("Authorization") String authHeader);
 
+    @GET("api/post")
+    Call<ListRESPONSE<NewsJSON>> getNewsListREs();
     @GET("api/post")
     Call<JsonObject> getNewsList();
 
@@ -154,11 +158,12 @@ public interface Api {
     @Headers({"Accept: application/json"})
     Call<JsonObject> addBusEvent(@Header("Authorization") String token,@Field("title") String title,@Field("place")String place,@Field("time")String time);
 
-    @DELETE("api/bus/event/{{bus_event_id}}")
-    Call<JsonObject> deleteBusEvent(@Header("Authorization") String token);
+    @DELETE("api/bus/event/{bus_event_id}")
+
+    Call<JsonObject> deleteBusEvent(@Header("Authorization") String token,@Path("bus_event_id") int id);
 
     @GET("api/bus/event")
-    Call<JsonObject> getBusList();
+    Call<ListRESPONSE<BusJSON>> getBusList();
 
 
 

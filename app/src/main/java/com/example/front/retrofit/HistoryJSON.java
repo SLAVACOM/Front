@@ -2,6 +2,7 @@ package com.example.front.retrofit;
 
 public class HistoryJSON {
 
+    private MapObject map_object;
     private int id;
     private int user_id;
     private int map_object_id;
@@ -21,7 +22,13 @@ public class HistoryJSON {
                 '}';
     }
 
+    public MapObject getMap_object() {
+        return map_object;
+    }
 
+    public void setMap_object(MapObject map_object) {
+        this.map_object = map_object;
+    }
 
     public int getId() {
         return id;

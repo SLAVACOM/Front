@@ -56,6 +56,9 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
+                password.setText("admin1");
+                login.setText("u1@mail.ru");
+
                 Call<JsonObject> call = RetrofitClient.getInstance().getApi().login(login.getText().toString(),password.getText().toString());
                 call.enqueue(new Callback<JsonObject>() {
                     @Override

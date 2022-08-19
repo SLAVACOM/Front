@@ -29,7 +29,7 @@ public class NewsMapper {
             data.setUser_id(object.optInt("user_id"));
             data.setCreated_at(object.optString("created_at"));
             data.setUpdated_at(object.optString("updated_at"));
-            DataData.NEWS_JSON_LIST.add(data);
+//            DataData.NEWS_JSON_LIST.add(data);
 
         }
 

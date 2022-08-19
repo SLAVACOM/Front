@@ -16,6 +16,8 @@ import com.example.front.R;
 import com.example.front.adapter.Adapter_appeal;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import retrofit2.Call;
+
 
 public class AppealFragment extends Fragment  {
 
@@ -23,7 +25,15 @@ public class AppealFragment extends Fragment  {
     FloatingActionButton floatingActionButton;
     Adapter_appeal adapter;
     RecyclerView recyclerView;
-    FloatingActionButton button;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+//        Call<Res>
+
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

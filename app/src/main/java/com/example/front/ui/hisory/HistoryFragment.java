@@ -16,6 +16,7 @@ import com.example.front.adapter.AdapterHistory;
 import com.example.front.data.DataData;
 import com.example.front.retrofit.Data;
 import com.example.front.retrofit.HistoryJSON;
+import com.example.front.retrofit.ListRESPONSE;
 import com.example.front.retrofit.RetrofitClient;
 import com.example.front.retrofit.maper.HistoryMapper;
 import com.google.gson.Gson;
@@ -51,29 +52,27 @@ public class HistoryFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        Call<JsonObject> getHistory = RetrofitClient.getInstance().getApi().getEventHistory("Bearer " + DataData.token);
-        getHistory.enqueue(new Callback<JsonObject>() {
+        Call<ListRESPONSE<HistoryJSON>> getHistory = RetrofitClient.getInstance().getApi().getEventHistory("Bearer " + DataData.token);
+        getHistory.enqueue(new Callback<ListRESPONSE<HistoryJSON>>() {
             @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+            public void onResponse(Call<ListRESPONSE<HistoryJSON>> call, Response<ListRESPONSE<HistoryJSON>> response) {
+
                 if(response.code()==200){
                     try {
-                        JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
-                        JSONArray array = jsonObject.getJSONArray("data");
+
                         DataData.HISTORY_JSON_LIST.clear();
-                        for (int i = 0; i <array.length() ; i++) {
-                            DataData.HISTORY_JSON_LIST.add(HistoryMapper.HistoryFromJSON(array.getJSONObject(i)));
-                        }
+                        DataData.HISTORY_JSON_LIST.addAll(response.body().getData());
                         adapter.notifyDataSetChanged();
-                        Log.d(CONST.SERVER_LOG,response.body().toString());
-                    }catch (JSONException e){
+                        Log.d(CONST.SERVER_LOG,response.body().getData().toString());
+                    }catch (Exception e){
                         e.printStackTrace();
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-
+            public void onFailure(Call<ListRESPONSE<HistoryJSON>> call, Throwable t) {
+                t.printStackTrace();
             }
         });
 

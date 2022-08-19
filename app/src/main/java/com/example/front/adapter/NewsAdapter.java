@@ -10,13 +10,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.front.R;
 import com.example.front.data.DataData;
+import com.example.front.data.News;
 import com.example.front.retrofit.Datum;
 import com.example.front.retrofit.NewsJSON;
 
 
-public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> {
+public class NewsAdapter extends RecyclerView.Adapter {
 
-
+    private static ClickListener clickListener;
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -24,10 +25,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> 
         return new MyViewHolder(view);
     }
 
-
-
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ((MyViewHolder)holder).bindView(position);
     }
 
@@ -38,7 +37,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> 
         return DataData.NEWS_JSON_LIST.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,View.OnLongClickListener{
         TextView time, event, zagal;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -47,12 +46,32 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> 
             zagal = itemView.findViewById(R.id.news_title);
         }
         public void bindView(int position){
-            Datum datum = DataData.NEWS_JSON_LIST.get(position);
+            NewsJSON newsJSON  = DataData.NEWS_JSON_LIST.get(position);
 
-            time.setText(datum.getCreated_at().replaceFirst(".000000Z","").replaceFirst("T"," "));
-            event.setText(datum.getDescription().replaceAll("<p>","").replaceAll("</p>","").replaceAll("&","").replaceAll("nbsp;",""));
-            zagal.setText(datum.getTitle());
+            time.setText(""+newsJSON.getData().getDate());
+            event.setText(""+newsJSON.getData().getTitle());
+            zagal.setText(""+newsJSON.getData().getDescription());
 
         }
+
+        @Override
+        public void onClick(View view) {
+            clickListener.onItemClick(getAdapterPosition(),view);
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            clickListener.onItemLongClick(getAdapterPosition(), view);
+            return false;
+        }
+    }
+
+    public void setClickListener(ClickListener clickListener){
+        NewsAdapter.clickListener = clickListener;
+    }
+
+    public interface ClickListener{
+        void onItemClick(int position,View view);
+        void onItemLongClick(int position,View view);
     }
 }

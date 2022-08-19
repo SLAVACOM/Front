@@ -15,8 +15,10 @@ import com.example.front.R;
 import com.example.front.adapter.NewsAdapter;
 import com.example.front.data.DataData;
 import com.example.front.retrofit.Data;
+import com.example.front.retrofit.ListRESPONSE;
 import com.example.front.retrofit.NewsJSON;
 import com.example.front.retrofit.RetrofitClient;
+import com.example.front.retrofit.maper.EventMaper;
 import com.example.front.retrofit.maper.NewsMapper;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -48,17 +50,19 @@ public class NewsFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
         Call<JsonObject> getNewsList = RetrofitClient.getInstance().getApi().getNewsList();
         getNewsList.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                if (response.code()==200){
+                if(response.code()==200){
+                    DataData.EVENT_JSON_LIST.clear();
                     try {
                         JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
-                        NewsJSON newsJSON= NewsMapper.NewsFromJson(jsonObject);
-                        Log.d(CONST.SERVER_LOG,""+ newsJSON);
+//                        jsonObject = jsonObject.getJSONObject("data");
+                        NewsMapper.NewsFromJson(jsonObject);
                         adapter.notifyDataSetChanged();
-                    }catch (JSONException e){
+                    } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
@@ -66,9 +70,9 @@ public class NewsFragment extends Fragment {
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                t.printStackTrace();
 
             }
         });
-
     }
 }

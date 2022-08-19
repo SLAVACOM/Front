@@ -26,7 +26,10 @@ public class DataData {
     public static User user = new User();
 
     public static List<BusJSON> BUS_JSON_LIST = new ArrayList<>();
-    public static List<Datum> NEWS_JSON_LIST = new ArrayList<>();
+    public static List<User> USERS_LIST = new ArrayList<>();
+    public static BusJSON deleteBus = new BusJSON();
+
+    public static List<NewsJSON> NEWS_JSON_LIST = new ArrayList<>();
     public static List<HistoryJSON> HISTORY_JSON_LIST = new ArrayList<>();
     public static List<EventJSON> EVENT_JSON_LIST = new ArrayList<>();
     public static  String token = "";

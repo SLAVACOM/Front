@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -20,12 +22,14 @@ import com.example.front.LoginActivity;
 import com.example.front.R;
 import com.example.front.data.DataData;
 import com.example.front.retrofit.RetrofitClient;
+import com.example.front.retrofit.User;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,65 +37,70 @@ import retrofit2.Response;
 
 public class UserEditFragment extends Fragment {
 
-    private EditText name, second_name,last_name,password,password_confirmation;
+    private EditText name, second_name,last_name,email,phone,points,adress,cardnum;
     private Button button;
+    private CheckBox checkBox;
+    private int curator;
+
+    private int pos;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        int pos= getArguments().getInt("pos");
         View view= inflater.inflate(R.layout.fragment_user_edit, container, false);
 
         name = view.findViewById(R.id.etv_prof_edit_name);
         second_name = view.findViewById(R.id.etv_prof_edit_second_name);
         last_name = view.findViewById(R.id.etv_prof_edit_last_name);
-        password = view.findViewById(R.id.etv_prof_edit_password);
-        password_confirmation = view.findViewById(R.id.etv_prof_edit_password_confirmation);
+        email = view.findViewById(R.id.etv_prof_edit_password);
+        phone = view.findViewById(R.id.etv_prof_edit_phone);
+        points = view.findViewById(R.id.etv_prof_edit_points);
+        adress = view.findViewById(R.id.etv_prof_edit_adress);
+        cardnum = view.findViewById(R.id.etv_prof_edi_numcard);
+        checkBox =view.findViewById(R.id.cb_curator);
 
-        name.setText(DataData.user.getName());
-        second_name.setText(DataData.user.getSecond_name());
-        last_name.setText(DataData.user.getLast_name());
+        User user = DataData.USERS_LIST.get(pos);
+        name.setText(user.getName());
+        second_name.setText(user.getSecond_name());
 
+        last_name.setText(user.getLast_name());
+        email.setText(user.getEmail());
+        phone.setText(String.valueOf(user.getPhone()));
+        points.setText(String.valueOf(user.getPoints()));
+        adress.setText(user.getAddress());
+        cardnum.setText(String.valueOf(user.getCard_id()));
         button = view.findViewById(R.id.bt_editProf);
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (checkBox.isChecked()){
+                    curator  = 1;
+                } else curator=0;
+            }
+        });
+
+        if (user.isCurator()) {
+            checkBox.setChecked(true);
+        } else checkBox.setChecked(false);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!name.getText().toString().equals("")|!last_name.getText().toString().equals("")|!second_name.getText().toString().equals("")|
-                        !password.getText().toString().equals("")|!password_confirmation.getText().toString().equals("")){
-                    if(password.getText().length()>=6){
-                        if (password.getText().toString().equals(password_confirmation.getText().toString())){
-                            Call<JsonObject> editProf = RetrofitClient.getInstance().getApi().editProfile("Bearer "+ DataData.token,"PUT",name.getText().toString(),second_name.getText().toString(),last_name.getText().toString()
-                            ,password.getText().toString(),password_confirmation.getText().toString());
-                            editProf.enqueue(new Callback<JsonObject>() {
-                                @Override
-                                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                                    Log.d(CONST.SERVER_LOG,response.body().toString());
-                                    if(response.code()==200){
-                                        Toast.makeText(getContext(), "Успешно", Toast.LENGTH_SHORT).show();
-                                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                                        fragmentManager.popBackStack();
-                                    }
-                                    if (response.code()==422){
-                                        try {
-                                            JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
-                                            Log.d(CONST.SERVER_LOG,jsonObject.getString("errors"));
-                                        }catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                }
+                Call<ResponseBody> setUser = RetrofitClient.getInstance().getApi().editUserList("Bearer " +DataData.token,Integer.valueOf(user.getId()),"put",email.getText().toString(),name.getText().toString(),second_name.getText().toString(),Integer.valueOf(phone.getText().toString()),last_name.getText().toString(),user.getBlocked(),curator,Integer.valueOf(points.getText().toString()),Integer.valueOf(cardnum.getText().toString()));
+                setUser.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.code()==200)
+                            Toast.makeText(getContext(), "Успешно", Toast.LENGTH_SHORT).show();
+                        else Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
+                    }
 
-                                @Override
-                                public void onFailure(Call<JsonObject> call, Throwable t) {
-                                }
-                            });
-                        } else{
-                            Toast.makeText(getContext(), "Пароли не совпадают!", Toast.LENGTH_SHORT).show();
-                            password_confirmation.setTextColor(-65536);
-                            password.setTextColor(-65536);
-                        }
-                    }else Toast.makeText(getContext(), "Минимальная длинна пароля 6 сиволов!", Toast.LENGTH_SHORT).show();
-                }else Toast.makeText(getContext(), "Не все поля запонены!", Toast.LENGTH_SHORT).show();
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                    }
+                });
             }
         });
 

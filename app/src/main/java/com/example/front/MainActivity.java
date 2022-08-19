@@ -18,18 +18,15 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.front.CONST.CONST;
-import com.example.front.data.Appeal;
 import com.example.front.data.DataData;
-import com.example.front.data.Event;
-import com.example.front.data.News;
 import com.example.front.retrofit.RetrofitClient;
 import com.example.front.retrofit.maper.MapObjectMapper;
 import com.example.front.ui.Map.MapFragment;
 import com.example.front.ui.User.UserFragment;
+import com.example.front.ui.User.UsersListFragment;
 import com.example.front.ui.appeal.AppealFragment;
 import com.example.front.ui.appeal.MyAppealFragment;
 import com.example.front.ui.bus.FragmentBus;
-import com.example.front.ui.bus.FragmentBusAdmin;
 import com.example.front.ui.event.EventFragment;
 import com.example.front.ui.hisory.HistoryFragment;
 import com.example.front.ui.my_file.MyFileFragment;
@@ -58,9 +55,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onStart() {
         super.onStart();
-
-
-
 
         Call<JsonObject> getMapObject = RetrofitClient.getInstance().getApi().getMapObject();
         getMapObject.enqueue(new Callback<JsonObject>() {
@@ -158,10 +152,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 break;
             case R.id.nav_bus:
-                if (!DataData.user.isCurator())
                 fragment = new FragmentBus();
-                else
-                    fragment = new FragmentBusAdmin();
 
                 break;
             case R.id.nav_event:
@@ -174,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 fragment = new MyAppealFragment();
                 break;
             case R.id.nav_user_list:
-                fragment= new MyFileFragment();
+                fragment= new UsersListFragment();
                 break;
             case R.id.nav_user:
                 fragment = new UserFragment();

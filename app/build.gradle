@@ -67,4 +67,7 @@ dependencies {
     implementation 'com.yandex.android:maps.mobile:4.1.0-lite'
 
     implementation 'com.squareup.picasso:picasso:2.5.2'
+
+    implementation"androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+
 }

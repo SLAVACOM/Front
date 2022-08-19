@@ -12,15 +12,32 @@ public class User {
     private int blocked;
     private int created_at;
     private int updated_at;
+    private int card_id;
     private String phone;
     private int points;
-    private int card_id;
     private String full_name;
     private boolean curator;
+    private String address;
+    private Data data;
+
+    public Data getData() {
+        return data;
+    }
+
+    public void setData(Data data) {
+        this.data = data;
+    }
 
     public User() {
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public int getCreated_at() {
         return created_at;

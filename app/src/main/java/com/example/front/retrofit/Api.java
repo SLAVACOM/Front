@@ -3,9 +3,12 @@ package com.example.front.retrofit;
 import com.google.gson.JsonObject;
 
 import java.io.File;
+import java.util.List;
 
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -13,6 +16,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface Api {
 
@@ -44,7 +48,7 @@ public interface Api {
                                       @Field("last_name")String last_name, @Field("password") String password, @Field("password_confirmation") String password_confirmation);
 
     @GET("api/user/event")
-    Call<JsonObject> getEventHistory(@Header("Authorization") String authHeader);
+    Call<ListRESPONSE<HistoryJSON>> getEventHistory(@Header("Authorization") String authHeader);
 
 
 
@@ -71,6 +75,8 @@ public interface Api {
     @DELETE("api/post/{{post_id}}")
     Call<ResponseBody> deleteNews(@Header("Authorization") String authHeader);
 
+    @GET("api/post")
+    Call<ListRESPONSE<NewsJSON>> getNewsListREs();
     @GET("api/post")
     Call<JsonObject> getNewsList();
 
@@ -154,11 +160,12 @@ public interface Api {
     @Headers({"Accept: application/json"})
     Call<JsonObject> addBusEvent(@Header("Authorization") String token,@Field("title") String title,@Field("place")String place,@Field("time")String time);
 
-    @DELETE("api/bus/event/{{bus_event_id}}")
-    Call<JsonObject> deleteBusEvent(@Header("Authorization") String token);
+    @DELETE("api/bus/event/{bus_event_id}")
+
+    Call<JsonObject> deleteBusEvent(@Header("Authorization") String token,@Path("bus_event_id") int id);
 
     @GET("api/bus/event")
-    Call<JsonObject> getBusList();
+    Call<ListRESPONSE<BusJSON>> getBusList();
 
 
 
@@ -267,12 +274,15 @@ public interface Api {
                                     @Field("password") String password, @Field("password_confirmation")String password_confirmation);
 
 
+    @POST("api/user/{user_id}")
+    @Headers({"Accept: application/json"})
+    Call<ResponseBody> editUserList(@Header("Authorization") String token, @Path("user_id") int user_id,@Body String method,@Body String email,@Body String name, @Body String second_name, @Body int phone,@Body String last_name,@Body int blocked, @Body int curator, @Body int point,@Body int card_id);
+
     @GET("api/user/3")
     @Headers({"Authorization: Bearer {{token}}"})
     Call<ResponseBody> getUserData();
 
 
     @GET("api/user")
-    @Headers({"Authorization: Bearer {{token}}"})
-    Call<ResponseBody> getUsers();
+    Call<JsonObject> getUsers(@Header("Authorization") String heder);
 }

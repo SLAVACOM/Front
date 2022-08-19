@@ -42,7 +42,7 @@ public class MapObjectMapper {
                     point.setLat(array1.getJSONObject(i).optDouble("lat"));
                     point.setLng(array1.getJSONObject(i).optDouble("lng"));
                     pointArrayList.add(point);
-                    mapObject.setCoords(pointArrayList);
+//                    mapObject.setCoords(pointArrayList);
 
                 }
             }

@@ -24,6 +24,8 @@ import com.google.gson.JsonObject;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -56,6 +58,9 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
+                password.setText("admin1");
+                login.setText("a@mail.ru");
+
                 Call<JsonObject> call = RetrofitClient.getInstance().getApi().login(login.getText().toString(),password.getText().toString());
                 call.enqueue(new Callback<JsonObject>() {
                     @Override
@@ -99,8 +104,6 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, "Неверные данные!", Toast.LENGTH_SHORT).show();
                         }
                     }
-
-
 
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {

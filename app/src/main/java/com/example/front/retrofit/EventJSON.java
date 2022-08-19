@@ -10,6 +10,7 @@ public class EventJSON {
     private String created_at;
     private String updated_at;
     private int points;
+    private Data data;
 
     @Override
     public String toString() {
@@ -23,6 +24,14 @@ public class EventJSON {
                 ", updated_at='" + updated_at + '\'' +
                 ", points=" + points +
                 '}';
+    }
+
+    public Data getData() {
+        return data;
+    }
+
+    public void setData(Data data) {
+        this.data = data;
     }
 
     public int getId() {

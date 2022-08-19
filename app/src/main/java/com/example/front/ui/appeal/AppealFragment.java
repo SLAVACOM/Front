@@ -7,14 +7,18 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 
 import com.example.front.R;
 import com.example.front.adapter.Adapter_appeal;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import retrofit2.Call;
 
 
 public class AppealFragment extends Fragment  {
@@ -23,13 +27,25 @@ public class AppealFragment extends Fragment  {
     FloatingActionButton floatingActionButton;
     Adapter_appeal adapter;
     RecyclerView recyclerView;
-    FloatingActionButton button;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private CheckBox checkBox;
+
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_appeal,container,false);
-
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
+        checkBox = view.findViewById(R.id.cb_show_my_appeal);
         floatingActionButton =view.findViewById(R.id.flBt_appeal);
 
         adapter = new Adapter_appeal();

@@ -101,7 +101,6 @@ public class FragmentBus extends Fragment  {
                 Bundle bundle = new Bundle();
                 bundle.putInt("pos",position);
                 editFragment.setArguments(bundle);
-                Toast.makeText(getActivity(), "sdad"+DataData.BUS_JSON_LIST.get(position).getTime(), Toast.LENGTH_SHORT).show();
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.nav_host_fragment_content_main,editFragment).addToBackStack(null);

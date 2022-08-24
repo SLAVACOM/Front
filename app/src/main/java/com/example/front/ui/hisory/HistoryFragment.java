@@ -45,6 +45,7 @@ public class HistoryFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
+        getHistory();
 
         return view;
     }
@@ -52,6 +53,10 @@ public class HistoryFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        getHistory();
+    }
+
+    public void getHistory(){
         Call<ListRESPONSE<HistoryJSON>> getHistory = RetrofitClient.getInstance().getApi().getEventHistory("Bearer " + DataData.token);
         getHistory.enqueue(new Callback<ListRESPONSE<HistoryJSON>>() {
             @Override
@@ -75,7 +80,5 @@ public class HistoryFragment extends Fragment {
                 t.printStackTrace();
             }
         });
-
-
     }
 }

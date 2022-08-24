@@ -1,21 +1,15 @@
 package com.example.front.retrofit.maper;
 
 
-import android.util.Log;
-
-import com.example.front.CONST.CONST;
 import com.example.front.retrofit.Cords;
 import com.example.front.retrofit.MapObject;
-import com.yandex.mapkit.geometry.Point;
-import com.yandex.mapkit.geometry.Polygon;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import retrofit2.Call;
+
 
 public class MapObjectMapper {
     public static MapObject MapObjectFromJson(JSONObject jsonObject){
@@ -42,7 +36,7 @@ public class MapObjectMapper {
                     point.setLat(array1.getJSONObject(i).optDouble("lat"));
                     point.setLng(array1.getJSONObject(i).optDouble("lng"));
                     pointArrayList.add(point);
-//                    mapObject.setCoords(pointArrayList);
+                    mapObject.setCoords(pointArrayList);
 
                 }
             }

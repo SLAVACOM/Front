@@ -13,15 +13,12 @@ import java.util.ArrayList;
 
 public class NewsMapper {
     public static NewsJSON NewsFromJson(JSONObject jsonObject){
-    NewsJSON newsJSON = null;
     try {
-        newsJSON = new NewsJSON();
-
-        JSONArray DataArray = jsonObject.optJSONArray("data");
+        NewsJSON newsJSON = new NewsJSON();
+        JSONArray DataArray = jsonObject.getJSONArray("data");
         DataData.NEWS_JSON_LIST.clear();
         for (int i = 0; i < DataArray.length() ; i++) {
-            Datum data = new Datum();
-
+            Data data = new Data();
             JSONObject object = DataArray.getJSONObject(i);
             data.setId(object.optInt("id"));
             data.setTitle(object.optString("title"));
@@ -29,8 +26,8 @@ public class NewsMapper {
             data.setUser_id(object.optInt("user_id"));
             data.setCreated_at(object.optString("created_at"));
             data.setUpdated_at(object.optString("updated_at"));
-//            DataData.NEWS_JSON_LIST.add(data);
-
+            newsJSON.setData(data);
+            DataData.NEWS_JSON_LIST.add(newsJSON);
         }
 
 
@@ -39,7 +36,7 @@ public class NewsMapper {
     }
 
 
-    return newsJSON;
+        return null;
     }
 
 }

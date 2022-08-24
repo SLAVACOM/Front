@@ -1,6 +1,10 @@
 package com.example.front.ui.User;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -9,21 +13,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.Toast;
-
 import com.example.front.CONST.CONST;
 import com.example.front.R;
 import com.example.front.adapter.AdapterUserList;
 import com.example.front.data.DataData;
 import com.example.front.retrofit.RetrofitClient;
 import com.example.front.retrofit.maper.UserMapper;
-import com.example.front.retrofit.maper.UsersMapper;
-import com.example.front.ui.bus.FragmentBusAdd;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 

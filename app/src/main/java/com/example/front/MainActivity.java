@@ -56,35 +56,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onStart() {
         super.onStart();
 
-        Call<JsonObject> getMapObject = RetrofitClient.getInstance().getApi().getMapObject();
-        getMapObject.enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                if (response.code()==200){
-                    try {
-                        JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
-                        JSONArray jsonArray = jsonObject.getJSONArray("data");
-                        DataData.MAP_OBJECTS.clear();
 
-                        for (int i = 0; i < jsonArray.length() ; i++) {
-                            JSONObject object = jsonArray.getJSONObject(i);
-                            DataData.MAP_OBJECTS.add(MapObjectMapper.MapObjectFromJson(object));
-
-                        }
-                        Log.d(CONST.SERVER_LOG,""+DataData.MAP_OBJECTS.toString());
-
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-
-            }
-        });
 
     }
 

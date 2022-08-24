@@ -58,8 +58,6 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                password.setText("admin1");
-                login.setText("a@mail.ru");
 
                 Call<JsonObject> call = RetrofitClient.getInstance().getApi().login(login.getText().toString(),password.getText().toString());
                 call.enqueue(new Callback<JsonObject>() {
@@ -86,6 +84,9 @@ public class LoginActivity extends AppCompatActivity {
 
                                             }
                                         }
+                                        else {
+                                            Toast.makeText(LoginActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                                        }
                                     }
 
                                     @Override
@@ -96,12 +97,11 @@ public class LoginActivity extends AppCompatActivity {
                                 startActivity(new Intent(getApplicationContext(),MainActivity.class));
 
                             }catch (JSONException e){
-
+                                e.printStackTrace();
                             }
-
-
-                        }else {
-                            Toast.makeText(LoginActivity.this, "Неверные данные!", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            Toast.makeText(LoginActivity.this, response.message(), Toast.LENGTH_SHORT).show();
                         }
                     }
 

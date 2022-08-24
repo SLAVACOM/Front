@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class MapObject {
     private int id;
     private String name;
-    private ArrayList <ArrayList<Cords>> coords;
+    private ArrayList <Cords> coords;
     private int points;
     private String type;
     private int app_type;
@@ -24,11 +24,11 @@ public class MapObject {
     }
 
 
-    public ArrayList<ArrayList<Cords>> getCoords() {
+    public ArrayList<Cords> getCoords() {
         return coords;
     }
 
-    public void setCoords(ArrayList<ArrayList<Cords>> coords) {
+    public void setCoords(ArrayList<Cords> coords) {
         this.coords = coords;
     }
 

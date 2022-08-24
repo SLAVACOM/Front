@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void saveUserToken(String userToken){
-        sharedPreferences = getPreferences(0);
+        sharedPreferences = getSharedPreferences(LoginActivity.LOGIN_PREFS, 0);
         sharedPreferences.edit().putString(CONST.USER_TOKEN,userToken).commit();
         Log.d(CONST.SERVER_LOG,"Токен cохранён: "+userToken);
     }

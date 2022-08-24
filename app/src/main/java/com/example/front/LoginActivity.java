@@ -1,8 +1,6 @@
 package com.example.front;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,7 +16,6 @@ import com.example.front.data.DataData;
 import com.example.front.retrofit.ObjectResponse;
 import com.example.front.retrofit.User;
 import com.example.front.retrofit.RetrofitClient;
-import com.example.front.retrofit.maper.UserMapper;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -31,6 +28,7 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity  {
 
+    public static final String LOGIN_PREFS = "login";
     SharedPreferences sharedPreferences;
     EditText login, password;
     Button button;
@@ -97,8 +95,8 @@ public class LoginActivity extends AppCompatActivity  {
         getProfile(false);
     }
     private void getProfile(boolean resume) {
-        String token = getPreferences(0).getString(CONST.USER_TOKEN, null);
-        if (token == null && resume) return;
+        String token = getSharedPreferences(LOGIN_PREFS, 0).getString(CONST.USER_TOKEN, null);
+        if (token == null || resume) return;
         Call<ObjectResponse<User>> getProfileData = RetrofitClient.getInstance().getApi().getProfile("Bearer " + token);
         getProfileData.enqueue(new Callback<ObjectResponse<User>>() {
             @Override
@@ -119,7 +117,7 @@ public class LoginActivity extends AppCompatActivity  {
     }
 
     private void saveUserToken(String userToken) {
-        sharedPreferences = getPreferences(0);
+        sharedPreferences = getSharedPreferences(LOGIN_PREFS, 0);
         sharedPreferences.edit().putString(CONST.USER_TOKEN, userToken).commit();
         Log.d(CONST.SERVER_LOG, "Токен cохранён: " + userToken);
     }

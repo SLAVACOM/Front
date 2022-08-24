@@ -18,7 +18,7 @@ public class UserMapper {
             user.setPassword_reset_at(jsonObject.optString("password_reset_at"));
             user.setRole(jsonObject.optInt("role"));
             user.setBlocked(jsonObject.optInt("blocked"));
-            user.setCreated_at(jsonObject.optInt("created_at"));
+            user.setCreated_at(jsonObject.optString("created_at"));
             user.setPhone(jsonObject.optString("phone"));
             user.setPoints(jsonObject.optInt("points"));
             user.setFull_name(jsonObject.optString("full_name"));

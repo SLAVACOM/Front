@@ -10,8 +10,8 @@ public class User {
     private String password_reset_at;
     private int role;
     private int blocked;
-    private int created_at;
-    private int updated_at;
+    private String created_at;
+    private String updated_at;
     private int card_id;
     private String phone;
     private int points;
@@ -39,19 +39,19 @@ public class User {
         this.address = address;
     }
 
-    public int getCreated_at() {
+    public String getCreated_at() {
         return created_at;
     }
 
-    public void setCreated_at(int created_at) {
+    public void setCreated_at(String created_at) {
         this.created_at = created_at;
     }
 
-    public int getUpdated_at() {
+    public String getUpdated_at() {
         return updated_at;
     }
 
-    public void setUpdated_at(int updated_at) {
+    public void setUpdated_at(String updated_at) {
         this.updated_at = updated_at;
     }
 

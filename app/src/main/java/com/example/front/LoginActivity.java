@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.front.CONST.CONST;
 import com.example.front.data.DataData;
+import com.example.front.retrofit.ObjectResponse;
 import com.example.front.retrofit.User;
 import com.example.front.retrofit.RetrofitClient;
 import com.example.front.retrofit.maper.UserMapper;
@@ -24,101 +25,104 @@ import com.google.gson.JsonObject;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity  {
 
     SharedPreferences sharedPreferences;
-
-
-    EditText login,password;
-
+    EditText login, password;
     Button button;
-    FragmentManager fragmentManager;
-    FragmentTransaction fragmentTransaction;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
-        fragmentManager = getSupportFragmentManager();
-        fragmentTransaction = getSupportFragmentManager().beginTransaction();
-
         password = findViewById(R.id.etv_login_password);
         login = findViewById(R.id.etv_login_login);
-        button= findViewById(R.id.bt_login);
-        
-
-
-
+        login.setText("a@mail.ru");
+        password.setText("admin1");
+        button = findViewById(R.id.bt_login);
         button.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
-
-                Call<JsonObject> call = RetrofitClient.getInstance().getApi().login(login.getText().toString(),password.getText().toString());
-                call.enqueue(new Callback<JsonObject>() {
-                    @Override
-                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-
-                        if (response.code()==200){
-                            try {
-                                JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
-                                saveUserToken(jsonObject.getJSONObject("data").getString("access_token"));
-                                DataData.token=(jsonObject.getJSONObject("data").getString("access_token"));
-                                Call<JsonObject> getProfileData = RetrofitClient.getInstance().getApi().view_profil_data("Bearer " +DataData.token);
-                                getProfileData.enqueue(new Callback<JsonObject>() {
-                                    @Override
-                                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                                        if (response.code()==200){
-                                            try {
-                                                JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
-                                                JSONObject jsonObject1 = jsonObject.getJSONObject("data");
-                                                User user = UserMapper.UserFullFromJson(jsonObject1);
-                                                DataData.user = user;
-                                                Log.d(CONST.SERVER_LOG,"USERS " + DataData.user);
-                                            }catch (JSONException e){
-
-                                            }
-                                        }
-                                        else {
-                                            Toast.makeText(LoginActivity.this, response.message(), Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onFailure(Call<JsonObject> call, Throwable t) {
-
-                                    }
-                                });
-                                startActivity(new Intent(getApplicationContext(),MainActivity.class));
-
-                            }catch (JSONException e){
-                                e.printStackTrace();
-                            }
-                        }
-                        else {
-                            Toast.makeText(LoginActivity.this, response.message(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<JsonObject> call, Throwable t) {
-                        Log.d(CONST.SERVER_LOG,"ERROR: "+t.getMessage());
-                    }
-                });
+                button.setEnabled(false);
+                getToken();
             }
         });
     }
-    private void saveUserToken(String userToken){
-        sharedPreferences = getPreferences(0);
-        sharedPreferences.edit().putString(CONST.USER_ID,userToken).commit();
-        Log.d(CONST.SERVER_LOG,"Токен cохранён: "+userToken);
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getProfile(true);
     }
 
+    private  void getToken() {
+        Call<JsonObject> call = RetrofitClient.getInstance().getApi().login(login.getText().toString(), password.getText().toString());
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.code() == 500) {
+                    Toast.makeText(LoginActivity.this, "Ошибка сервера", Toast.LENGTH_LONG).show();
+                    button.setEnabled(true);
+                    return;
+                } else if (response.code() >= 400 && response.code() < 500) {
+                    Toast.makeText(LoginActivity.this, "Неправильный логин или пароль", Toast.LENGTH_LONG).show();
+                    button.setEnabled(true);
+                    return;
+                }
+                try {
+                    JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
+                    String token = jsonObject.getJSONObject("data").getString("access_token");
+                    saveUserToken(DataData.token = token);
+                } catch (JSONException e) {
+                    Toast.makeText(LoginActivity.this, "Неправильный логин или пароль", Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }finally {
+                    getProfile();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Toast.makeText(LoginActivity.this, "Для продолжения работы с профилем, необходимо обновить приложение", Toast.LENGTH_LONG).show();
+                Log.d(CONST.SERVER_LOG, "ERROR: " + t.getMessage());
+                button.setEnabled(true);
+            }
+        });
+    }
+    private void getProfile() {
+        getProfile(false);
+    }
+    private void getProfile(boolean resume) {
+        String token = getPreferences(0).getString(CONST.USER_TOKEN, null);
+        if (token == null && resume) return;
+        Call<ObjectResponse<User>> getProfileData = RetrofitClient.getInstance().getApi().getProfile("Bearer " + token);
+        getProfileData.enqueue(new Callback<ObjectResponse<User>>() {
+            @Override
+            public void onResponse(Call<ObjectResponse<User>> call, Response<ObjectResponse<User>> response) {
+                DataData.user = response.body().getData();
+                Log.d(CONST.SERVER_LOG, "USERS " + DataData.user);
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            }
+
+            @Override
+            public void onFailure(Call<ObjectResponse<User>> call, Throwable t) {
+                if (resume) Toast.makeText(LoginActivity.this, "Не удалось загрузить данные о профиле", Toast.LENGTH_LONG).show();
+                Log.d(CONST.SERVER_LOG, "TOKEN " + token);
+                button.setEnabled(true);
+                t.printStackTrace();
+            }
+        });
+    }
+
+    private void saveUserToken(String userToken) {
+        sharedPreferences = getPreferences(0);
+        sharedPreferences.edit().putString(CONST.USER_TOKEN, userToken).commit();
+        Log.d(CONST.SERVER_LOG, "Токен cохранён: " + userToken);
+    }
 
 
 }

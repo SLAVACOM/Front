@@ -18,9 +18,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.front.CONST.CONST;
-import com.example.front.data.DataData;
-import com.example.front.retrofit.RetrofitClient;
-import com.example.front.retrofit.maper.MapObjectMapper;
 import com.example.front.ui.Map.MapFragment;
 import com.example.front.ui.User.UserFragment;
 import com.example.front.ui.User.UsersListFragment;
@@ -29,20 +26,9 @@ import com.example.front.ui.appeal.MyAppealFragment;
 import com.example.front.ui.bus.FragmentBus;
 import com.example.front.ui.event.EventFragment;
 import com.example.front.ui.hisory.HistoryFragment;
-import com.example.front.ui.my_file.MyFileFragment;
 import com.example.front.ui.news.NewsFragment;
 import com.google.android.material.navigation.NavigationView;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.yandex.mapkit.MapKitFactory;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -167,13 +153,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private String loadUserId(){
         sharedPreferences = getPreferences(0);
-        String UserToken =sharedPreferences.getString(CONST.USER_ID,"");
+        String UserToken =sharedPreferences.getString(CONST.USER_TOKEN,"");
         return UserToken;
     }
 
     private void saveUserToken(String userToken){
         sharedPreferences = getPreferences(0);
-        sharedPreferences.edit().putString(CONST.USER_ID,userToken).commit();
+        sharedPreferences.edit().putString(CONST.USER_TOKEN,userToken).commit();
         Log.d(CONST.SERVER_LOG,"Токен cохранён: "+userToken);
     }
 

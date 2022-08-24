@@ -1,12 +1,15 @@
 package com.example.front.retrofit;
 
 
+import com.yandex.mapkit.map.PolygonMapObject;
+
 import java.util.ArrayList;
 
 public class MapObject {
     private int id;
     private String name;
-    private ArrayList <Cords> coords;
+
+    private ArrayList <ArrayList<Cords>> coords;
     private int points;
     private String type;
     private int app_type;
@@ -14,6 +17,7 @@ public class MapObject {
     private String created_at;
     private String updated_at;
     private int client_id;
+    private PolygonMapObject polygonMapObject;
 
 
     public MapObject(String name) {
@@ -24,11 +28,12 @@ public class MapObject {
     }
 
 
-    public ArrayList<Cords> getCoords() {
+
+    public ArrayList<ArrayList<Cords>> getCoords() {
         return coords;
     }
 
-    public void setCoords(ArrayList<Cords> coords) {
+    public void setCoords(ArrayList<ArrayList<Cords>> coords) {
         this.coords = coords;
     }
 
@@ -119,5 +124,13 @@ public class MapObject {
                 ", updated_at=" + updated_at +
                 ", client_id='" + client_id + '\'' +
                 '}';
+    }
+
+    public PolygonMapObject getPolygonMapObject() {
+        return polygonMapObject;
+    }
+
+    public void setPolygonMapObject(PolygonMapObject polygonMapObject) {
+        this.polygonMapObject = polygonMapObject;
     }
 }

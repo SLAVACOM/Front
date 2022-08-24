@@ -39,7 +39,7 @@ public interface Api {
     Call<ResponseBody> reset_password(@Field("email") String email);
 
     @POST("api/auth/profile")
-    Call<JsonObject> view_profil_data(@Header("Authorization") String authHeader);
+    Call<ObjectResponse<User>> getProfile(@Header("Authorization") String authHeader);
 
     @FormUrlEncoded
     @POST("api/auth/profile")
@@ -258,7 +258,7 @@ public interface Api {
     Call<ResponseBody> deleteMapObject();
 
     @GET("api/mapObject")
-    Call<JsonObject> getMapObject();
+    Call<ListRESPONSE<MapObject>> getMapObject();
 
 
 

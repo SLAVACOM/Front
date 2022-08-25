@@ -28,8 +28,8 @@ public interface Api {
 
 
     @Headers({"Accept: application/json"})
-    Call<ResponseBody> registration(@Field("email") String email, @Field("name") String name,@Field("second_name")String second_name,@Field("accept") String accept,
-                                    @Field("phone") String phone,@Field("last_name") String last_name);
+    @POST("api/auth/signup/")
+    Call<ResponseBody> registration(@Body User user);
 
     @POST("api/auth/logout/")
     Call<ResponseBody> logout(@Header("Authorization") String authHeader);

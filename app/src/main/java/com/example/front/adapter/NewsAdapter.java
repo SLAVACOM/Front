@@ -49,7 +49,7 @@ public class NewsAdapter extends RecyclerView.Adapter {
         public void bindView(int position){
             NewsJSON newsJSON  = DataData.NEWS_JSON_LIST.get(position);
 
-            time.setText(""+newsJSON.getData().getCreated_at().replaceAll("T","").replaceAll(".000000Z",""));
+            time.setText(""+newsJSON.getData().getCreated_at().replaceAll("T"," ").replaceAll(".000000Z",""));
             event.setText(newsJSON.getData().getDescription().replaceAll("<p>","").replaceAll("</p>","").replaceAll("&nbsp;",""));
             zagal.setText(""+newsJSON.getData().getTitle().replaceAll("<P>",""));
 

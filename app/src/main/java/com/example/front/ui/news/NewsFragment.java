@@ -25,6 +25,8 @@ import com.example.front.retrofit.RetrofitClient;
 import com.example.front.retrofit.maper.EventMaper;
 import com.example.front.retrofit.maper.NewsMapper;
 import com.example.front.ui.bus.BusEditFragment;
+import com.example.front.ui.bus.FragmentBusAdd;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -41,11 +43,22 @@ public class NewsFragment extends Fragment {
     NewsAdapter adapter;
     RecyclerView recyclerView;
     SwipeRefreshLayout swipeRefreshLayout;
+    FloatingActionButton actionButton;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_news,container,false);
         adapter = new NewsAdapter();
+        actionButton = view.findViewById(R.id.fab_addNews);
+        actionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.nav_host_fragment_content_main,new NewsAddFragment()).addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
         adapter.setClickListener(new NewsAdapter.ClickListener() {
             @Override
             public void onItemClick(int position, View view) {

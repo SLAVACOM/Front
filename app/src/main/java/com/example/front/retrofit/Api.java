@@ -1,5 +1,6 @@
 package com.example.front.retrofit;
 
+import com.example.front.retrofit.maper.TitleAndDescription;
 import com.google.gson.JsonObject;
 
 import java.io.File;
@@ -63,7 +64,7 @@ public interface Api {
     @FormUrlEncoded
     @POST("api/post")
     @Headers({"Accept: application/json"})
-    Call<ResponseBody> addNews(@Header("Authorization") String authHeader,@Field("title") String title, @Field("description") String description);
+    Call<ResponseBody> addNews(@Header("Authorization") String authHeader, @Body TitleAndDescription titleAndDescription);
 
 
     @FormUrlEncoded
@@ -72,8 +73,8 @@ public interface Api {
     Call<ResponseBody> editNews(@Header("Authorization") String authHeader,@Field("_method") String method,@Field("title") String title, @Field("description") String description,@Field("post_photos[0]") File file,@Field("post_photos[1]") File file1,@Field("delete_photos[0]") int id);
 
 
-    @DELETE("api/post/{{post_id}}")
-    Call<ResponseBody> deleteNews(@Header("Authorization") String authHeader);
+    @DELETE("api/post/{post_id}")
+    Call<ResponseBody> deleteNews(@Header("Authorization") String authHeader,@Path("post_id") int id);
 
     @GET("api/post")
     Call<ListRESPONSE<NewsJSON>> getNewsListREs();
@@ -147,9 +148,8 @@ public interface Api {
     @Headers({"Accept: application/json","Authorization: Bearer {{token}}"})
     Call<ResponseBody> addEvent(@Field("title") String title, @Field("place") String place, @Field("date") String date, @Field("points") String points,@Field("_method") String method);
 
-    @DELETE("api/event/{{event_id}}")
-    @Headers({"Authorization: Bearer {{token}}"})
-    Call<ResponseBody> deleteEvent();
+    @DELETE("api/event/{event_id}")
+    Call<ResponseBody> deleteEvent(@Header("Authorization") String token, @Path("event_id") int id);
 
     @GET("api/event")
     Call<JsonObject> getEventList();

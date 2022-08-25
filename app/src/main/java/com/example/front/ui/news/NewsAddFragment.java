@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.example.front.R;
 import com.example.front.data.DataData;
 import com.example.front.retrofit.RetrofitClient;
+import com.example.front.retrofit.maper.TitleAndDescription;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -34,16 +35,20 @@ public class NewsAddFragment extends Fragment {
         content = view.findViewById(R.id.etv_news_add_content);
         addBt = view.findViewById(R.id.buttonAdd);
 
+
         addBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                TitleAndDescription titleAndDescription = new TitleAndDescription();
+                titleAndDescription.setTitle(title.getText().toString());
+                titleAndDescription.setDescription(content.getText().toString());
                 try {
-                    Call<ResponseBody> addEvent = RetrofitClient.getInstance().getApi().addNews("Bearer " + DataData.token,title.getText().toString(),content.getText().toString());
+                    Call<ResponseBody> addEvent = RetrofitClient.getInstance().getApi().addNews("Bearer " + DataData.token, titleAndDescription);
                     addEvent.enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
                             if (response.code()==200){
-                                Toast.makeText(getContext(), "Успешно", Toast.LENGTH_SHORT).show();
                                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                                 fragmentManager.popBackStack();
                             }

@@ -59,7 +59,7 @@ public class UserFragment extends Fragment {
             }
             phone.setText("Номер телефона: "+user.getPhone());
             balance.setText("Баланс: "+user.getPoints());
-            if (user.getCard_id()!=0)
+            if (user.getCard_id() != null && !user.getCard_id().isEmpty())
                 cardId.setText("Номер карты: " + user.getCard_id());
 
 
@@ -73,7 +73,7 @@ public class UserFragment extends Fragment {
             curator.setText("Номер телефона: "+user.getPhone());
             phone.setText("Почта: "+user.getEmail());
             email.setText("Баланс: "+ user.getPoints());
-            if (user.getCard_id()!=0)
+            if (user.getCard_id() != null && !user.getCard_id().isEmpty())
                 balance.setText("Номер карты: " + user.getCard_id());
         }
         loadQrCode(url);

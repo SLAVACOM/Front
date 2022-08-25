@@ -1,5 +1,6 @@
 package com.example.front;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -132,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 fragment = new HistoryFragment();
                 break;
             case R.id.nav_exit:
-                saveUserToken("121");
+                LoginActivity.saveUserToken(this, null);
                 startActivity(new Intent(this, LoginActivity.class));
                 finish();
                 return true;
@@ -151,17 +152,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    private String loadUserId(){
-        sharedPreferences = getPreferences(0);
-        String UserToken =sharedPreferences.getString(CONST.USER_TOKEN,"");
-        return UserToken;
-    }
-
-    private void saveUserToken(String userToken){
-        sharedPreferences = getSharedPreferences(LoginActivity.LOGIN_PREFS, 0);
-        sharedPreferences.edit().putString(CONST.USER_TOKEN,userToken).commit();
-        Log.d(CONST.SERVER_LOG,"Токен cохранён: "+userToken);
-    }
 
 
 }

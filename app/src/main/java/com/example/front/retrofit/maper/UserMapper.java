@@ -24,7 +24,7 @@ public class UserMapper {
             user.setFull_name(jsonObject.optString("full_name"));
             user.setCurator(jsonObject.optBoolean("curator"));
             user.setAddress(jsonObject.optString("address"));
-            user.setCard_id(jsonObject.optInt("card_id"));
+            user.setCard_id(jsonObject.optString("card_id"));
 
 
         } catch (Exception e) {

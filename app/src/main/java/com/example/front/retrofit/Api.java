@@ -36,7 +36,7 @@ public interface Api {
     @FormUrlEncoded
     @Headers({"Accept: application/json"})
     @POST("api/auth/reset")
-    Call<ResponseBody> reset_password(@Field("email") String email);
+    Call<ResponseBody> resetPassword(@Field("email") String email);
 
     @POST("api/auth/profile")
     Call<ObjectResponse<User>> getProfile(@Header("Authorization") String authHeader);

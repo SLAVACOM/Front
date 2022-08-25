@@ -12,7 +12,7 @@ public class User {
     private int blocked;
     private String created_at;
     private String updated_at;
-    private int card_id;
+    private String card_id;
     private String phone;
     private int points;
     private String full_name;
@@ -143,11 +143,11 @@ public class User {
         this.points = points;
     }
 
-    public int getCard_id() {
+    public String getCard_id() {
         return card_id;
     }
 
-    public void setCard_id(int card_id) {
+    public void setCard_id(String card_id) {
         this.card_id = card_id;
     }
 

@@ -49,6 +49,7 @@ public class NewsAddFragment extends Fragment {
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                             Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
                             if (response.code()==200){
+                                Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
                                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                                 fragmentManager.popBackStack();
                             }

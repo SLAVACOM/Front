@@ -3,8 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/drawable-v24/ic_iker.xml" value="0.253" />
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1935" />
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/drawable-v24/ic_recycler.xml" value="0.1935" />
+        <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/drawable-v24/ic_recycler1.xml" value="0.253" />
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/drawable/collections_bookmark_24.xml" value="0.1715" />
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/drawable/exit.xml" value="0.344" />
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/drawable/ic_baseline_add_circle_24.xml" value="0.1915" />
@@ -32,7 +34,7 @@
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/app_bar_main.xml" value="0.1762917933130699" />
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/content_main.xml" value="0.19662921348314608" />
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/fragment_add_event.xml" value="0.33" />
-        <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/fragment_appeal.xml" value="0.5663140764849471" />
+        <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/fragment_appeal.xml" value="0.22" />
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/fragment_appeal_add.xml" value="0.33" />
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/fragment_blank.xml" value="0.15925925925925927" />
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/fragment_bus.xml" value="0.1" />
@@ -58,21 +60,24 @@
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/fragment_news_add.xml" value="0.33" />
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/fragment_news_edit.xml" value="0.276268115942029" />
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/fragment_register.xml" value="0.25" />
+        <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/fragment_request.xml" value="0.276268115942029" />
+        <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/fragment_request_by_id.xml" value="0.276268115942029" />
+        <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/fragment_request_edit.xml" value="0.276268115942029" />
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/fragment_second.xml" value="0.3625" />
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/fragment_slideshow.xml" value="0.1" />
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/fragment_user.xml" value="0.33" />
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/fragment_user_edit.xml" value="0.33" />
-        <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/fragment_userlist_edit.xml" value="0.25625" />
+        <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/fragment_userlist_edit.xml" value="0.33" />
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/fragment_users_list.xml" value="0.24166666666666667" />
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/fragment_y_map.xml" value="0.15443840579710144" />
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/item/item_pfofile.xml" value="0.1" />
-        <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/item_appeal.xml" value="0.33" />
+        <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/item_appeal.xml" value="0.67" />
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/item_bus.xml" value="0.33" />
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/item_employee.xml" value="0.24139492753623187" />
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/item_event.xml" value="0.5" />
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/item_history.xml" value="0.5" />
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/item_my_appeal.xml" value="0.5" />
-        <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/item_news.xml" value="0.25" />
+        <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/item_news.xml" value="0.33" />
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/item_pfofile.xml" value="0.5" />
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/item_userList.xml" value="0.24166666666666667" />
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/item_userlist.xml" value="0.33" />

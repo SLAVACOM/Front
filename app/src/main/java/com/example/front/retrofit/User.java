@@ -17,6 +17,7 @@ public class User {
     private int points;
     private String full_name;
     private boolean curator;
+    private boolean accept = true;
     private String address;
     private Data data;
 
@@ -165,6 +166,14 @@ public class User {
 
     public void setCurator(boolean curator) {
         this.curator = curator;
+    }
+
+    public boolean isAccept() {
+        return accept;
+    }
+
+    public void setAccept(boolean accept) {
+        this.accept = accept;
     }
 
     @Override

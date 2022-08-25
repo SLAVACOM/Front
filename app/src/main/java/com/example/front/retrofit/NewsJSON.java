@@ -15,6 +15,7 @@ public class NewsJSON {
     private String path;
     private String per_page;
     private String prev_page_url;
+    private ArrayList<Photo> photos;
     private int to;
     private int total;
 

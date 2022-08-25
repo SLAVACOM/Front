@@ -1,13 +1,17 @@
 package com.example.front;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -18,6 +22,7 @@ import com.example.front.data.DataData;
 import com.example.front.retrofit.ObjectResponse;
 import com.example.front.retrofit.User;
 import com.example.front.retrofit.RetrofitClient;
+import com.example.front.ui.signup.SignUpActivity;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -47,7 +52,7 @@ public class LoginActivity extends AppCompatActivity  {
         login = findViewById(R.id.etv_login_login);
         signup = findViewById(R.id.signup);
         reset = findViewById(R.id.reset);
-        login.setText("jura96@mail.ru");
+        login.setText("a@sugai.ru");
         password.setText("admin1");
         button = findViewById(R.id.bt_login);
         button.setOnClickListener(new View.OnClickListener() {
@@ -71,6 +76,15 @@ public class LoginActivity extends AppCompatActivity  {
                 password.setVisibility(View.INVISIBLE);
             }
 
+        });
+        signup.setOnClickListener((view) -> {
+            startActivityForResult(new Intent(getBaseContext(), SignUpActivity.class), Activity.RESULT_OK);
+        });
+        password.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                if (loginMode) getToken();
+            }
+            return false;
         });
     }
 
@@ -183,4 +197,12 @@ public class LoginActivity extends AppCompatActivity  {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        String email = data.getStringExtra("email");
+        if (email != null && !email.isEmpty()) {
+            login.setText(email);
+        }
+    }
 }

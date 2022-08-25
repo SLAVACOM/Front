@@ -4,7 +4,6 @@ import com.example.front.retrofit.maper.TitleAndDescription;
 import com.google.gson.JsonObject;
 
 import java.io.File;
-import java.util.List;
 
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -18,6 +17,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface Api {
 
@@ -28,8 +28,8 @@ public interface Api {
 
 
     @Headers({"Accept: application/json"})
-    Call<ResponseBody> registration(@Field("email") String email, @Field("name") String name,@Field("second_name")String second_name,@Field("accept") String accept,
-                                    @Field("phone") String phone,@Field("last_name") String last_name);
+    @POST("api/auth/signup/")
+    Call<ResponseBody> registration(@Body User user);
 
     @POST("api/auth/logout/")
     Call<ResponseBody> logout(@Header("Authorization") String authHeader);
@@ -42,11 +42,14 @@ public interface Api {
     @POST("api/auth/profile")
     Call<ObjectResponse<User>> getProfile(@Header("Authorization") String authHeader);
 
-    @FormUrlEncoded
     @POST("api/auth/profile")
     @Headers({"Accept: application/json"})
     Call<JsonObject> editProfile(@Header("Authorization") String authHeader,@Field("_method") String method, @Field("name") String name, @Field("second_name") String second_name,
-                                      @Field("last_name")String last_name, @Field("password") String password, @Field("password_confirmation") String password_confirmation);
+                                 @Field("last_name")String last_name, @Field("password") String password, @Field("password_confirmation") String password_confirmation);
+
+    @POST("api/user/{user_id}")
+    @Headers({"Accept: application/json"})
+    Call<JsonObject> editProfile(@Header("Authorization") String authHeader,@Path("user_id") int id,@Query("_method") String method ,@Query("blocked") int block);
 
     @GET("api/user/event")
     Call<ListRESPONSE<HistoryJSON>> getEventHistory(@Header("Authorization") String authHeader);
@@ -55,7 +58,15 @@ public interface Api {
 
 
 
+    @GET("api/type")
+    Call<ListRESPONSE<RequestTypeJSON>> getRequestType();
 
+    @POST("/api/type")
+    @Headers({"Accept: application/json"})
+    Call<ResponseBody> addRequestType(@Header("Authorization") String authHeader,@Query("name") String name);
+
+    @DELETE("api/type/{type_id}")
+    Call<ResponseBody> deleteRequest(@Header("Authorization") String authHeader,@Path("type_id") int id);
 
 
 
@@ -76,8 +87,7 @@ public interface Api {
     @DELETE("api/post/{post_id}")
     Call<ResponseBody> deleteNews(@Header("Authorization") String authHeader,@Path("post_id") int id);
 
-    @GET("api/post")
-    Call<ListRESPONSE<NewsJSON>> getNewsListREs();
+
     @GET("api/post")
     Call<JsonObject> getNewsList();
 
@@ -276,7 +286,7 @@ public interface Api {
 
     @POST("api/user/{user_id}")
     @Headers({"Accept: application/json"})
-    Call<ResponseBody> editUserList(@Header("Authorization") String token, @Path("user_id") int user_id,@Body String method,@Body String email,@Body String name, @Body String second_name, @Body int phone,@Body String last_name,@Body int blocked, @Body int curator, @Body int point,@Body int card_id);
+    Call<RequestBody> editUserList(@Header("Authorization") String token, @Path("user_id") int user_id, @Query("_method") String method, @Query("email") String email, @Query("name") String name, @Query("second_name") String second_name, @Query("phone") String phone, @Query("last_name") String last_name, @Query("blocked") int blocked, @Query("curator") int curator, @Query("point") int point, @Query("card_id") long card_id);
 
     @GET("api/user/3")
     @Headers({"Authorization: Bearer {{token}}"})

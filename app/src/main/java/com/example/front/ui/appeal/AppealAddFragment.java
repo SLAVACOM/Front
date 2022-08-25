@@ -1,5 +1,7 @@
 package com.example.front.ui.appeal;
 
+import static com.example.front.data.DataData.token;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,17 +12,24 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.front.CONST.CONST;
 import com.example.front.R;
 import com.example.front.data.Appeal;
 import com.example.front.data.DataData;
+import com.example.front.retrofit.RetrofitClient;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class AppealAddFragment extends Fragment {
-    public static final int THEM_LENGTH = 10;
-    public static final int CONTENT_LENGTH = 20;
 
-    EditText appeal_theme, appeal_content;
+
+    EditText appeal_content;
     Button bt_send_appeal;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -28,26 +37,34 @@ public class AppealAddFragment extends Fragment {
         View  view= inflater.inflate(R.layout.fragment_appeal_add, container, false);
 
         appeal_content = view.findViewById(R.id.etv_add_appeal_content);
-        appeal_theme = view.findViewById(R.id.etv_add_appeal_theme);
         bt_send_appeal = view.findViewById(R.id.bt_add_appeal);
+
 
         bt_send_appeal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (appeal_content.getText().toString().length()>=CONTENT_LENGTH && appeal_theme.getText().toString().length()>=THEM_LENGTH){
+                if (appeal_content.getText().toString().length()>= CONST.CONTENT_LENGTH){
+                    Call<ResponseBody> addRequest = RetrofitClient.getInstance().getApi().addRequestType("Bearer " + DataData.token,appeal_content.getText().toString());
+                    addRequest.enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            if(response.code()==200){
+                                Toast.makeText(getContext(), "Добавлено", Toast.LENGTH_SHORT).show();
+                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                fragmentManager.popBackStack();
+                            }
+                        }
 
-                DataData.APPEALS_LIST.add(new Appeal(appeal_theme.getText().toString(),appeal_content.getText().toString(),"SLAVACOM","18:00"));
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                fragmentManager.popBackStack();
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                        }
+                    });
+
                 }else{
-                    if (appeal_theme.getText().toString().length()<THEM_LENGTH)
-                        Toast.makeText(getActivity(), "Заполните тему", Toast.LENGTH_SHORT).show();
-
-                    else if (appeal_content.getText().toString().length()<CONTENT_LENGTH){
-                        Toast.makeText(getActivity(), "Заполните обращение", Toast.LENGTH_SHORT).show();
-
-                    }
-            }}
+                    Toast.makeText(getActivity(), "Количество символов в поле имя должно быть не менее 10", Toast.LENGTH_SHORT).show();
+                }
+            }
         });
         return view;
     }

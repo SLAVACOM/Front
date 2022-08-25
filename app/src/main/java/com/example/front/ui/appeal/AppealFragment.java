@@ -28,7 +28,6 @@ public class AppealFragment extends Fragment  {
     Adapter_appeal adapter;
     RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private CheckBox checkBox;
 
 
 
@@ -43,9 +42,8 @@ public class AppealFragment extends Fragment  {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_appeal,container,false);
+        View view = inflater.inflate(R.layout.fragment_request,container,false);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
-        checkBox = view.findViewById(R.id.cb_show_my_appeal);
         floatingActionButton =view.findViewById(R.id.flBt_appeal);
 
         adapter = new Adapter_appeal();
@@ -65,5 +63,9 @@ public class AppealFragment extends Fragment  {
 
 
         return view;
+    }
+
+    public  void getAppeal(){
+
     }
 }

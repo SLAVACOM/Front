@@ -18,18 +18,7 @@ import com.example.front.data.DataData;
 
 public class Adapter_appeal extends RecyclerView.Adapter {
 
-    private Context context;
-    private String[] imageUrl;
 
-    public Adapter_appeal(Context context,String[] imageUrl ) {
-        this.context = context;
-        this.imageUrl=imageUrl;
-
-    }
-
-    public Adapter_appeal() {
-
-    }
 
     @NonNull
     @Override
@@ -50,7 +39,7 @@ public class Adapter_appeal extends RecyclerView.Adapter {
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        TextView name,content,time,theme;
+        TextView name,content,time,theme,status;
         ViewPager2 viewPager2;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -58,7 +47,7 @@ public class Adapter_appeal extends RecyclerView.Adapter {
             name = itemView.findViewById(R.id.tv_appeal_name);
             content = itemView.findViewById(R.id.tv_appeal_content);
             time = itemView.findViewById(R.id.tv_my_appeal_time);
-            viewPager2 = itemView.findViewById(R.id.news_viewPager);
+            status = itemView.findViewById(R.id.tv_appeal_status);
         }
 
         public void bindView(int position){
@@ -67,6 +56,7 @@ public class Adapter_appeal extends RecyclerView.Adapter {
             content.setText("Обращение: "+ appeal.getContent());
             time.setText(appeal.getTime());
             theme.setText("Тема: " + appeal.getTheme());
+            status.setText("");
         }
 
         @Override

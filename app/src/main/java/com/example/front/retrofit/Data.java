@@ -1,5 +1,7 @@
 package com.example.front.retrofit;
 
+import java.util.ArrayList;
+
 public class Data {
     private int id;
     private String title;
@@ -7,7 +9,7 @@ public class Data {
     private int user_id;
     private String created_at;
     private String updated_at;
-    private Photos photos;
+    private ArrayList<Photo> photos;
     private User author;
     private String date;
 
@@ -75,11 +77,11 @@ public class Data {
         this.updated_at = updated_at;
     }
 
-    public Photos getPhotos() {
+    public ArrayList<Photo> getPhotos() {
         return photos;
     }
 
-    public void setPhotos(Photos photos) {
+    public void setPhotos(ArrayList<Photo> photos) {
         this.photos = photos;
     }
 }

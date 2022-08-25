@@ -4,6 +4,7 @@ import com.example.front.data.DataData;
 import com.example.front.retrofit.Data;
 import com.example.front.retrofit.Datum;
 import com.example.front.retrofit.NewsJSON;
+import com.example.front.retrofit.Photo;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,6 +27,21 @@ public class NewsMapper {
             data.setUser_id(object.optInt("user_id"));
             data.setCreated_at(object.optString("created_at"));
             data.setUpdated_at(object.optString("updated_at"));
+
+            ArrayList<Photo> photos= new ArrayList<>();
+            JSONArray photoarray = object.getJSONArray("photos");
+            for (int j = 0; j < photoarray.length(); j++) {
+                JSONObject object1 = photoarray.getJSONObject(i);
+                Photo photo =new Photo();
+                photo.setId(object1.getInt("id"));
+                photo.setFile(object1.optString("file"));
+                photo.setUser_post_id(object1.getInt("post_id"));
+                photo.setCreated_at(object1.getString("created_at"));
+                photo.setUpdated_at(object1.getString("updated_at"));
+                photos.add(photo);
+
+            }
+            data.setPhotos(photos);
             newsJSON.setData(data);
             DataData.NEWS_JSON_LIST.add(newsJSON);
         }

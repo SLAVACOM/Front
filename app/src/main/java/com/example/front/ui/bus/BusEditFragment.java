@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,7 +14,6 @@ import androidx.fragment.app.FragmentManager;
 import com.example.front.R;
 import com.example.front.data.DataData;
 import com.example.front.retrofit.BusJSON;
-import com.example.front.retrofit.Data;
 import com.example.front.retrofit.RetrofitClient;
 import com.google.gson.JsonObject;
 
@@ -35,7 +33,7 @@ public class BusEditFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_bus_edit, container, false);
         Bundle bundle = getArguments();
         time = view.findViewById(R.id.etv_fragment_busedit_time);
-        title = view.findViewById(R.id.etv_fragment_busedit_title);
+        title = view.findViewById(R.id.etv_fragment_requestedit);
         place = view.findViewById(R.id.etv_fragment_busedit_place);
         button = view.findViewById(R.id.bt_fragment_busedit);
 

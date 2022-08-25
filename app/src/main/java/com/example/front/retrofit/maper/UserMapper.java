@@ -13,6 +13,7 @@ public class UserMapper {
             user.setId(jsonObject.optInt("id"));
             user.setName(jsonObject.optString("name"));
             user.setSecond_name(jsonObject.optString("second_name"));
+            user.setLast_name((jsonObject.optString("last_name")));
             user.setEmail(jsonObject.optString("email"));
             user.setEmail_verified_at(jsonObject.optString("email_verified_at"));
             user.setPassword_reset_at(jsonObject.optString("password_reset_at"));

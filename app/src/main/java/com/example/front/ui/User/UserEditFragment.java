@@ -14,9 +14,12 @@ import androidx.fragment.app.Fragment;
 
 import com.example.front.R;
 import com.example.front.data.DataData;
+import com.example.front.retrofit.RequestTypeJSON;
 import com.example.front.retrofit.RetrofitClient;
 import com.example.front.retrofit.User;
 
+import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -75,17 +78,17 @@ public class UserEditFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Call<ResponseBody> setUser = RetrofitClient.getInstance().getApi().editUserList("Bearer " +DataData.token,Integer.valueOf(user.getId()),"put",email.getText().toString(),name.getText().toString(),second_name.getText().toString(),Integer.valueOf(phone.getText().toString()),last_name.getText().toString(),user.getBlocked(),curator,Integer.valueOf(points.getText().toString()),Integer.valueOf(cardnum.getText().toString()));
-                setUser.enqueue(new Callback<ResponseBody>() {
+                Call<RequestBody> setUser = RetrofitClient.getInstance().getApi().editUserList("Bearer " +DataData.token,Integer.valueOf(user.getId()),"put",email.getText().toString(),name.getText().toString(),second_name.getText().toString(),phone.getText().toString(),last_name.getText().toString(),user.getBlocked(),curator,Integer.parseInt(points.getText().toString()),Integer.parseInt(cardnum.getText().toString()));
+                setUser.enqueue(new Callback<RequestBody>() {
                     @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    public void onResponse(Call<RequestBody> call, Response<RequestBody> response) {
                         if (response.code()==200)
                             Toast.makeText(getContext(), "Успешно", Toast.LENGTH_SHORT).show();
                         else Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    public void onFailure(Call<RequestBody> call, Throwable t) {
 
                     }
                 });
@@ -93,5 +96,6 @@ public class UserEditFragment extends Fragment {
         });
 
         return view;
+
     }
 }

@@ -2,9 +2,9 @@ package com.example.front;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.RestrictionEntry;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -19,17 +19,24 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.front.CONST.CONST;
+import com.example.front.data.DataData;
+import com.example.front.retrofit.RetrofitClient;
 import com.example.front.ui.Map.MapFragment;
 import com.example.front.ui.User.UserFragment;
 import com.example.front.ui.User.UsersListFragment;
 import com.example.front.ui.appeal.AppealFragment;
-import com.example.front.ui.appeal.MyAppealFragment;
+import com.example.front.ui.appeal.RequestFragment;
 import com.example.front.ui.bus.FragmentBus;
 import com.example.front.ui.event.EventFragment;
 import com.example.front.ui.hisory.HistoryFragment;
 import com.example.front.ui.news.NewsFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.yandex.mapkit.MapKitFactory;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -42,9 +49,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onStart() {
         super.onStart();
+        DataData.token= userToken(getBaseContext());
 
 
 
+    }
+    public static String userToken(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(LoginActivity.LOGIN_PREFS, 0);
+        return sharedPreferences.getString(CONST.USER_TOKEN, null);
     }
 
     @Override
@@ -56,7 +68,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             CONST.API_SET=true;
         }
 
+
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
 
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
@@ -121,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 fragment = new AppealFragment();
                 break;
             case R.id.nav_my_appeal:
-                fragment = new MyAppealFragment();
+                fragment = new RequestFragment();
                 break;
             case R.id.nav_user_list:
                 fragment= new UsersListFragment();
@@ -133,9 +147,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 fragment = new HistoryFragment();
                 break;
             case R.id.nav_exit:
-                LoginActivity.saveUserToken(this, null);
-                startActivity(new Intent(this, LoginActivity.class));
-                finish();
+                Call<ResponseBody> logout = RetrofitClient.getInstance().getApi().logout("Bearer "+ DataData.token);
+                logout.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.code()==200){
+                            LoginActivity.saveUserToken(getBaseContext(), null);
+                            startActivity(new Intent(getBaseContext(), LoginActivity.class));
+                            finish();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                    }
+                });
                 return true;
             default:
                 DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);

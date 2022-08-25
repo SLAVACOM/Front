@@ -1,7 +1,5 @@
 package com.example.front.retrofit;
 
-import android.graphics.Color;
-
 public class BusJSON {
     private int id;
     private String title;

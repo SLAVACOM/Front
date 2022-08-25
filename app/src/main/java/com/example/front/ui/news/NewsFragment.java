@@ -1,11 +1,9 @@
 package com.example.front.ui.news;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -14,18 +12,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.front.CONST.CONST;
 import com.example.front.R;
 import com.example.front.adapter.NewsAdapter;
 import com.example.front.data.DataData;
-import com.example.front.retrofit.Data;
-import com.example.front.retrofit.ListRESPONSE;
-import com.example.front.retrofit.NewsJSON;
 import com.example.front.retrofit.RetrofitClient;
-import com.example.front.retrofit.maper.EventMaper;
 import com.example.front.retrofit.maper.NewsMapper;
-import com.example.front.ui.bus.BusEditFragment;
-import com.example.front.ui.bus.FragmentBusAdd;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -48,7 +39,7 @@ public class NewsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_news,container,false);
-        adapter = new NewsAdapter();
+        adapter = new NewsAdapter(getContext());
         actionButton = view.findViewById(R.id.fab_addNews);
         actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,7 +70,7 @@ public class NewsFragment extends Fragment {
             }
         });
         swipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
-        recyclerView = view.findViewById(R.id.recycler_my_appeal);
+        recyclerView = view.findViewById(R.id.recycler_appeal_byrequest);
         recyclerView.setAdapter(adapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
@@ -124,4 +115,5 @@ public class NewsFragment extends Fragment {
             }
         });
     }
+
 }

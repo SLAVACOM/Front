@@ -1,6 +1,9 @@
 package com.example.front.ui.User;
 
+
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,15 +14,16 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.front.R;
 import com.example.front.data.DataData;
-import com.example.front.retrofit.RequestTypeJSON;
 import com.example.front.retrofit.RetrofitClient;
 import com.example.front.retrofit.User;
 
-import okhttp3.Request;
-import okhttp3.RequestBody;
+import java.util.HashMap;
+import java.util.Map;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,14 +36,16 @@ public class UserEditFragment extends Fragment {
     private Button button;
     private CheckBox checkBox;
     private int curator;
-
-    private int pos;
+    String stringChange = "";
+    Map<String,String> String_map = new HashMap<>();
+    Map<String,Integer> integerMap_map = new HashMap<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        int pos= getArguments().getInt("pos");
         View view= inflater.inflate(R.layout.fragment_user_edit, container, false);
+        int pos= getArguments().getInt("pos");
+        User user = DataData.USERS_LIST.get(pos);
 
         name = view.findViewById(R.id.etv_prof_edit_name);
         second_name = view.findViewById(R.id.etv_prof_edit_second_name);
@@ -51,10 +57,18 @@ public class UserEditFragment extends Fragment {
         cardnum = view.findViewById(R.id.etv_prof_edi_numcard);
         checkBox =view.findViewById(R.id.cb_curator);
 
-        User user = DataData.USERS_LIST.get(pos);
+        String_map.put("_method","put");
+        if (user.isCurator()) {
+            checkBox.setChecked(true);
+            curator=1;
+
+        } else {
+            checkBox.setChecked(false);
+            curator = 0;
+        }
+
         name.setText(user.getName());
         second_name.setText(user.getSecond_name());
-
         last_name.setText(user.getLast_name());
         email.setText(user.getEmail());
         phone.setText(String.valueOf(user.getPhone()));
@@ -67,29 +81,179 @@ public class UserEditFragment extends Fragment {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (checkBox.isChecked()){
                     curator  = 1;
-                } else curator=0;
+                    Toast.makeText(getContext(),String.valueOf(curator), Toast.LENGTH_SHORT).show();
+                } else {
+                    curator=0;
+                }
+                integerMap_map.put("curator",curator);
+
             }
         });
 
-        if (user.isCurator()) {
-            checkBox.setChecked(true);
-        } else checkBox.setChecked(false);
+        name.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (!stringChange.equals(charSequence.toString())){
+                    String_map.put("name",name.getText().toString());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        last_name.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (!stringChange.equals(charSequence.toString())){
+                    String_map.put("last_name",last_name.getText().toString());
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        second_name.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (!stringChange.equals(charSequence.toString())){
+                    String_map.put("second_name",second_name.getText().toString());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        phone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (!stringChange.equals(charSequence.toString())){
+                    String_map.put("phone",phone.getText().toString());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        adress.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (!stringChange.equals(charSequence.toString())){
+                    String_map.put("address",adress.getText().toString());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        email.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (!stringChange.equals(charSequence.toString())){
+                    String_map.put("email",email.getText().toString());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        points.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (!stringChange.equals(charSequence.toString())){
+                    integerMap_map.put("points",Integer.valueOf(points.getText().toString()));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        cardnum.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (!stringChange.equals(charSequence.toString())){
+                    integerMap_map.put("card_id",Integer.valueOf(cardnum.getText().toString()));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Call<RequestBody> setUser = RetrofitClient.getInstance().getApi().editUserList("Bearer " +DataData.token,Integer.valueOf(user.getId()),"put",email.getText().toString(),name.getText().toString(),second_name.getText().toString(),phone.getText().toString(),last_name.getText().toString(),user.getBlocked(),curator,Integer.parseInt(points.getText().toString()),Integer.parseInt(cardnum.getText().toString()));
-                setUser.enqueue(new Callback<RequestBody>() {
+                    Call<ResponseBody> setUser = RetrofitClient.getInstance().getApi().editUserList("Bearer " +DataData.token,Integer.valueOf(user.getId()),String_map,integerMap_map);
+                    setUser.enqueue(new Callback<ResponseBody>() {
                     @Override
-                    public void onResponse(Call<RequestBody> call, Response<RequestBody> response) {
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         if (response.code()==200)
                             Toast.makeText(getContext(), "Успешно", Toast.LENGTH_SHORT).show();
-                        else Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
+                            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                            fragmentManager.popBackStack();
                     }
 
                     @Override
-                    public void onFailure(Call<RequestBody> call, Throwable t) {
-
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        t.printStackTrace();
                     }
                 });
             }

@@ -18,7 +18,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.front"
-        minSdk 21
+        minSdk 24
         targetSdk 32
         versionCode 1
         versionName "1.0"
@@ -68,6 +68,7 @@ dependencies {
     implementation 'com.yandex.android:maps.mobile:4.1.0-lite'
 
     implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
     implementation"androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 

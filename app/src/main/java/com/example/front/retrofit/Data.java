@@ -84,6 +84,21 @@ public class Data {
     public void setPhotos(ArrayList<Photo> photos) {
         this.photos = photos;
     }
+
+    @Override
+    public String toString() {
+        return "Data{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", user_id=" + user_id +
+                ", created_at='" + created_at + '\'' +
+                ", updated_at='" + updated_at + '\'' +
+                ", photos=" + photos +
+                ", author=" + author +
+                ", date='" + date + '\'' +
+                '}';
+    }
 }
 
 

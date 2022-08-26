@@ -31,6 +31,7 @@
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/activity_main.xml" value="0.12" />
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/activity_main2.xml" value="0.16869300911854104" />
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/activity_register.xml" value="0.3625" />
+        <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/activity_sign_up.xml" value="0.18489583333333334" />
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/app_bar_main.xml" value="0.1762917933130699" />
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/content_main.xml" value="0.19662921348314608" />
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/fragment_add_event.xml" value="0.33" />
@@ -78,6 +79,7 @@
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/item_history.xml" value="0.5" />
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/item_my_appeal.xml" value="0.5" />
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/item_news.xml" value="0.33" />
+        <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/item_news_photo.xml" value="0.23713798977853492" />
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/item_pfofile.xml" value="0.5" />
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/item_userList.xml" value="0.24166666666666667" />
         <entry key="..\:/Users/slava/AndroidStudioProjects/Front/app/src/main/res/layout/item_userlist.xml" value="0.33" />

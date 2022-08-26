@@ -4,7 +4,9 @@ import com.example.front.retrofit.maper.TitleAndDescription;
 import com.google.gson.JsonObject;
 
 import java.io.File;
+import java.util.Map;
 
+import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -18,6 +20,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 
 public interface Api {
 
@@ -72,10 +75,9 @@ public interface Api {
 
 
 
-    @FormUrlEncoded
     @POST("api/post")
     @Headers({"Accept: application/json"})
-    Call<ResponseBody> addNews(@Header("Authorization") String authHeader, @Body TitleAndDescription titleAndDescription);
+    Call<ResponseBody> addNews(@Header("Authorization") String authHeader, @Query("title") String title,@Query("description") String description);
 
 
     @FormUrlEncoded
@@ -286,7 +288,7 @@ public interface Api {
 
     @POST("api/user/{user_id}")
     @Headers({"Accept: application/json"})
-    Call<RequestBody> editUserList(@Header("Authorization") String token, @Path("user_id") int user_id, @Query("_method") String method, @Query("email") String email, @Query("name") String name, @Query("second_name") String second_name, @Query("phone") String phone, @Query("last_name") String last_name, @Query("blocked") int blocked, @Query("curator") int curator, @Query("point") int point, @Query("card_id") long card_id);
+    Call<ResponseBody> editUserList(@Header("Authorization") String token, @Path("user_id") int user_id,@QueryMap Map<String,String> stringmap,@QueryMap Map<String,Integer> intmap);
 
     @GET("api/user/3")
     @Headers({"Authorization: Bearer {{token}}"})

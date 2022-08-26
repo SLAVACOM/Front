@@ -39,11 +39,8 @@ public class NewsAddFragment extends Fragment {
         addBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TitleAndDescription titleAndDescription = new TitleAndDescription();
-                titleAndDescription.setTitle(title.getText().toString());
-                titleAndDescription.setDescription(content.getText().toString());
                 try {
-                    Call<ResponseBody> addEvent = RetrofitClient.getInstance().getApi().addNews("Bearer " + DataData.token, titleAndDescription);
+                    Call<ResponseBody> addEvent = RetrofitClient.getInstance().getApi().addNews("Bearer " + DataData.token, title.getText().toString(),content.getText().toString());
                     addEvent.enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

@@ -125,20 +125,22 @@ public class NewsJSON {
         this.total = total;
     }
 
+
     @Override
     public String toString() {
         return "NewsJSON{" +
+                "data=" + data +
                 ", current_page=" + current_page +
-                ", data=" + data.toString() +
                 ", first_page_url='" + first_page_url + '\'' +
                 ", from=" + from +
                 ", last_page=" + last_page +
                 ", last_page_url='" + last_page_url + '\'' +
-                ", links=" +links +
+                ", links=" + links +
                 ", next_page_url='" + next_page_url + '\'' +
                 ", path='" + path + '\'' +
                 ", per_page='" + per_page + '\'' +
                 ", prev_page_url='" + prev_page_url + '\'' +
+                ", photos=" + photos +
                 ", to=" + to +
                 ", total=" + total +
                 '}';

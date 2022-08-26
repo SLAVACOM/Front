@@ -93,18 +93,18 @@ public class UserFragment extends Fragment {
 
     private void loadQrCode(String url){
 
-        Picasso.with(getContext()).load(url).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(qrCode, new com.squareup.picasso.Callback(){
-
-            @Override
-            public void onSuccess() {
-
-            }
-
-            @Override
-            public void onError() {
-
-            }
-        });
+//        Picasso.with(getContext()).load(url).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(qrCode, new com.squareup.picasso.Callback(){
+//
+//            @Override
+//            public void onSuccess() {
+//
+//            }
+//
+//            @Override
+//            public void onError() {
+//
+//            }
+//        });
 
     }
 }

@@ -111,6 +111,8 @@ public class MapFragment extends Fragment {
         }
         int intcolor = Color.parseColor(color);
         polygon.setFillColor(intcolor);
+        polygon.setStrokeColor(intcolor);
+        polygon.setStrokeWidth(0.5F);
         polygon.addTapListener((mapObject1, point) -> {
             MapObject mo = (MapObject) mapObject1.getUserData();
             Toast toast = Toast.makeText(

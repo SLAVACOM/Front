@@ -26,7 +26,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class AppealAddFragment extends Fragment {
+public class AppealEditFragment extends Fragment {
 
 
     EditText appeal_content;

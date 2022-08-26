@@ -14,9 +14,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.front.R;
 import com.example.front.data.DataData;
 import com.example.front.retrofit.User;
-import com.example.front.ui.appeal.AppealAddFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.squareup.picasso.Picasso;
 
 public class UserFragment extends Fragment {
     private TextView name, lastname,secondname, curator,cardId,email,phone,balance;

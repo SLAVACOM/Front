@@ -1,7 +1,6 @@
 package com.example.front.ui.appeal;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,21 +10,11 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.front.CONST.CONST;
 import com.example.front.R;
-import com.example.front.adapter.AdapterRequest;
 import com.example.front.data.DataData;
-import com.example.front.retrofit.Data;
-import com.example.front.retrofit.ListRESPONSE;
 import com.example.front.retrofit.RequestTypeJSON;
 import com.example.front.retrofit.RetrofitClient;
-import com.example.front.ui.bus.BusEditFragment;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;

@@ -3,7 +3,6 @@ package com.example.front.ui.appeal;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewTreeViewModelKt;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -12,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.front.R;
-import com.example.front.adapter.AdapterRequest;
 import com.example.front.adapter.AdapterRequestByID;
 
 

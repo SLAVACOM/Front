@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 
 import com.example.front.CONST.CONST;
 import com.example.front.R;
-import com.example.front.adapter.AdapterRequest;
+import com.example.front.adapter.AppealAdapter;
 import com.example.front.data.DataData;
 import com.example.front.retrofit.ListRESPONSE;
 import com.example.front.retrofit.RetrofitClient;
@@ -32,7 +32,7 @@ public class RequestFragment extends Fragment {
 
 
     FloatingActionButton flbt_add;
-    AdapterRequest adapter;
+    AppealAdapter adapter;
     RecyclerView recyclerView;
     SwipeRefreshLayout swipeRefreshLayout;
 
@@ -44,8 +44,8 @@ public class RequestFragment extends Fragment {
         getREQUEST();
         flbt_add =view.findViewById(R.id.flBt_my_appeal);
         recyclerView = view.findViewById(R.id.recycler_appeal_byrequest);
-        adapter = new AdapterRequest();
-        adapter.setOnItemClickListener(new AdapterRequest.ClickListener() {
+        adapter = new AppealAdapter(getActivity());
+        adapter.setOnItemClickListener(new AppealAdapter.ClickListener() {
             @Override
             public void onItemClick(int position, View v) {
                 RequestByIdFragment editFragment = new RequestByIdFragment();
@@ -88,7 +88,7 @@ public class RequestFragment extends Fragment {
             public void onClick(View view) {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.nav_host_fragment_content_main, new AppealAddFragment()).addToBackStack(null);
+                fragmentTransaction.replace(R.id.nav_host_fragment_content_main, new AppealEditFragment()).addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });

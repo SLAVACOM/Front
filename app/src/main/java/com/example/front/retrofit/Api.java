@@ -1,5 +1,6 @@
 package com.example.front.retrofit;
 
+import com.example.front.data.Appeal;
 import com.example.front.retrofit.maper.TitleAndDescription;
 import com.google.gson.JsonObject;
 
@@ -94,17 +95,6 @@ public interface Api {
     Call<JsonObject> getNewsList();
 
 
-
-
-
-
-
-
-
-
-
-
-
     @FormUrlEncoded
     @POST("api/user/post")
     @Headers({"Accept: application/json"})
@@ -131,9 +121,8 @@ public interface Api {
     @POST("api/user/post/{{user_post_id}}/like")
     Call<ResponseBody> userResponsLike(@Header("Authorization") String authHeader);
 
-    @FormUrlEncoded
     @GET("api/user/post/")
-    Call<ResponseBody> getResponsList(@Header("Authorization") String authHeader,@Field("mode") String mode);
+    Call<ListRESPONSE<Appeal>> getAppeals(@Header("Authorization") String authHeader, @Query("mode") String mode);
 
 
 

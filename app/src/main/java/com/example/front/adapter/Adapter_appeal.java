@@ -1,7 +1,5 @@
 package com.example.front.adapter;
 
-import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,11 +50,11 @@ public class Adapter_appeal extends RecyclerView.Adapter {
 
         public void bindView(int position){
             Appeal appeal = DataData.APPEALS_LIST.get(position);
-            name.setText("От кого: "+appeal.getFrom());
-            content.setText("Обращение: "+ appeal.getContent());
-            time.setText(appeal.getTime());
-            theme.setText("Тема: " + appeal.getTheme());
-            status.setText("");
+            name.setText("От кого: "+appeal.getAuthor().getFull_name());
+            content.setText("Обращение: "+ appeal.getDescription());
+            time.setText(appeal.getDate());
+            theme.setText("Тема: " + appeal.getComment());
+            status.setText(appeal.getState()+"");
         }
 
         @Override

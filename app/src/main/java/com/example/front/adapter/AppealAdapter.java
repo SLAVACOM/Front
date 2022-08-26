@@ -1,5 +1,6 @@
 package com.example.front.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +14,14 @@ import com.example.front.data.DataData;
 import com.example.front.retrofit.RequestTypeJSON;
 
 
-public class AdapterRequest extends RecyclerView.Adapter {
+public class AppealAdapter extends RecyclerView.Adapter {
 
     public static ClickListener clickListener;
+    public Context context;
+
+    public AppealAdapter(Context context) {
+        this.context = context;
+    }
 
     @NonNull
     @Override
@@ -64,7 +70,7 @@ public class AdapterRequest extends RecyclerView.Adapter {
     }
 
     public void setOnItemClickListener(ClickListener clickListener) {
-        AdapterRequest.clickListener = clickListener;
+        AppealAdapter.clickListener = clickListener;
     }
 
     public interface ClickListener {

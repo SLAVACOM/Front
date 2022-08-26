@@ -1,5 +1,8 @@
 package com.example.front.ui.signup;
 
+import android.content.Context;
+import android.widget.TextView;
+
 import androidx.annotation.Nullable;
 
 /**
@@ -8,23 +11,39 @@ import androidx.annotation.Nullable;
 class UserFormState {
 
     @Nullable
-    private Integer passwordError;
+    private Object passwordError;
     @Nullable
-    private Integer usernameError;
+    private Object usernameError;
     @Nullable
-    private Integer secondNameError;
+    private Object secondNameError;
     @Nullable
-    private Integer lastNameError;
+    private Object lastNameError;
     @Nullable
-    private Integer nameError;
+    private Object nameError;
     @Nullable
-    private Integer phoneError;
+    private Object phoneError;
     @Nullable
-    private Integer addressError;
+    private Object addressError;
+    @Nullable
+    private Object formError;
 
     private boolean isDataValid;
 
-    UserFormState(@Nullable String field, @Nullable Integer error) {
+    UserFormState(@Nullable String field, @Nullable Object error) {
+        this.addError(field, error);
+        this.isDataValid = false;
+    }
+
+
+    UserFormState(boolean isDataValid) {
+        this.isDataValid = isDataValid;
+    }
+
+    boolean isDataValid() {
+        return isDataValid;
+    }
+
+    public void addError(String field, Object error) {
         if (field != null) switch (field) {
             case "name" :
                 this.nameError = error;
@@ -45,45 +64,61 @@ class UserFormState {
             case "username" :
                 this.usernameError = error;
                 break;
+            default:
+                this.formError = error;
+                break;
         }
-        this.isDataValid = false;
     }
-
-    UserFormState(boolean isDataValid) {
-        this.isDataValid = isDataValid;
-    }
-
-    boolean isDataValid() {
-        return isDataValid;
-    }
-
     @Nullable
-    public Integer getUsernameError() {
+    public Object getUsernameError() {
         return usernameError;
     }
 
     @Nullable
-    public Integer getPasswordError() {
+    public Object getPasswordError() {
         return passwordError;
     }
 
-    public Integer getSecondNameError() {
+    public Object getSecondNameError() {
         return secondNameError;
     }
 
-    public Integer getLastNameError() {
+    public Object getLastNameError() {
         return lastNameError;
     }
 
-    public Integer getNameError() {
+    public Object getNameError() {
         return nameError;
     }
 
-    public Integer getPhoneError() {
+    public Object getPhoneError() {
         return phoneError;
     }
 
-    public Integer getAddressError() {
+    public Object getAddressError() {
         return addressError;
     }
+
+    public String setError(Object error, TextView view) {
+        String err;
+        Context baseContext = view.getContext();
+        if (error == null) {
+            view.setError(null);
+            return null;
+        }
+        if (error instanceof Integer) {
+            err = baseContext.getString((Integer) error);
+        }
+        else {
+            err = error.toString();
+        }
+        view.setError(err);
+        return err;
+    }
+
+    @Nullable
+    public Object getFormError() {
+        return formError;
+    }
+
 }

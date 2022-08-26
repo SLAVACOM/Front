@@ -20,7 +20,6 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.front.R;
 import com.example.front.databinding.ActivitySignUpBinding;
 import com.example.front.retrofit.User;
 import com.example.front.ui.components.AppEditText;
@@ -37,40 +36,31 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         viewModel = new ViewModelProvider(this, new SignUpViewModelFactory())
                 .get(SignUpViewModel.class);
+        viewModel.setContext(this);
         final AppEditText usernameEditText = (AppEditText) binding.username;
         final AppEditText nameEt = (AppEditText) binding.name;
         final AppEditText secondNameEt = (AppEditText) binding.secondName;
         final AppEditText lastNameEt = (AppEditText) binding.lastName;
         final AppEditText addressEt = (AppEditText) binding.address;
         final AppEditText phoneEt = (AppEditText) binding.phone;
-        final Button loginButton = binding.login;
+        final Button signupBtn = binding.login;
         final ProgressBar loadingProgressBar = binding.loading;
 
         viewModel.getSignUpFormState().observe(this, new Observer<UserFormState>() {
             @Override
-            public void onChanged(@Nullable UserFormState signUpFormState) {
-                if (signUpFormState == null) {
+            public void onChanged(@Nullable UserFormState userForm) {
+                if (userForm == null) {
                     return;
                 }
-                loginButton.setEnabled(signUpFormState.isDataValid());
-                if (signUpFormState.getUsernameError() != null) {
-                    usernameEditText.setError(getString(signUpFormState.getUsernameError()));
-                }
-                if (signUpFormState.getNameError() != null) {
-                    nameEt.setError(getString(signUpFormState.getNameError()));
-                }
-                if (signUpFormState.getLastNameError() != null) {
-                    lastNameEt.setError(getString(signUpFormState.getLastNameError()));
-                }
-                if (signUpFormState.getSecondNameError() != null) {
-                    secondNameEt.setError(getString(signUpFormState.getSecondNameError()));
-                }
-                if (signUpFormState.getAddressError() != null) {
-                    addressEt.setError(getString(signUpFormState.getAddressError()));
-                }
-                if (signUpFormState.getPhoneError() != null) {
-                    phoneEt.setError(getString(signUpFormState.getPhoneError()));
-                }
+                signupBtn.setEnabled(userForm.isDataValid());
+                userForm.setError(userForm.getUsernameError(), usernameEditText);
+                userForm.setError(userForm.getNameError(), nameEt);
+                userForm.setError(userForm.getLastNameError(), lastNameEt);
+                userForm.setError(userForm.getSecondNameError(), secondNameEt);
+                userForm.setError(userForm.getAddressError(), addressEt);
+                userForm.setError(userForm.getPhoneError(), phoneEt);
+                userForm.setError(userForm.getFormError(), binding.textView3);
+                loadingProgressBar.setVisibility(View.GONE);
             }
         });
 
@@ -125,7 +115,7 @@ public class SignUpActivity extends AppCompatActivity {
         phoneEt.addTextChangedListener(afterTextChangedListener);
         nameEt.addTextChangedListener(afterTextChangedListener);
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        signupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 loadingProgressBar.setVisibility(View.VISIBLE);

@@ -92,6 +92,8 @@
                 android:hint="@string/phone"
                 android:imeActionLabel="@string/action_sign_in_short"
                 android:imeOptions="actionDone"
+                android:inputType="phone"
+                android:maxLength="10"
                 android:selectAllOnFocus="true"
                 android:text="9279931787" />
 
@@ -114,7 +116,8 @@
                 android:background="@drawable/blue_btn_small"
                 android:enabled="false"
                 android:text="@string/action_sign_in"
-                android:textAllCaps="false" />
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/textView3"

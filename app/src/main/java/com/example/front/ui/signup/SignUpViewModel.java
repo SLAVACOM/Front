@@ -1,5 +1,6 @@
 package com.example.front.ui.signup;
 
+import android.content.Context;
 import android.util.Patterns;
 
 import androidx.lifecycle.LiveData;
@@ -9,7 +10,12 @@ import androidx.lifecycle.ViewModel;
 import com.example.front.R;
 import com.example.front.retrofit.RetrofitClient;
 import com.example.front.retrofit.User;
+import com.example.front.retrofit.call.ValidateCallback;
+import com.example.front.retrofit.responses.ValidationResponse;
 import com.google.gson.JsonObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -21,7 +27,7 @@ public class SignUpViewModel extends ViewModel {
     private MutableLiveData<UserFormState> signUpFormState = new MutableLiveData<>();
     private MutableLiveData<SignUpResult> signupResult = new MutableLiveData<>();
     private MutableLiveData<User> userData = new MutableLiveData<>();
-
+    private Context context;
     SignUpViewModel() {
     }
 
@@ -38,19 +44,27 @@ public class SignUpViewModel extends ViewModel {
 
     public void signUp(UserFormState form) {
         Call<ResponseBody> call = RetrofitClient.getInstance().getApi().registration(userData.getValue());
-        call.enqueue(new Callback<ResponseBody>() {
+        call.enqueue(new ValidateCallback<ResponseBody>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.isSuccessful()) {
-                    signupResult.setValue(new SignUpResult(userData.getValue()));
-                } else {
-                    signupResult.setValue(new SignUpResult(R.string.signup_failed));
+            public void on422(Call<ResponseBody> call, Response<ResponseBody> response, ValidationResponse vr) {
+                HashMap<String, ArrayList<String>> map = vr.getErrors();
+                UserFormState form = new UserFormState(false);
+                for (String key: map.keySet()) {
+                    String error = vr.getError(key);
+                    if (error != null) form.addError(key, error);
                 }
+                signUpFormState.setValue(form);
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                signupResult.setValue(new SignUpResult(R.string.signup_failed));
+            public void onSuccess(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    signupResult.setValue(new SignUpResult(userData.getValue()));
+                }
+            }
+            @Override
+            public Context getContext() {
+                return SignUpViewModel.this.context;
             }
         });
     }
@@ -67,7 +81,8 @@ public class SignUpViewModel extends ViewModel {
         } else if (!isLastValid(address)) {
             signUpFormState.setValue(new UserFormState("address", R.string.invalid_address));
         } else if (!isPhoneValid(phone)) {
-            signUpFormState.setValue(new UserFormState("phone", R.string.invalid_phone));
+            if (phone.matches("^\\+?7")) signUpFormState.setValue(new UserFormState("phone", R.string.invalid_phone));
+            else if (phone.length()!=10) signUpFormState.setValue(new UserFormState("phone", R.string.invalid_phone_length));
         } else {
             User value = new User();
             value.setEmail(username);
@@ -101,5 +116,13 @@ public class SignUpViewModel extends ViewModel {
     }
     private boolean isPhoneValid(String phone) {
         return phone != null && phone.trim().length() == 10;
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
     }
 }

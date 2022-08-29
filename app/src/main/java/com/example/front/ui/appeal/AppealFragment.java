@@ -2,6 +2,7 @@ package com.example.front.ui.appeal;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -18,6 +19,7 @@ import com.example.front.CONST.CONST;
 import com.example.front.LoginActivity;
 import com.example.front.R;
 import com.example.front.adapter.AppealsAdapter;
+import com.example.front.adapter.LoadMoreAdapter;
 import com.example.front.data.Appeal;
 import com.example.front.data.User;
 import com.example.front.data.database.DataBASE;

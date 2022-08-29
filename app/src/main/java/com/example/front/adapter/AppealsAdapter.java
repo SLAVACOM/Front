@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
@@ -16,11 +17,16 @@ import com.example.front.R;
 import com.example.front.data.Appeal;
 import com.example.front.data.database.DataBASE;
 
+import java.util.List;
 
-public class AppealsAdapter extends LoadMoreAdapter<Appeal> {
 
+public class AppealsAdapter extends RecyclerView.Adapter {
+
+    public Context context;
+    public RecyclerView rv;
     public AppealsAdapter(Context context, RecyclerView rv) {
-        super(context, rv, DataBASE.APPEALS_LIST);
+        this.context = context;
+        this.rv = rv;
     }
 
 
@@ -30,15 +36,12 @@ public class AppealsAdapter extends LoadMoreAdapter<Appeal> {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        RecyclerView.ViewHolder holder = super.onCreateViewHolder(parent, viewType);
-        if (holder != null) return holder;
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_appeal,parent,false);
         return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        super.onBindViewHolder(holder, position);
         if (holder instanceof MyViewHolder) {
             ((MyViewHolder)holder).bindView(position);
         }

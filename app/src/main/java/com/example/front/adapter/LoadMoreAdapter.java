@@ -31,20 +31,6 @@ public abstract class LoadMoreAdapter<T> extends RecyclerView.Adapter {
         this.rv = rv;
         this.items = items;
         final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) rv.getLayoutManager();
-        this.rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                totalItemCount = linearLayoutManager.getItemCount();
-                lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
-                if (!isLoading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
-                    if (onLoadMoreListener != null) {
-                        onLoadMoreListener.onLoadMore();
-                    }
-                    isLoading = true;
-                }
-            }
-        });
     }
 
 
@@ -56,7 +42,7 @@ public abstract class LoadMoreAdapter<T> extends RecyclerView.Adapter {
         return items;
     }
 
-    interface OnLoadMoreListener {
+    public interface OnLoadMoreListener {
         public void onLoadMore();
     }
 

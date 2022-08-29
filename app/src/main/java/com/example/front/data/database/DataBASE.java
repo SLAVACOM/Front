@@ -4,7 +4,7 @@ import com.example.front.data.Appeal;
 import com.example.front.data.BusJSON;
 import com.example.front.data.EventJSON;
 import com.example.front.data.HistoryJSON;
-import com.example.front.data.NewsJSON;
+import com.example.front.data.News;
 import com.example.front.data.RequestTypeJSON;
 import com.example.front.data.User;
 
@@ -22,7 +22,7 @@ public class DataBASE {
     public static List<User> USERS_LIST = new ArrayList<>();
     public static BusJSON deleteBus = new BusJSON();
 
-    public static List<NewsJSON> NEWS_JSON_LIST = new ArrayList<>();
+    public static List<News> NEWS_JSON_LIST = new ArrayList<>();
     public static List<HistoryJSON> HISTORY_JSON_LIST = new ArrayList<>();
     public static List<EventJSON> EVENT_JSON_LIST = new ArrayList<>();
     public static List<RequestTypeJSON> REQUEST_TYPEJSON_LIST = new ArrayList<>();

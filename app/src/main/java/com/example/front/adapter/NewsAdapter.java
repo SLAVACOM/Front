@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.front.R;
-import com.example.front.data.database.DataBASE;
-import com.example.front.data.NewsJSON;
+import com.example.front.data.News;
 import com.example.front.data.Photo;
+import com.example.front.data.database.DataBASE;
 
 import java.util.ArrayList;
 
@@ -63,11 +63,11 @@ public class NewsAdapter extends RecyclerView.Adapter {
         }
 
         public void bindView(int position) {
-            NewsJSON newsJSON = DataBASE.NEWS_JSON_LIST.get(position);
-            ArrayList<Photo> photos= DataBASE.NEWS_JSON_LIST.get(position).getPhotos();
-            ViewPagerAdapter_News adapter_news = new ViewPagerAdapter_News(context, photos);
-            event.setText(newsJSON.getDescription().replaceAll("<p>", "").replaceAll("</p>", "").replaceAll("&nbsp;", ""));
-            zagal.setText("" + newsJSON.getTitle().replaceAll("<P>", ""));
+            News news = DataBASE.NEWS_JSON_LIST.get(position);
+            ArrayList<Photo> photos = DataBASE.NEWS_JSON_LIST.get(position).getPhotos();
+            NewsPhotosViewPager adapter_news = new NewsPhotosViewPager(context, photos);
+            event.setText(news.getDescription().replaceAll("<p>", "").replaceAll("</p>", "").replaceAll("&nbsp;", ""));
+            zagal.setText("" + news.getTitle().replaceAll("<P>", ""));
             viewPager.setAdapter(adapter_news);
 
         }
@@ -85,14 +85,14 @@ public class NewsAdapter extends RecyclerView.Adapter {
 
     }
 
-    public void setClickListener(ClickListener clickListener){
+    public void setClickListener(ClickListener clickListener) {
         NewsAdapter.clickListener = clickListener;
     }
 
 
+    public interface ClickListener {
+        void onItemClick(int position, View view);
 
-    public interface ClickListener{
-        void onItemClick(int position,View view);
-        void onItemLongClick(int position,View view);
+        void onItemLongClick(int position, View view);
     }
 }

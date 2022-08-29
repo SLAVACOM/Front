@@ -51,6 +51,10 @@ public class EventFragment extends Fragment {
         adapter.setOnItemClickListener(new AdapterEvents.ClickListener() {
             @Override
             public void onItemClick(int position, View view) {
+            }
+
+            @Override
+            public void onItemLongClick(int position, View view) {
                 EventEditFragment fragment = new EventEditFragment();
                 Bundle bundle = new Bundle();
                 bundle.putInt("pos",position);
@@ -59,11 +63,6 @@ public class EventFragment extends Fragment {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.nav_host_fragment_content_main,fragment).addToBackStack(null);
                 fragmentTransaction.commit();
-            }
-
-            @Override
-            public void onItemLongClick(int position, View view) {
-                Toast.makeText(getActivity(), "dfcsfcsdgfvotsdikgfv,", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -124,7 +123,7 @@ public class EventFragment extends Fragment {
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-
+                t.printStackTrace();
             }
         });
 

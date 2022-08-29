@@ -5,7 +5,7 @@ import com.example.front.data.BusJSON;
 import com.example.front.data.HistoryJSON;
 import com.example.front.data.ListRESPONSE;
 import com.example.front.data.MapObject;
-import com.example.front.data.NewsJSON;
+import com.example.front.data.News;
 import com.example.front.retrofit.responses.ObjectResponse;
 import com.example.front.data.RequestTypeJSON;
 import com.example.front.data.User;
@@ -84,9 +84,6 @@ public interface Api {
 
 
 
-    @GET("api/post")
-    Call<ListRESPONSE<NewsJSON>> getNewsList();
-
     @POST("api/post")
     @Headers({"Accept: application/json"})
     Call<ResponseBody> addNews(@Header("Authorization") String authHeader, @Query("title") String title,@Query("description") String description);
@@ -101,6 +98,9 @@ public interface Api {
     @DELETE("api/post/{post_id}")
     Call<ResponseBody> deleteNews(@Header("Authorization") String authHeader,@Path("post_id") int id);
 
+
+    @GET("api/post")
+    Call<ListRESPONSE<News>> getNewsList();
 
 
     @FormUrlEncoded
@@ -130,7 +130,7 @@ public interface Api {
     Call<ResponseBody> userResponsLike(@Header("Authorization") String authHeader);
 
     @GET("api/user/post/")
-    Call<ListRESPONSE<Appeal>> getAppeals(@Header("Authorization") String authHeader, @Query("mode") String mode);
+    Call<ListRESPONSE<Appeal>> getAppeals(@Header("Authorization") String authHeader, @Query("mode") String mode, @Query("page") String page);
 
 
 

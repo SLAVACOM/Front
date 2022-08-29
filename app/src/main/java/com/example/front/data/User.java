@@ -1,6 +1,7 @@
 package com.example.front.data;
 
 public class User {
+    public static int VIILAGE_USER_ROLE = 1;
     private int id;
     private String name;
     private String second_name;
@@ -19,13 +20,13 @@ public class User {
     private boolean curator;
     private boolean accept = true;
     private String address;
-    private Data data;
+    private News data;
 
-    public Data getData() {
+    public News getData() {
         return data;
     }
 
-    public void setData(Data data) {
+    public void setData(News data) {
         this.data = data;
     }
 

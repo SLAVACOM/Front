@@ -14,12 +14,12 @@ import com.example.front.data.database.DataBASE;
 import com.example.front.data.RequestTypeJSON;
 
 
-public class AppealAdapter extends RecyclerView.Adapter {
+public class RequestsTypeAdapter extends RecyclerView.Adapter {
 
     public static ClickListener clickListener;
     public Context context;
 
-    public AppealAdapter(Context context) {
+    public RequestsTypeAdapter(Context context) {
         this.context = context;
     }
 
@@ -70,7 +70,7 @@ public class AppealAdapter extends RecyclerView.Adapter {
     }
 
     public void setOnItemClickListener(ClickListener clickListener) {
-        AppealAdapter.clickListener = clickListener;
+        RequestsTypeAdapter.clickListener = clickListener;
     }
 
     public interface ClickListener {

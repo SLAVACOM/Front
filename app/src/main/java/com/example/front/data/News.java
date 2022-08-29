@@ -2,7 +2,7 @@ package com.example.front.data;
 
 import java.util.ArrayList;
 
-public class NewsJSON {
+public class News {
     private int id;
     private String title;
     private String description;
@@ -12,6 +12,22 @@ public class NewsJSON {
     private ArrayList<Photo> photos;
     private User author;
     private String date;
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
 
     public int getId() {
         return id;
@@ -69,19 +85,21 @@ public class NewsJSON {
         this.photos = photos;
     }
 
-    public User getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(User author) {
-        this.author = author;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
+    @Override
+    public String toString() {
+        return "Data{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", user_id=" + user_id +
+                ", created_at='" + created_at + '\'' +
+                ", updated_at='" + updated_at + '\'' +
+                ", photos=" + photos +
+                ", author=" + author +
+                ", date='" + date + '\'' +
+                '}';
     }
 }
+
+
+

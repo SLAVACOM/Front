@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -134,6 +135,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 fragment = new AppealFragment();
                 break;
             case R.id.nav_my_appeal:
+                fragment = new AppealFragment(AppealFragment.MODE_MY);
+                break;
+            case R.id.nav_request_types:
                 fragment = new RequestFragment();
                 break;
             case R.id.nav_user_list:
@@ -164,9 +168,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 });
                 return true;
             default:
-                DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
-                drawerLayout.closeDrawer(GravityCompat.START);
-                startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+                Toast.makeText(this, "Раздел в разработке", Toast.LENGTH_SHORT).show();
                 return true;
         }
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);

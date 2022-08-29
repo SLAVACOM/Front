@@ -10,7 +10,7 @@ public class EventJSON {
     private String created_at;
     private String updated_at;
     private int points;
-    private Data data;
+    private News data;
 
     @Override
     public String toString() {
@@ -26,11 +26,11 @@ public class EventJSON {
                 '}';
     }
 
-    public Data getData() {
+    public News getData() {
         return data;
     }
 
-    public void setData(Data data) {
+    public void setData(News data) {
         this.data = data;
     }
 

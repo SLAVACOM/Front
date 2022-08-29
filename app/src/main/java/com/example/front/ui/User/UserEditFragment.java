@@ -44,7 +44,7 @@ public class UserEditFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view= inflater.inflate(R.layout.fragment_user_edit, container, false);
-        int pos= getArguments().getInt("pos");
+        int pos = getArguments().getInt("pos");
         User user = DataBASE.USERS_LIST.get(pos);
 
         name = view.findViewById(R.id.etv_prof_edit_name);

@@ -16,9 +16,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.front.CONST.CONST;
 import com.example.front.R;
 import com.example.front.adapter.Adapter_bus;
-import com.example.front.data.database.DataBASE;
 import com.example.front.data.BusJSON;
 import com.example.front.data.ListRESPONSE;
+import com.example.front.data.database.DataBASE;
 import com.example.front.retrofit.RetrofitClient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -107,7 +107,7 @@ public class FragmentBus extends Fragment  {
                     try {
                         DataBASE.BUS_JSON_LIST.clear();
                         DataBASE.BUS_JSON_LIST.addAll(response.body().getData());
-                        Log.d(CONST.SERVER_LOG,""+ DataBASE.BUS_JSON_LIST);
+                        Log.d(CONST.SERVER_LOG,""+DataBASE.BUS_JSON_LIST);
                         adapterBus.notifyDataSetChanged();
 
                     } catch (Exception e){

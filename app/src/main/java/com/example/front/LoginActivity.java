@@ -124,12 +124,12 @@ public class LoginActivity extends AppCompatActivity  {
             }
         });
     }
-    private void getProfile() {
-        getProfile(false);
+    public User getProfile() {
+        return getProfile(false);
     }
-    private void getProfile(boolean resume) {
+    public User getProfile(boolean resume) {
         String token = userToken(getBaseContext());
-        if (token == null) return;
+        if (token == null) return null;
         Call<ObjectResponse<User>> getProfileData = RetrofitClient.getInstance().getApi().getProfile("Bearer " + token);
         getProfileData.enqueue(new Callback<ObjectResponse<User>>() {
             @Override
@@ -150,6 +150,7 @@ public class LoginActivity extends AppCompatActivity  {
                 t.printStackTrace();
             }
         });
+        return  DataBASE.user;
     }
     public static String userToken(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(LoginActivity.LOGIN_PREFS, 0);

@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -17,10 +18,11 @@ import com.example.front.CONST.CONST;
 import com.example.front.R;
 import com.example.front.adapter.NewsAdapter;
 import com.example.front.data.ListRESPONSE;
-import com.example.front.data.NewsJSON;
+import com.example.front.data.database.DataBASE;
+import com.example.front.data.ListRESPONSE;
+import com.example.front.data.News;
 import com.example.front.data.database.DataBASE;
 import com.example.front.retrofit.RetrofitClient;
-import com.example.front.retrofit.maper.NewsMapper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 
@@ -95,24 +97,21 @@ public class NewsFragment extends Fragment {
 
     }
     private void getNews(){
-        Call<ListRESPONSE<NewsJSON>> getNewsList = RetrofitClient.getInstance().getApi().getNewsList();
-        getNewsList.enqueue(new Callback<ListRESPONSE<NewsJSON>>() {
+        Call<ListRESPONSE<News>> getNewsList = RetrofitClient.getInstance().getApi().getNewsList();
+        getNewsList.enqueue(new Callback<ListRESPONSE<News>>() {
             @Override
-            public void onResponse(Call<ListRESPONSE<NewsJSON>> call, Response<ListRESPONSE<NewsJSON>> response) {
+            public void onResponse(Call<ListRESPONSE<News>> call, Response<ListRESPONSE<News>> response) {
                 if(response.code()==200){
-                    try {
-                        DataBASE.NEWS_JSON_LIST.clear();
-                        DataBASE.NEWS_JSON_LIST.addAll(response.body().getData());
-                        Log.d(CONST.SERVER_LOG,DataBASE.EVENT_JSON_LIST.toString());
-                        adapter.notifyDataSetChanged();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    DataBASE.NEWS_JSON_LIST.clear();
+                    DataBASE.NEWS_JSON_LIST.addAll(response.body().getData());
+                    adapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(getActivity(),"Сервер не доступен", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<ListRESPONSE<NewsJSON>> call, Throwable t) {
+            public void onFailure(Call<ListRESPONSE<News>> call, Throwable t) {
                 t.printStackTrace();
 
             }

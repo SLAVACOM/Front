@@ -29,7 +29,12 @@
         <item
         android:id="@+id/nav_my_appeal"
         android:icon="@drawable/ic_file"
-        android:title="@string/appeal_type" />
+        android:title="@string/appeal_my_fragment" />
+
+        <item
+        android:id="@+id/nav_request_types"
+        android:icon="@drawable/ic_file"
+        android:title="@string/request_types" />
 
 
         <item

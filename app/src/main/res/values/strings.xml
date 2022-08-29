@@ -17,7 +17,8 @@
     <string name="bus_fragment">Расписание автобусов</string>
     <string name="event_fragment">Мероприятия</string>
     <string name="appeal_fragment">Обращения</string>
-    <string name="appeal_type">Типы запросов</string>
+    <string name="appeal_my_fragment">Мои обращения</string>
+    <string name="request_types">Типы запросов</string>
     <string name="user_list">Список пользователей</string>
     <string name="response_to_admin">Запросы в администрацию</string>
     <string name="response_to_lib">Запросы в библиотеку</string>

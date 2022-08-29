@@ -1,17 +1,18 @@
-package com.example.front.data;
+package com.example.front.data.database;
 
-import com.example.front.retrofit.BusJSON;
-import com.example.front.retrofit.EventJSON;
-import com.example.front.retrofit.HistoryJSON;
-import com.example.front.retrofit.NewsJSON;
-import com.example.front.retrofit.User;
-import com.example.front.retrofit.RequestTypeJSON;
+import com.example.front.data.Appeal;
+import com.example.front.data.BusJSON;
+import com.example.front.data.EventJSON;
+import com.example.front.data.HistoryJSON;
+import com.example.front.data.NewsJSON;
+import com.example.front.data.RequestTypeJSON;
+import com.example.front.data.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DataData {
-    private DataData(){}
+public class DataBASE {
+    private DataBASE(){}
     public static final List<Appeal> APPEALS_LIST= new ArrayList<>();
 
 

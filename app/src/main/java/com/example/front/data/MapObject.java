@@ -1,4 +1,4 @@
-package com.example.front.retrofit;
+package com.example.front.data;
 
 
 import com.yandex.mapkit.map.PolygonMapObject;

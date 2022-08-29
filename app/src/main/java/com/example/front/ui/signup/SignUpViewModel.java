@@ -9,17 +9,15 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.front.R;
 import com.example.front.retrofit.RetrofitClient;
-import com.example.front.retrofit.User;
+import com.example.front.data.User;
 import com.example.front.retrofit.call.ValidateCallback;
 import com.example.front.retrofit.responses.ValidationResponse;
-import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SignUpViewModel extends ViewModel {

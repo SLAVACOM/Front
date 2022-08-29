@@ -1,32 +1,17 @@
 package com.example.front.ui.User;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
-import com.example.front.CONST.CONST;
 import com.example.front.R;
-import com.example.front.data.DataData;
-import com.example.front.retrofit.RetrofitClient;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import com.example.front.data.database.DataBASE;
 
 
 public class UserListEditFragment extends Fragment {
@@ -47,9 +32,9 @@ public class UserListEditFragment extends Fragment {
         password_confirmation = view.findViewById(R.id.etv_prof_edit_password_confirmation);
         checkBox = view.findViewById(R.id.cb_curator);
 
-        name.setText(DataData.user.getName());
-        second_name.setText(DataData.user.getSecond_name());
-        last_name.setText(DataData.user.getLast_name());
+        name.setText(DataBASE.user.getName());
+        second_name.setText(DataBASE.user.getSecond_name());
+        last_name.setText(DataBASE.user.getLast_name());
 
         button = view.findViewById(R.id.bt_editProf);
 

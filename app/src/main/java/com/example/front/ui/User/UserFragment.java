@@ -12,8 +12,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.front.R;
-import com.example.front.data.DataData;
-import com.example.front.retrofit.User;
+import com.example.front.data.database.DataBASE;
+import com.example.front.data.User;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class UserFragment extends Fragment {
@@ -29,7 +29,7 @@ public class UserFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        User user= DataData.user;
+        User user= DataBASE.user;
         url =  url+user.getId();
 
         View view = inflater.inflate(R.layout.fragment_user,container,false);

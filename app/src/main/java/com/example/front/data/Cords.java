@@ -1,6 +1,4 @@
-package com.example.front.retrofit;
-
-import org.json.JSONObject;
+package com.example.front.data;
 
 public class Cords {
 

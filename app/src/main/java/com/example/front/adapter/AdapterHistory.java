@@ -9,8 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.front.R;
-import com.example.front.data.DataData;
-import com.example.front.retrofit.HistoryJSON;
+import com.example.front.data.database.DataBASE;
+import com.example.front.data.HistoryJSON;
 
 public class AdapterHistory extends RecyclerView.Adapter<AdapterHistory.MyViewHolder> {
 
@@ -30,7 +30,7 @@ public class AdapterHistory extends RecyclerView.Adapter<AdapterHistory.MyViewHo
 
     @Override
     public int getItemCount() {
-        return DataData.HISTORY_JSON_LIST.size();
+        return DataBASE.HISTORY_JSON_LIST.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -43,7 +43,7 @@ public class AdapterHistory extends RecyclerView.Adapter<AdapterHistory.MyViewHo
         }
 
         public void bindView(int position){
-            HistoryJSON historyJSON = DataData.HISTORY_JSON_LIST.get(position);
+            HistoryJSON historyJSON = DataBASE.HISTORY_JSON_LIST.get(position);
             time.setText(historyJSON.getCreated_at());
             points.setText(historyJSON.getPoints()+" баллов благодарности");
             mapId.setText("Место: "+historyJSON.getMap_object().getName());

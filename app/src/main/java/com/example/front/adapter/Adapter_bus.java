@@ -6,12 +6,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.front.R;
-import com.example.front.data.DataData;
-import com.example.front.retrofit.BusJSON;
+import com.example.front.data.database.DataBASE;
+import com.example.front.data.BusJSON;
 
 
 public class Adapter_bus extends RecyclerView.Adapter {
@@ -33,7 +32,7 @@ public class Adapter_bus extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return DataData.BUS_JSON_LIST.size();
+        return DataBASE.BUS_JSON_LIST.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,View.OnLongClickListener{
@@ -48,7 +47,7 @@ public class Adapter_bus extends RecyclerView.Adapter {
         }
 
         public void bindView(int position){
-            BusJSON bus = DataData.BUS_JSON_LIST.get(position);
+            BusJSON bus = DataBASE.BUS_JSON_LIST.get(position);
             time.setText(bus.getTime());
             bus_title.setText(bus.getTitle());
             bus_place.setText(bus.getPlace());

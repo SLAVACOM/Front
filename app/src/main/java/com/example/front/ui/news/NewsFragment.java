@@ -1,6 +1,7 @@
 package com.example.front.ui.news;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +13,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.front.CONST.CONST;
 import com.example.front.R;
 import com.example.front.adapter.NewsAdapter;
-import com.example.front.data.DataData;
+import com.example.front.data.ListRESPONSE;
+import com.example.front.data.NewsJSON;
+import com.example.front.data.database.DataBASE;
 import com.example.front.retrofit.RetrofitClient;
 import com.example.front.retrofit.maper.NewsMapper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -92,24 +95,24 @@ public class NewsFragment extends Fragment {
 
     }
     private void getNews(){
-        Call<JsonObject> getNewsList = RetrofitClient.getInstance().getApi().getNewsList();
-        getNewsList.enqueue(new Callback<JsonObject>() {
+        Call<ListRESPONSE<NewsJSON>> getNewsList = RetrofitClient.getInstance().getApi().getNewsList();
+        getNewsList.enqueue(new Callback<ListRESPONSE<NewsJSON>>() {
             @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+            public void onResponse(Call<ListRESPONSE<NewsJSON>> call, Response<ListRESPONSE<NewsJSON>> response) {
                 if(response.code()==200){
-                    DataData.EVENT_JSON_LIST.clear();
                     try {
-                        JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
-                        NewsMapper.NewsFromJson(jsonObject);
+                        DataBASE.NEWS_JSON_LIST.clear();
+                        DataBASE.NEWS_JSON_LIST.addAll(response.body().getData());
+                        Log.d(CONST.SERVER_LOG,DataBASE.EVENT_JSON_LIST.toString());
                         adapter.notifyDataSetChanged();
-                    } catch (JSONException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
+            public void onFailure(Call<ListRESPONSE<NewsJSON>> call, Throwable t) {
                 t.printStackTrace();
 
             }

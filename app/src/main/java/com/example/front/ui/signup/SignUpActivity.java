@@ -21,7 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.front.databinding.ActivitySignUpBinding;
-import com.example.front.retrofit.User;
+import com.example.front.data.User;
 import com.example.front.ui.components.AppEditText;
 
 public class SignUpActivity extends AppCompatActivity {

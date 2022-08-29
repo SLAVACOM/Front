@@ -1,26 +1,19 @@
 package com.example.front.adapter;
 
 import android.content.Context;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.HorizontalScrollView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.front.CONST.CONST;
 import com.example.front.R;
-import com.example.front.data.DataData;
-import com.example.front.retrofit.NewsJSON;
-import com.example.front.retrofit.Photo;
-import com.squareup.picasso.Picasso;
+import com.example.front.data.database.DataBASE;
+import com.example.front.data.NewsJSON;
+import com.example.front.data.Photo;
 
 import java.util.ArrayList;
 
@@ -53,7 +46,7 @@ public class NewsAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return DataData.NEWS_JSON_LIST.size();
+        return DataBASE.NEWS_JSON_LIST.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
@@ -70,11 +63,11 @@ public class NewsAdapter extends RecyclerView.Adapter {
         }
 
         public void bindView(int position) {
-            NewsJSON newsJSON = DataData.NEWS_JSON_LIST.get(position);
-            ArrayList<Photo> photos= DataData.NEWS_JSON_LIST.get(position).getData().getPhotos();
+            NewsJSON newsJSON = DataBASE.NEWS_JSON_LIST.get(position);
+            ArrayList<Photo> photos= DataBASE.NEWS_JSON_LIST.get(position).getPhotos();
             ViewPagerAdapter_News adapter_news = new ViewPagerAdapter_News(context, photos);
-            event.setText(newsJSON.getData().getDescription().replaceAll("<p>", "").replaceAll("</p>", "").replaceAll("&nbsp;", ""));
-            zagal.setText("" + newsJSON.getData().getTitle().replaceAll("<P>", ""));
+            event.setText(newsJSON.getDescription().replaceAll("<p>", "").replaceAll("</p>", "").replaceAll("&nbsp;", ""));
+            zagal.setText("" + newsJSON.getTitle().replaceAll("<P>", ""));
             viewPager.setAdapter(adapter_news);
 
         }

@@ -11,7 +11,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.front.R;
 import com.example.front.data.Appeal;
-import com.example.front.data.DataData;
+import com.example.front.data.database.DataBASE;
 
 
 public class Adapter_appeal extends RecyclerView.Adapter {
@@ -33,7 +33,7 @@ public class Adapter_appeal extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return DataData.APPEALS_LIST.size();
+        return DataBASE.APPEALS_LIST.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -49,7 +49,7 @@ public class Adapter_appeal extends RecyclerView.Adapter {
         }
 
         public void bindView(int position){
-            Appeal appeal = DataData.APPEALS_LIST.get(position);
+            Appeal appeal = DataBASE.APPEALS_LIST.get(position);
             name.setText("От кого: "+appeal.getAuthor().getFull_name());
             content.setText("Обращение: "+ appeal.getDescription());
             time.setText(appeal.getDate());

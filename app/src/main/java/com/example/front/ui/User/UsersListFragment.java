@@ -16,7 +16,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.front.CONST.CONST;
 import com.example.front.R;
 import com.example.front.adapter.AdapterUserList;
-import com.example.front.data.DataData;
+import com.example.front.data.database.DataBASE;
 import com.example.front.retrofit.RetrofitClient;
 import com.example.front.retrofit.maper.UserMapper;
 import com.google.gson.Gson;
@@ -76,21 +76,21 @@ public class UsersListFragment extends Fragment {
     }
 
     private void getUsers(){
-        Call<JsonObject> getUsers = RetrofitClient.getInstance().getApi().getUsers("Bearer "+ DataData.token);
+        Call<JsonObject> getUsers = RetrofitClient.getInstance().getApi().getUsers("Bearer "+ DataBASE.token);
         getUsers.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if(response.code()==200){
                     try {
-                        DataData.USERS_LIST.clear();
+                        DataBASE.USERS_LIST.clear();
                         JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
                         JSONArray array = jsonObject.getJSONArray("data");
                         for (int i = 0; i < array.length() ; i++) {
                             JSONObject jsonObject1 = array.getJSONObject(i);
-                            DataData.USERS_LIST.add(UserMapper.UserFullFromJson(jsonObject1));
+                            DataBASE.USERS_LIST.add(UserMapper.UserFullFromJson(jsonObject1));
 
                         }
-                        Log.d(CONST.SERVER_LOG,""+DataData.USERS_LIST);
+                        Log.d(CONST.SERVER_LOG,""+ DataBASE.USERS_LIST);
                         adapterUserList.notifyDataSetChanged();
 
                     } catch (Exception e){

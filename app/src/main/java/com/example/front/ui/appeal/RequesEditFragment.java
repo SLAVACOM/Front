@@ -12,8 +12,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.front.R;
-import com.example.front.data.DataData;
-import com.example.front.retrofit.RequestTypeJSON;
+import com.example.front.data.database.DataBASE;
+import com.example.front.data.RequestTypeJSON;
 import com.example.front.retrofit.RetrofitClient;
 
 import okhttp3.ResponseBody;
@@ -32,14 +32,14 @@ public class RequesEditFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view= inflater.inflate(R.layout.fragment_request_edit, container, false);
-        RequestTypeJSON requestTypeJSON = DataData.REQUEST_TYPEJSON_LIST.get(getArguments().getInt("pos"));
+        RequestTypeJSON requestTypeJSON = DataBASE.REQUEST_TYPEJSON_LIST.get(getArguments().getInt("pos"));
         textView=view.findViewById(R.id.etv_fragment_requestedit);
         textView.setText("ID: "+ requestTypeJSON.getId()+"\nОбращение: "+requestTypeJSON.getName());
         button = view.findViewById(R.id.bt_fragment_edit);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Call<ResponseBody> deleteResp = RetrofitClient.getInstance().getApi().deleteRequest("Bearer " + DataData.token,requestTypeJSON.getId());
+                Call<ResponseBody> deleteResp = RetrofitClient.getInstance().getApi().deleteRequest("Bearer " + DataBASE.token,requestTypeJSON.getId());
                 deleteResp.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

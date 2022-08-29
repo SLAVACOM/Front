@@ -11,7 +11,8 @@ public class CONST {
 
     public static int REQUEST_to_ADMIN = 1024;
 
-    public static final int THEM_LENGTH = 10;
+    public static final int NEWS_THEM_LENGTH = 20;
+    public static final int NEWS_DESCRIPTION_LENGTH = 50;
     public static final int CONTENT_LENGTH = 10;
 
     public static final String SERVER_URl ="https://sugai.ru/";

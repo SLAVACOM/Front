@@ -1,14 +1,20 @@
 package com.example.front.retrofit;
 
 import com.example.front.data.Appeal;
-import com.example.front.retrofit.maper.TitleAndDescription;
+import com.example.front.data.BusJSON;
+import com.example.front.data.HistoryJSON;
+import com.example.front.data.ListRESPONSE;
+import com.example.front.data.MapObject;
+import com.example.front.data.NewsJSON;
+import com.example.front.retrofit.responses.ObjectResponse;
+import com.example.front.data.RequestTypeJSON;
+import com.example.front.data.User;
 import com.google.gson.JsonObject;
 
 import java.io.File;
 import java.util.Map;
 
-import okhttp3.Request;
-import okhttp3.RequestBody;
+import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -18,7 +24,9 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
@@ -76,23 +84,23 @@ public interface Api {
 
 
 
+    @GET("api/post")
+    Call<ListRESPONSE<NewsJSON>> getNewsList();
+
     @POST("api/post")
     @Headers({"Accept: application/json"})
     Call<ResponseBody> addNews(@Header("Authorization") String authHeader, @Query("title") String title,@Query("description") String description);
 
 
-    @FormUrlEncoded
-    @POST("api/post/{{post_id}}")
+    @Multipart
+    @POST("api/post?_method=put&title={title}&description={description}&post_photos%5B0%5D={post_photos[0]}")
     @Headers({"Accept: application/json"})
-    Call<ResponseBody> editNews(@Header("Authorization") String authHeader,@Field("_method") String method,@Field("title") String title, @Field("description") String description,@Field("post_photos[0]") File file,@Field("post_photos[1]") File file1,@Field("delete_photos[0]") int id);
+    Call<ResponseBody> editNews(@Header("Authorization") String authHeader, @Path("title") String title, @Field("description") String description, @Part MultipartBody.Part  file);
 
 
     @DELETE("api/post/{post_id}")
     Call<ResponseBody> deleteNews(@Header("Authorization") String authHeader,@Path("post_id") int id);
 
-
-    @GET("api/post")
-    Call<JsonObject> getNewsList();
 
 
     @FormUrlEncoded

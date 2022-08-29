@@ -1,17 +1,14 @@
 package com.example.front.retrofit.maper;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.front.CONST.CONST;
-import com.example.front.data.DataData;
-import com.example.front.retrofit.Data;
-import com.example.front.retrofit.Datum;
-import com.example.front.retrofit.NewsJSON;
-import com.example.front.retrofit.Photo;
+import com.example.front.data.database.DataBASE;
+import com.example.front.data.Data;
+import com.example.front.data.NewsJSON;
+import com.example.front.data.Photo;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -21,7 +18,7 @@ public class NewsMapper {
     try {
         NewsJSON newsJSON = new NewsJSON();
         JSONArray DataArray = jsonObject.getJSONArray("data");
-        DataData.NEWS_JSON_LIST.clear();
+        DataBASE.NEWS_JSON_LIST.clear();
         for (int i = 0; i < DataArray.length() ; i++) {
             Data data = new Data();
             JSONObject object  = DataArray.getJSONObject(i);
@@ -46,10 +43,10 @@ public class NewsMapper {
 
             }
             data.setPhotos(photos);
-            newsJSON.setData(data);
-            DataData.NEWS_JSON_LIST.add(newsJSON);
+//            newsJSON.setData(data);
+            DataBASE.NEWS_JSON_LIST.add(newsJSON);
         }
-        Log.d(CONST.SERVER_LOG,DataData.NEWS_JSON_LIST.toString());
+        Log.d(CONST.SERVER_LOG, DataBASE.NEWS_JSON_LIST.toString());
 
 
     }catch (Exception e){

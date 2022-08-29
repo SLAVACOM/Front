@@ -9,8 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.front.R;
-import com.example.front.data.DataData;
-import com.example.front.retrofit.RequestTypeJSON;
+import com.example.front.data.database.DataBASE;
+import com.example.front.data.RequestTypeJSON;
 
 
 public class AdapterRequestByID extends RecyclerView.Adapter {
@@ -30,7 +30,7 @@ public class AdapterRequestByID extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return DataData.REQUEST_TYPEJSON_byID_LIST.size();
+        return DataBASE.REQUEST_TYPEJSON_byID_LIST.size();
     }
 
 
@@ -43,7 +43,7 @@ public class AdapterRequestByID extends RecyclerView.Adapter {
         }
 
         public void bindView(int position) {
-            RequestTypeJSON appeal = DataData.REQUEST_TYPEJSON_byID_LIST.get(position);
+            RequestTypeJSON appeal = DataBASE.REQUEST_TYPEJSON_byID_LIST.get(position);
             content.setText("ID" + appeal.getId() + "\nОбращение: " + appeal.getName());
         }
     }

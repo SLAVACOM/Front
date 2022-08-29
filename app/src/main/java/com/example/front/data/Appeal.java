@@ -1,8 +1,5 @@
 package com.example.front.data;
 
-import com.example.front.retrofit.Photo;
-import com.example.front.retrofit.User;
-
 import java.util.ArrayList;
 
 public class Appeal{
@@ -96,5 +93,20 @@ public class Appeal{
 
     public void setPhotos(ArrayList<Photo> photos) {
         this.photos = photos;
+    }
+
+    @Override
+    public String toString() {
+        return "Appeal{" +
+                "title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", comment='" + comment + '\'' +
+                ", date='" + date + '\'' +
+                ", state=" + state +
+                ", likes=" + likes +
+                ", user_like=" + user_like +
+                ", author=" + author +
+                ", photos=" + photos +
+                '}';
     }
 }

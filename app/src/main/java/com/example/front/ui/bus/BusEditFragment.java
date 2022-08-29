@@ -12,8 +12,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.front.R;
-import com.example.front.data.DataData;
-import com.example.front.retrofit.BusJSON;
+import com.example.front.data.database.DataBASE;
+import com.example.front.data.BusJSON;
 import com.example.front.retrofit.RetrofitClient;
 import com.google.gson.JsonObject;
 
@@ -37,7 +37,7 @@ public class BusEditFragment extends Fragment {
         place = view.findViewById(R.id.etv_fragment_busedit_place);
         button = view.findViewById(R.id.bt_fragment_busedit);
 
-        BusJSON busJSON = DataData.BUS_JSON_LIST.get(bundle.getInt("pos"));
+        BusJSON busJSON = DataBASE.BUS_JSON_LIST.get(bundle.getInt("pos"));
         title.setText(busJSON.getTitle());
         place.setText(busJSON.getPlace());
         time.setText(busJSON.getTime());
@@ -46,7 +46,7 @@ public class BusEditFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 try {
-                    Call<JsonObject> deleteBusEvent = RetrofitClient.getInstance().getApi().deleteBusEvent("Bearer " + DataData.token,busJSON.getId());
+                    Call<JsonObject> deleteBusEvent = RetrofitClient.getInstance().getApi().deleteBusEvent("Bearer " + DataBASE.token,busJSON.getId());
                     deleteBusEvent.enqueue(new Callback<JsonObject>() {
                         @Override
                         public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {

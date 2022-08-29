@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.example.front.R;
-import com.example.front.data.DataData;
-import com.example.front.retrofit.EventJSON;
+import com.example.front.data.database.DataBASE;
+import com.example.front.data.EventJSON;
 
 public class EventEditFragment extends Fragment {
     private EditText title,content;
@@ -20,7 +20,7 @@ public class EventEditFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_event_edit, container, false);
-        EventJSON busJSON = DataData.EVENT_JSON_LIST.get(getArguments().getInt("pos"));
+        EventJSON busJSON = DataBASE.EVENT_JSON_LIST.get(getArguments().getInt("pos"));
         title = view.findViewById(R.id.etv_edit_event_title);
         content = view.findViewById(R.id.etv_edit_event_content);
         title.setText(busJSON.getTitle());

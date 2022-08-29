@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -18,9 +17,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.front.CONST.CONST;
-import com.example.front.data.DataData;
-import com.example.front.retrofit.ObjectResponse;
-import com.example.front.retrofit.User;
+import com.example.front.data.database.DataBASE;
+import com.example.front.retrofit.responses.ObjectResponse;
+import com.example.front.data.User;
 import com.example.front.retrofit.RetrofitClient;
 import com.example.front.ui.signup.SignUpActivity;
 import com.google.gson.Gson;
@@ -102,7 +101,7 @@ public class LoginActivity extends AppCompatActivity  {
                 try {
                     JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
                     String token = jsonObject.getJSONObject("data").getString("access_token");
-                    saveUserToken(getBaseContext(), DataData.token = token);
+                    saveUserToken(getBaseContext(), DataBASE.token = token);
                 } catch (JSONException e) {
                     Toast.makeText(LoginActivity.this, "Неправильный логин или пароль", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
@@ -136,8 +135,8 @@ public class LoginActivity extends AppCompatActivity  {
             @Override
             public void onResponse(Call<ObjectResponse<User>> call, Response<ObjectResponse<User>> response) {
                 if (response.isSuccessful()) {
-                    DataData.user = response.body().getData();
-                    Log.d(CONST.SERVER_LOG, "USERS " + DataData.user);
+                    DataBASE.user = response.body().getData();
+                    Log.d(CONST.SERVER_LOG, "USERS " + DataBASE.user);
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 }
                 button.setEnabled(true);

@@ -2,7 +2,7 @@ package com.example.front.ui.signup;
 
 import androidx.annotation.Nullable;
 
-import com.example.front.retrofit.User;
+import com.example.front.data.User;
 
 /**
  * Authentication result : success (user details) or error message.

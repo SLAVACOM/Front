@@ -9,10 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.front.R;
-import com.example.front.data.DataData;
-import com.example.front.data.Event;
-import com.example.front.retrofit.EventJSON;
-import com.example.front.retrofit.HistoryJSON;
+import com.example.front.data.database.DataBASE;
+import com.example.front.data.EventJSON;
 
 public class AdapterEvents extends RecyclerView.Adapter {
     public static ClickListener clickListener;
@@ -31,7 +29,7 @@ public class AdapterEvents extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return DataData.EVENT_JSON_LIST.size();
+        return DataBASE.EVENT_JSON_LIST.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,View.OnLongClickListener{
@@ -45,7 +43,7 @@ public class AdapterEvents extends RecyclerView.Adapter {
             itemView.setOnClickListener(this);
         }
         public void bindView(int position){
-             EventJSON event = DataData.EVENT_JSON_LIST.get(position);
+             EventJSON event = DataBASE.EVENT_JSON_LIST.get(position);
             time.setText(""+event.getCreated_at());
             content.setText(""+event.getPlace());
             zagal.setText(""+event.getTitle());

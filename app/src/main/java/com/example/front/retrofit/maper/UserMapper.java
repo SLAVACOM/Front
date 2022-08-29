@@ -1,8 +1,7 @@
 package com.example.front.retrofit.maper;
 
-import com.example.front.retrofit.User;
+import com.example.front.data.User;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 public class UserMapper {

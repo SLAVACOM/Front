@@ -2,7 +2,6 @@ package com.example.front;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.RestrictionEntry;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
@@ -19,7 +18,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.front.CONST.CONST;
-import com.example.front.data.DataData;
+import com.example.front.data.database.DataBASE;
 import com.example.front.retrofit.RetrofitClient;
 import com.example.front.ui.Map.MapFragment;
 import com.example.front.ui.User.UserFragment;
@@ -49,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onStart() {
         super.onStart();
-        DataData.token= userToken(getBaseContext());
+        DataBASE.token= userToken(getBaseContext());
 
 
 
@@ -147,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 fragment = new HistoryFragment();
                 break;
             case R.id.nav_exit:
-                Call<ResponseBody> logout = RetrofitClient.getInstance().getApi().logout("Bearer "+ DataData.token);
+                Call<ResponseBody> logout = RetrofitClient.getInstance().getApi().logout("Bearer "+ DataBASE.token);
                 logout.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

@@ -8,8 +8,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
-import com.example.front.CONST.CONST;
-import com.example.front.retrofit.Photo;
+import com.example.front.data.Photo;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

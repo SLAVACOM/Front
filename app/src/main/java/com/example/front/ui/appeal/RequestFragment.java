@@ -17,10 +17,10 @@ import android.view.ViewGroup;
 import com.example.front.CONST.CONST;
 import com.example.front.R;
 import com.example.front.adapter.AppealAdapter;
-import com.example.front.data.DataData;
-import com.example.front.retrofit.ListRESPONSE;
+import com.example.front.data.database.DataBASE;
+import com.example.front.data.ListRESPONSE;
 import com.example.front.retrofit.RetrofitClient;
-import com.example.front.retrofit.RequestTypeJSON;
+import com.example.front.data.RequestTypeJSON;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import retrofit2.Call;
@@ -104,9 +104,9 @@ public class RequestFragment extends Fragment {
             public void onResponse(Call<ListRESPONSE<RequestTypeJSON>> call, Response<ListRESPONSE<RequestTypeJSON>> response) {
                 if(response.code()==200){
                     try {
-                        DataData.REQUEST_TYPEJSON_LIST.clear();
-                        DataData.REQUEST_TYPEJSON_LIST.addAll(response.body().getData());
-                        Log.d(CONST.SERVER_LOG,DataData.REQUEST_TYPEJSON_LIST.toString());
+                        DataBASE.REQUEST_TYPEJSON_LIST.clear();
+                        DataBASE.REQUEST_TYPEJSON_LIST.addAll(response.body().getData());
+                        Log.d(CONST.SERVER_LOG, DataBASE.REQUEST_TYPEJSON_LIST.toString());
                         adapter.notifyDataSetChanged();
                     } catch (Exception e){
                         e.printStackTrace();

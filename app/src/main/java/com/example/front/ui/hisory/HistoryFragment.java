@@ -13,18 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.front.CONST.CONST;
 import com.example.front.R;
 import com.example.front.adapter.AdapterHistory;
-import com.example.front.data.DataData;
-import com.example.front.retrofit.Data;
-import com.example.front.retrofit.HistoryJSON;
-import com.example.front.retrofit.ListRESPONSE;
+import com.example.front.data.database.DataBASE;
+import com.example.front.data.HistoryJSON;
+import com.example.front.data.ListRESPONSE;
 import com.example.front.retrofit.RetrofitClient;
-import com.example.front.retrofit.maper.HistoryMapper;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -57,7 +49,7 @@ public class HistoryFragment extends Fragment {
     }
 
     public void getHistory(){
-        Call<ListRESPONSE<HistoryJSON>> getHistory = RetrofitClient.getInstance().getApi().getEventHistory("Bearer " + DataData.token);
+        Call<ListRESPONSE<HistoryJSON>> getHistory = RetrofitClient.getInstance().getApi().getEventHistory("Bearer " + DataBASE.token);
         getHistory.enqueue(new Callback<ListRESPONSE<HistoryJSON>>() {
             @Override
             public void onResponse(Call<ListRESPONSE<HistoryJSON>> call, Response<ListRESPONSE<HistoryJSON>> response) {
@@ -65,8 +57,8 @@ public class HistoryFragment extends Fragment {
                 if(response.code()==200){
                     try {
 
-                        DataData.HISTORY_JSON_LIST.clear();
-                        DataData.HISTORY_JSON_LIST.addAll(response.body().getData());
+                        DataBASE.HISTORY_JSON_LIST.clear();
+                        DataBASE.HISTORY_JSON_LIST.addAll(response.body().getData());
                         adapter.notifyDataSetChanged();
                         Log.d(CONST.SERVER_LOG,response.body().getData().toString());
                     }catch (Exception e){

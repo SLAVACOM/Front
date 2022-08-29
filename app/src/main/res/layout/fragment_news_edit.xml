@@ -61,16 +61,27 @@
         android:text="Изменить"
         app:layout_constraintEnd_toEndOf="@+id/etv_news_edit_content"
         app:layout_constraintStart_toStartOf="@+id/etv_news_edit_content"
-        app:layout_constraintTop_toBottomOf="@+id/etv_news_edit_content" />
+        app:layout_constraintTop_toBottomOf="@+id/bt_newsedit_addimage" />
 
     <Button
         android:id="@+id/buttonDel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginBottom="32dp"
         android:text="Удалить"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/buttonEdit"
         app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/buttonEdit" />
+
+    <Button
+        android:id="@+id/bt_newsedit_addimage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Добавить изображение"
+        app:layout_constraintEnd_toEndOf="@+id/buttonEdit"
+        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="@+id/buttonEdit"
-        app:layout_constraintTop_toBottomOf="@+id/buttonEdit" />
+        app:layout_constraintTop_toBottomOf="@+id/etv_news_edit_content" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,7 +1,5 @@
 package com.example.front.ui.appeal;
 
-import static com.example.front.data.DataData.token;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +10,10 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.front.CONST.CONST;
 import com.example.front.R;
-import com.example.front.data.Appeal;
-import com.example.front.data.DataData;
+import com.example.front.data.database.DataBASE;
 import com.example.front.retrofit.RetrofitClient;
 
 import okhttp3.ResponseBody;
@@ -44,7 +40,7 @@ public class AppealEditFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (appeal_content.getText().toString().length()>= CONST.CONTENT_LENGTH){
-                    Call<ResponseBody> addRequest = RetrofitClient.getInstance().getApi().addRequestType("Bearer " + DataData.token,appeal_content.getText().toString());
+                    Call<ResponseBody> addRequest = RetrofitClient.getInstance().getApi().addRequestType("Bearer " + DataBASE.token,appeal_content.getText().toString());
                     addRequest.enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

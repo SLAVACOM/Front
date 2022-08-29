@@ -18,21 +18,13 @@ import com.example.front.CONST.CONST;
 import com.example.front.LoginActivity;
 import com.example.front.R;
 import com.example.front.adapter.AppealAdapter;
-import com.example.front.adapter.NewsAdapter;
 import com.example.front.data.Appeal;
-import com.example.front.data.DataData;
-import com.example.front.retrofit.ListRESPONSE;
+import com.example.front.data.database.DataBASE;
+import com.example.front.data.ListRESPONSE;
 import com.example.front.retrofit.RetrofitClient;
-import com.example.front.retrofit.maper.NewsMapper;
 import com.example.front.ui.news.NewsAddFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -109,9 +101,9 @@ public class AppealFragment extends Fragment  {
             @Override
             public void onResponse(Call<ListRESPONSE<Appeal>> call, Response<ListRESPONSE<Appeal>> response) {
                 if (response.code() == 200) {
-                    DataData.EVENT_JSON_LIST.clear();
+                    DataBASE.EVENT_JSON_LIST.clear();
                     List<Appeal> data = response.body().getData();
-                    DataData.APPEALS_LIST.addAll(data);
+                    DataBASE.APPEALS_LIST.addAll(data);
                     adapter.notifyDataSetChanged();
                     Log.d(CONST.SERVER_LOG, data.toString());
                 }

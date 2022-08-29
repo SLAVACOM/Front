@@ -9,14 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.front.CONST.CONST;
 import com.example.front.R;
-import com.example.front.retrofit.Cords;
-import com.example.front.retrofit.ListRESPONSE;
-import com.example.front.retrofit.MapObject;
+import com.example.front.data.Cords;
+import com.example.front.data.ListRESPONSE;
+import com.example.front.data.MapObject;
 import com.example.front.retrofit.RetrofitClient;
 import com.yandex.mapkit.Animation;
 import com.yandex.mapkit.MapKitFactory;
@@ -25,7 +24,6 @@ import com.yandex.mapkit.geometry.Point;
 import com.yandex.mapkit.geometry.Polygon;
 import com.yandex.mapkit.map.CameraPosition;
 import com.yandex.mapkit.map.MapObjectCollection;
-import com.yandex.mapkit.map.MapObjectTapListener;
 import com.yandex.mapkit.map.PlacemarkMapObject;
 import com.yandex.mapkit.map.PolygonMapObject;
 import com.yandex.mapkit.mapview.MapView;

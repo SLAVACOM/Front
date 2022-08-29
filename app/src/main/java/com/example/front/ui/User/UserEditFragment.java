@@ -17,9 +17,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.front.R;
-import com.example.front.data.DataData;
+import com.example.front.data.database.DataBASE;
 import com.example.front.retrofit.RetrofitClient;
-import com.example.front.retrofit.User;
+import com.example.front.data.User;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,7 +45,7 @@ public class UserEditFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view= inflater.inflate(R.layout.fragment_user_edit, container, false);
         int pos= getArguments().getInt("pos");
-        User user = DataData.USERS_LIST.get(pos);
+        User user = DataBASE.USERS_LIST.get(pos);
 
         name = view.findViewById(R.id.etv_prof_edit_name);
         second_name = view.findViewById(R.id.etv_prof_edit_second_name);
@@ -241,7 +241,7 @@ public class UserEditFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    Call<ResponseBody> setUser = RetrofitClient.getInstance().getApi().editUserList("Bearer " +DataData.token,Integer.valueOf(user.getId()),String_map,integerMap_map);
+                    Call<ResponseBody> setUser = RetrofitClient.getInstance().getApi().editUserList("Bearer " + DataBASE.token,Integer.valueOf(user.getId()),String_map,integerMap_map);
                     setUser.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

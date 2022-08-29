@@ -6,22 +6,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.front.CONST.CONST;
 import com.example.front.R;
-import com.example.front.data.DataData;
-import com.example.front.retrofit.HistoryJSON;
+import com.example.front.data.database.DataBASE;
 import com.example.front.retrofit.RetrofitClient;
-import com.example.front.retrofit.User;
+import com.example.front.data.User;
 import com.google.gson.JsonObject;
 
-import java.util.zip.CheckedOutputStream;
-
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,7 +40,7 @@ public class AdapterUserList extends RecyclerView.Adapter<AdapterUserList.MyView
 
     @Override
     public int getItemCount() {
-        return DataData.USERS_LIST.size();
+        return DataBASE.USERS_LIST.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,View.OnLongClickListener{
@@ -64,7 +59,7 @@ public class AdapterUserList extends RecyclerView.Adapter<AdapterUserList.MyView
         }
 
         public void bindView(int position){
-            User user = DataData.USERS_LIST.get(position);
+            User user = DataBASE.USERS_LIST.get(position);
             id.setText("ID пользователя: "+user.getId());
             points.setText(user.getPoints()+" баллов");
             email.setText("Почта: "+user.getEmail());
@@ -81,12 +76,12 @@ public class AdapterUserList extends RecyclerView.Adapter<AdapterUserList.MyView
                     } else {
                         blok=0;
                     }
-                    Call<JsonObject> blocket = RetrofitClient.getInstance().getApi().editProfile("Bearer "+DataData.token, user.getId(),"put", blok);
+                    Call<JsonObject> blocket = RetrofitClient.getInstance().getApi().editProfile("Bearer "+ DataBASE.token, user.getId(),"put", blok);
                     blocket.enqueue(new Callback<JsonObject>() {
                         @Override
                         public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                             if (response.code()==200){
-                                DataData.USERS_LIST.get(position).setBlocked(blok);
+                                DataBASE.USERS_LIST.get(position).setBlocked(blok);
                                 if (user.getBlocked()==0)
                                     button.setText("Заблокировать");
                                 else button.setText("Разблоировать");

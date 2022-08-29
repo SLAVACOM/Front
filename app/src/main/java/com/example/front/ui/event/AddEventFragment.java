@@ -14,13 +14,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewTreeViewModelKt;
 
-import com.example.front.MainActivity;
 import com.example.front.R;
-import com.example.front.data.DataData;
-import com.example.front.retrofit.Data;
-import com.example.front.retrofit.EventJSON;
 
 import java.util.Calendar;
 

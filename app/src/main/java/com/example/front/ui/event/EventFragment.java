@@ -16,11 +16,9 @@ import android.widget.Toast;
 
 import com.example.front.R;
 import com.example.front.adapter.AdapterEvents;
-import com.example.front.data.DataData;
+import com.example.front.data.database.DataBASE;
 import com.example.front.retrofit.RetrofitClient;
 import com.example.front.retrofit.maper.EventMaper;
-import com.example.front.ui.bus.FragmentBusAdd;
-import com.example.front.ui.news.NewsAddFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -113,7 +111,7 @@ public class EventFragment extends Fragment {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if(response.code()==200){
-                    DataData.EVENT_JSON_LIST.clear();
+                    DataBASE.EVENT_JSON_LIST.clear();
                     try {
                         JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
                         EventMaper.EventFromJSON(jsonObject);

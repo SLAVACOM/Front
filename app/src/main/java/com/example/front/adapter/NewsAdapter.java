@@ -1,6 +1,8 @@
 package com.example.front.adapter;
 
 import android.content.Context;
+import android.os.Build;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,26 +52,32 @@ public class NewsAdapter extends RecyclerView.Adapter {
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
-        TextView event, zagal;
+        TextView content, zagal;
         ViewPager viewPager;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             viewPager = itemView.findViewById(R.id.viewPager);
-            event = itemView.findViewById(R.id.tv_appeal1);
+            content = itemView.findViewById(R.id.news_content);
             zagal = itemView.findViewById(R.id.news_title);
-
+            viewPager.setVisibility(View.GONE);
             itemView.setOnLongClickListener(this);
         }
 
         public void bindView(int position) {
             News news = DataBASE.NEWS_JSON_LIST.get(position);
-            ArrayList<Photo> photos = DataBASE.NEWS_JSON_LIST.get(position).getPhotos();
-            NewsPhotosViewPager adapter_news = new NewsPhotosViewPager(context, photos);
-            event.setText(news.getDescription().replaceAll("<p>", "").replaceAll("</p>", "").replaceAll("&nbsp;", ""));
             zagal.setText("" + news.getTitle().replaceAll("<P>", ""));
-            viewPager.setAdapter(adapter_news);
-
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                content.setText(Html.fromHtml(news.getDescription(), Html.FROM_HTML_MODE_COMPACT));
+            } else {
+                content.setText(Html.fromHtml(news.getDescription()));
+            }
+            ArrayList<Photo> photos = DataBASE.NEWS_JSON_LIST.get(position).getPhotos();
+            if (photos.size()> 0) {
+                NewsPhotosViewPager adapter_news = new NewsPhotosViewPager(context, photos);
+                viewPager.setAdapter(adapter_news);
+                viewPager.setVisibility(View.VISIBLE);
+            }
         }
 
         @Override

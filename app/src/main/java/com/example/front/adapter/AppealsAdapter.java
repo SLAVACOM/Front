@@ -15,8 +15,10 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.front.R;
 import com.example.front.data.Appeal;
+import com.example.front.data.Photo;
 import com.example.front.data.database.DataBASE;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -61,6 +63,7 @@ public class AppealsAdapter extends RecyclerView.Adapter {
             name = itemView.findViewById(R.id.tv_appeal_name);
             content = itemView.findViewById(R.id.tv_appeal_content);
             viewPager = itemView.findViewById(R.id.viewPager);
+            viewPager.setVisibility(View.GONE);
         }
 
         public void bindView(int position){
@@ -73,8 +76,12 @@ public class AppealsAdapter extends RecyclerView.Adapter {
             }
             name.setText("Опубликовано: " + appeal.getDate());
 //            status.setText(appeal.getState()+"");
-            NewsPhotosViewPager adapter_news = new NewsPhotosViewPager(context, appeal.getPhotos());
-            viewPager.setAdapter(adapter_news);
+            ArrayList<Photo> photos = appeal.getPhotos();
+            if (photos.size()> 0) {
+                NewsPhotosViewPager adapter_news = new NewsPhotosViewPager(context, photos);
+                viewPager.setAdapter(adapter_news);
+                viewPager.setVisibility(View.VISIBLE);
+            }
         }
 
         @Override

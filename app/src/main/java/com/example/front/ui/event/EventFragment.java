@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.front.CONST.CONST;
 import com.example.front.R;
@@ -22,13 +21,7 @@ import com.example.front.data.EventJSON;
 import com.example.front.data.ListRESPONSE;
 import com.example.front.data.database.DataBASE;
 import com.example.front.retrofit.RetrofitClient;
-import com.example.front.retrofit.maper.EventMaper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;

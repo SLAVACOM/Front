@@ -273,5 +273,5 @@ public interface Api {
 
 
     @GET("api/user")
-    Call<JsonObject> getUsers(@Header("Authorization") String heder);
+    Call<ListRESPONSE<User>> getUsers(@Header("Authorization") String heder);
 }

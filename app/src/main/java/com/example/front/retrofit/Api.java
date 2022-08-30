@@ -2,6 +2,7 @@ package com.example.front.retrofit;
 
 import com.example.front.data.Appeal;
 import com.example.front.data.BusJSON;
+import com.example.front.data.EventJSON;
 import com.example.front.data.HistoryJSON;
 import com.example.front.data.ListRESPONSE;
 import com.example.front.data.MapObject;
@@ -10,6 +11,8 @@ import com.example.front.retrofit.responses.ObjectResponse;
 import com.example.front.data.RequestTypeJSON;
 import com.example.front.data.User;
 import com.google.gson.JsonObject;
+
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.Map;
@@ -37,7 +40,6 @@ public interface Api {
     @Headers({"Accept: application/json"})
     @POST("api/auth/login/")
     Call<JsonObject> login(@Field("email")String email, @Field("password") String password);
-
 
     @Headers({"Accept: application/json"})
     @POST("api/auth/signup/")
@@ -90,9 +92,9 @@ public interface Api {
 
 
     @Multipart
-    @POST("api/post?_method=put&title={title}&description={description}&post_photos%5B0%5D={post_photos[0]}")
+    @POST("api/post/{post_id}")
     @Headers({"Accept: application/json"})
-    Call<ResponseBody> editNews(@Header("Authorization") String authHeader, @Path("title") String title, @Field("description") String description, @Part MultipartBody.Part  file);
+    Call<JSONObject> editNews(@Header("Authorization") String authHeader,@Path("post_id") int postID, @Query("_method") String put,@Query("title") String title, @Query("description") String description, @Part MultipartBody.Part  post_photos );
 
 
     @DELETE("api/post/{post_id}")
@@ -134,34 +136,6 @@ public interface Api {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    @FormUrlEncoded
-    @POST("api/event")
-    @Headers({"Accept: application/json","Authorization: Bearer {{token}}"})
-    Call<ResponseBody> addEvent(@Field("title") String title, @Field("place") String place, @Field("date") String date, @Field("points") String points);
-
-    @FormUrlEncoded
-    @POST("api/event/{{event_id}}")
-    @Headers({"Accept: application/json","Authorization: Bearer {{token}}"})
-    Call<ResponseBody> addEvent(@Field("title") String title, @Field("place") String place, @Field("date") String date, @Field("points") String points,@Field("_method") String method);
-
-    @DELETE("api/event/{event_id}")
-    Call<ResponseBody> deleteEvent(@Header("Authorization") String token, @Path("event_id") int id);
-
-    @GET("api/event")
-    Call<JsonObject> getEventList();
 
 
     @FormUrlEncoded
@@ -271,8 +245,14 @@ public interface Api {
 
 
 
+    @FormUrlEncoded
+    @POST("api/event")
+    @Headers({"Accept: application/json","Authorization: Bearer {{token}}"})
+    Call<ResponseBody> addEvent(@Field("title") String title, @Field("place") String place, @Field("date") String date, @Field("points") String points);
 
 
+    @GET("api/event")
+    Call<ListRESPONSE<EventJSON>> getEventList();
 
 
 

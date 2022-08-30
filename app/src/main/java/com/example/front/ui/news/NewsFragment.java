@@ -24,10 +24,6 @@ import com.example.front.data.News;
 import com.example.front.data.database.DataBASE;
 import com.example.front.retrofit.RetrofitClient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.gson.Gson;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;

@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,10 +23,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.front.CONST.CONST;
 import com.example.front.R;
 import com.example.front.data.News;
 import com.example.front.data.database.DataBASE;
 import com.example.front.retrofit.RetrofitClient;
+
+import org.json.JSONObject;
 
 import java.io.File;
 
@@ -91,26 +95,30 @@ public class NewsEditFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (path!=null){
-                    File file =new File(path);
-                    RequestBody filebody=RequestBody.create(MediaType.parse("multipart/form-data"),file);
-                    MultipartBody.Part body = MultipartBody.Part.createFormData("image",file.getName(),filebody);
-                    Call<ResponseBody> saveNewsPost = RetrofitClient.getInstance().getApi().editNews("Bearer "+ DataBASE.token,title.getText().toString(),content.getText().toString(),body);
-                    saveNewsPost.enqueue(new Callback<ResponseBody>() {
-                        @Override
-                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                            if (response.code()==200){
-                                Toast.makeText(getContext(), "ecgtiyj", Toast.LENGTH_SHORT).show();
-                            }
-                            Toast.makeText(getContext(), "[rovlems", Toast.LENGTH_SHORT).show();
-                        }
+                File file =new File(path);
+                RequestBody filebody=RequestBody.create(MediaType.parse("multipart/form-data"),file);
+                if (item.getPhotos().size()==0){
 
-                        @Override
-                        public void onFailure(Call<ResponseBody> call, Throwable t) {
-                            t.printStackTrace();
-                        }
-                    });
                 }
+                String name= "post_photos["+item.getPhotos().size()+"]";
+                MultipartBody.Part body = MultipartBody.Part.createFormData(name,file.getName(),filebody);
+                Call<JSONObject> saveNewsPost = RetrofitClient.getInstance().getApi().editNews("Bearer "+ DataBASE.token,item.getId(),"PUT",title.getText().toString(),content.getText().toString(),body);
+                saveNewsPost.enqueue(new Callback<JSONObject>() {
+
+                    @Override
+                    public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
+                        Log.d(CONST.SERVER_LOG,response.toString());
+                        if (response.code()==200){
+                            Toast.makeText(getContext(), "Успешно отправлено", Toast.LENGTH_SHORT).show();
+                            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                            fragmentManager.popBackStack();
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<JSONObject> call, Throwable t) {
+                        t.printStackTrace();
+                    }
+                });
             }
         });
 

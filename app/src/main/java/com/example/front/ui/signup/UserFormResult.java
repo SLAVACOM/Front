@@ -7,22 +7,22 @@ import com.example.front.data.User;
 /**
  * Authentication result : success (user details) or error message.
  */
-class SignUpResult {
+public class UserFormResult {
     @Nullable
     private User success;
     @Nullable
     private Integer error;
 
-    SignUpResult(@Nullable Integer error) {
+    UserFormResult(@Nullable Integer error) {
         this.error = error;
     }
 
-    SignUpResult(@Nullable User success) {
+    UserFormResult(@Nullable User success) {
         this.success = success;
     }
 
     @Nullable
-    User getSuccess() {
+    public User getSuccess() {
         return success;
     }
 

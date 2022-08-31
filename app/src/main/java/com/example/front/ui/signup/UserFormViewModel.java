@@ -20,28 +20,33 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
 
-public class SignUpViewModel extends ViewModel {
+public class UserFormViewModel extends ViewModel {
 
     private MutableLiveData<UserFormState> signUpFormState = new MutableLiveData<>();
-    private MutableLiveData<SignUpResult> signupResult = new MutableLiveData<>();
+    private MutableLiveData<UserFormResult> signupResult = new MutableLiveData<>();
+    private MutableLiveData<UserFormResult> userEditResult = new MutableLiveData<>();
     private MutableLiveData<User> userData = new MutableLiveData<>();
     private Context context;
-    SignUpViewModel() {
+    UserFormViewModel() {
     }
 
-    LiveData<UserFormState> getSignUpFormState() {
+    public LiveData<UserFormState> getSignUpFormState() {
         return signUpFormState;
     }
 
-    LiveData<SignUpResult> getSignupResult() {
+    public MutableLiveData<UserFormResult> getUserEditResult() {
+        return userEditResult;
+    }
+
+    LiveData<UserFormResult> getSignupResult() {
         return signupResult;
     }
-    LiveData<User> getUserData() {
+    public LiveData<User> getUserData() {
         return userData;
     }
 
-    public void signUp(UserFormState form) {
-        Call<ResponseBody> call = RetrofitClient.getInstance().getApi().registration(userData.getValue());
+    public void sendRequest(Call<ResponseBody> call) {
+
         call.enqueue(new ValidateCallback<ResponseBody>() {
             @Override
             public void on422(Call<ResponseBody> call, Response<ResponseBody> response, ValidationResponse vr) {
@@ -57,17 +62,21 @@ public class SignUpViewModel extends ViewModel {
             @Override
             public void onSuccess(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-                    signupResult.setValue(new SignUpResult(userData.getValue()));
+                    signupResult.setValue(new UserFormResult(userData.getValue()));
+                    userEditResult.setValue(new UserFormResult(userData.getValue()));
                 }
             }
             @Override
             public Context getContext() {
-                return SignUpViewModel.this.context;
+                return UserFormViewModel.this.context;
             }
         });
     }
 
     public void loginDataChanged(String username, String name, String second, String last, String address, String phone) {
+        loginDataChanged(username, name, second,last,address,phone, null, null, null);
+    }
+    public void loginDataChanged(String username, String name, String second, String last, String address, String phone, String card, String points, Boolean curator) {
         if (!isUserNameValid(username)) {
             signUpFormState.setValue(new UserFormState("email", R.string.invalid_username));
         } else if (!isNameValid(name)) {
@@ -89,6 +98,14 @@ public class SignUpViewModel extends ViewModel {
             value.setName(name);
             value.setLast_name(last);
             value.setSecond_name(second);
+            if(card != null && !card.isEmpty()) value.setCard_id(card);
+            else value.setCard_id("");
+            try {
+                if (points != null) value.setPoints(Integer.parseInt(points));
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
+            if(curator != null) value.setCurator(curator);
             userData.setValue(value);
             signUpFormState.setValue(new UserFormState(true));
         }

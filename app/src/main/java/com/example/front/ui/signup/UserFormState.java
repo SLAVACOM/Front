@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 /**
  * Data validation state of the login form.
  */
-class UserFormState {
+public class UserFormState {
 
     @Nullable
     private Object passwordError;
@@ -26,6 +26,12 @@ class UserFormState {
     private Object addressError;
     @Nullable
     private Object formError;
+    @Nullable
+    private Object cardIdError;
+    @Nullable
+    private Object curatorError;
+    @Nullable
+    private Object pointsError;
 
     private boolean isDataValid;
 
@@ -39,7 +45,7 @@ class UserFormState {
         this.isDataValid = isDataValid;
     }
 
-    boolean isDataValid() {
+    public boolean isDataValid() {
         return isDataValid;
     }
 
@@ -60,6 +66,15 @@ class UserFormState {
             case "phone" :
                 this.phoneError = error;
                 break;
+            case "card_id" :
+                this.cardIdError = error;
+                break;
+            case "points" :
+                this.pointsError = error;
+                break;
+            case "curator" :
+                this.curatorError = error;
+                break;
             case "email" :
             case "username" :
                 this.usernameError = error;
@@ -69,6 +84,22 @@ class UserFormState {
                 break;
         }
     }
+
+    @Nullable
+    public Object getCardIdError() {
+        return cardIdError;
+    }
+
+    @Nullable
+    public Object getCuratorError() {
+        return curatorError;
+    }
+
+    @Nullable
+    public Object getPointsError() {
+        return pointsError;
+    }
+
     @Nullable
     public Object getUsernameError() {
         return usernameError;

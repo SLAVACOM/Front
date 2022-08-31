@@ -1,6 +1,8 @@
 package com.example.front.ui.User;
 
 
+import static com.example.front.data.database.DataBASE.user;
+
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,13 +15,19 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.front.R;
 import com.example.front.data.database.DataBASE;
 import com.example.front.retrofit.RetrofitClient;
-import com.example.front.data.User;
+import com.example.front.ui.signup.UserFormResult;
+import com.example.front.ui.signup.UserFormViewModel;
+import com.example.front.ui.signup.SignUpViewModelFactory;
+import com.example.front.ui.signup.UserFormState;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,23 +38,20 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class UserEditFragment extends Fragment {
+public class UserEditFragment extends Fragment implements View.OnClickListener {
 
-    private EditText name, second_name,last_name,email,phone,points,adress,cardnum;
-    private Button button;
+    private EditText name, second_name, last_name, email, phone, points, adress, cardnum;
+    private Button saveBtn;
     private CheckBox checkBox;
     private int curator;
-    String stringChange = "";
-    Map<String,String> String_map = new HashMap<>();
-    Map<String,Integer> integerMap_map = new HashMap<>();
+    Map<String, String> String_map = new HashMap<>();
+    Map<String, Integer> integerMap_map = new HashMap<>();
+    private UserFormViewModel viewModel;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view= inflater.inflate(R.layout.fragment_user_edit, container, false);
-        int pos = getArguments().getInt("pos");
-        User user = DataBASE.USERS_LIST.get(pos);
-
+    public void init(View view) {
+        viewModel = new ViewModelProvider(this, new SignUpViewModelFactory())
+                .get(UserFormViewModel.class);
+        viewModel.setContext(getActivity());
         name = view.findViewById(R.id.etv_prof_edit_name);
         second_name = view.findViewById(R.id.etv_prof_edit_second_name);
         last_name = view.findViewById(R.id.etv_prof_edit_last_name);
@@ -55,18 +60,83 @@ public class UserEditFragment extends Fragment {
         points = view.findViewById(R.id.etv_prof_edit_points);
         adress = view.findViewById(R.id.etv_prof_edit_adress);
         cardnum = view.findViewById(R.id.etv_prof_edi_numcard);
-        checkBox =view.findViewById(R.id.cb_curator);
+        checkBox = view.findViewById(R.id.cb_curator);
+        saveBtn = view.findViewById(R.id.bt_editProf);
+        viewModel.getSignUpFormState().observe(getActivity(), new Observer<UserFormState>() {
+            @Override
+            public void onChanged(@Nullable UserFormState userForm) {
+                if (userForm == null) {
+                    return;
+                }
+                saveBtn.setEnabled(userForm.isDataValid());
+                userForm.setError(userForm.getUsernameError(), email);
+                userForm.setError(userForm.getNameError(), name);
+                userForm.setError(userForm.getLastNameError(), last_name);
+                userForm.setError(userForm.getSecondNameError(), second_name);
+                userForm.setError(userForm.getAddressError(), adress);
+                userForm.setError(userForm.getPhoneError(), phone);
+                userForm.setError(userForm.getCardIdError(), cardnum);
+                userForm.setError(userForm.getPointsError(), points);
+                userForm.setError(userForm.getCuratorError(), checkBox);
+            }
+        });
+        viewModel.getUserEditResult().observe(getActivity(), new Observer<UserFormResult>() {
+            @Override
+            public void onChanged(UserFormResult userFormResult) {
+                if (userFormResult == null) {
+                    return;
+                }
+                if (userFormResult.getSuccess() != null) {
+                    Toast.makeText(getActivity(), "Данные обновлены", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        TextWatcher watcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
-        String_map.put("_method","put");
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                viewModel.loginDataChanged(
+                        email.getText().toString(),
+                        name.getText().toString(),
+                        second_name.getText().toString(),
+                        last_name.getText().toString(),
+                        adress.getText().toString(),
+                        phone.getText().toString(),
+                        cardnum.getText().toString(),
+                        points.getText().toString(),
+                        checkBox.isChecked()
+                );
+            }
+        };
+        email.addTextChangedListener(watcher);
+        name.addTextChangedListener(watcher);
+        last_name.addTextChangedListener(watcher);
+        second_name.addTextChangedListener(watcher);
+        points.addTextChangedListener(watcher);
+        cardnum.addTextChangedListener(watcher);
+        phone.addTextChangedListener(watcher);
+        adress.addTextChangedListener(watcher);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_user_edit, container, false);
+        init(view);
+        user = DataBASE.USERS_LIST.get(getArguments().getInt("pos"));
         if (user.isCurator()) {
             checkBox.setChecked(true);
-            curator=1;
+            curator = 1;
 
         } else {
             checkBox.setChecked(false);
             curator = 0;
         }
-
         name.setText(user.getName());
         second_name.setText(user.getSecond_name());
         last_name.setText(user.getLast_name());
@@ -75,191 +145,28 @@ public class UserEditFragment extends Fragment {
         points.setText(String.valueOf(user.getPoints()));
         adress.setText(user.getAddress());
         cardnum.setText(String.valueOf(user.getCard_id()));
-        button = view.findViewById(R.id.bt_editProf);
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (checkBox.isChecked()){
-                    curator  = 1;
-                    Toast.makeText(getContext(),String.valueOf(curator), Toast.LENGTH_SHORT).show();
+                if (checkBox.isChecked()) {
+                    curator = 1;
+                    Toast.makeText(getContext(), String.valueOf(curator), Toast.LENGTH_SHORT).show();
                 } else {
-                    curator=0;
+                    curator = 0;
                 }
-                integerMap_map.put("curator",curator);
+                integerMap_map.put("curator", curator);
 
             }
         });
-
-        name.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (!stringChange.equals(charSequence.toString())){
-                    String_map.put("name",name.getText().toString());
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-        last_name.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (!stringChange.equals(charSequence.toString())){
-                    String_map.put("last_name",last_name.getText().toString());
-
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-        second_name.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (!stringChange.equals(charSequence.toString())){
-                    String_map.put("second_name",second_name.getText().toString());
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-        phone.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (!stringChange.equals(charSequence.toString())){
-                    String_map.put("phone",phone.getText().toString());
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-        adress.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (!stringChange.equals(charSequence.toString())){
-                    String_map.put("address",adress.getText().toString());
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-        email.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (!stringChange.equals(charSequence.toString())){
-                    String_map.put("email",email.getText().toString());
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-        points.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (!stringChange.equals(charSequence.toString())){
-                    integerMap_map.put("points",Integer.valueOf(points.getText().toString()));
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-        cardnum.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (!stringChange.equals(charSequence.toString())){
-                    integerMap_map.put("card_id",Integer.valueOf(cardnum.getText().toString()));
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-
-
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                    Call<ResponseBody> setUser = RetrofitClient.getInstance().getApi().editUserList("Bearer " + DataBASE.token,Integer.valueOf(user.getId()),String_map,integerMap_map);
-                    setUser.enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        if (response.code()==200)
-                            Toast.makeText(getContext(), "Успешно", Toast.LENGTH_SHORT).show();
-                            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                            fragmentManager.popBackStack();
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        t.printStackTrace();
-                    }
-                });
-            }
-        });
+        saveBtn.setOnClickListener(this);
 
         return view;
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        Call<ResponseBody> setUser = RetrofitClient.getInstance().getApi().editUser("Bearer " + DataBASE.token, Integer.valueOf(user.getId()), viewModel.getUserData().getValue());
+        viewModel.sendRequest(setUser);
     }
 }

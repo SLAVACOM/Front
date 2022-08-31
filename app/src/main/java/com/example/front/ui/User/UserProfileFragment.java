@@ -1,6 +1,5 @@
 package com.example.front.ui.User;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,15 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.front.CONST.CONST;
-import com.example.front.LoginActivity;
-import com.example.front.MainActivity;
 import com.example.front.R;
 import com.example.front.data.database.DataBASE;
 import com.example.front.data.User;
@@ -29,7 +25,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UserFragment extends Fragment {
+public class UserProfileFragment extends Fragment {
     private TextView name, lastname,secondname, curator,cardId,email,phone,balance;
     private FloatingActionButton editBt;
     private ImageView qrCode;
@@ -96,7 +92,7 @@ public class UserFragment extends Fragment {
             public void onClick(View view) {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.nav_host_fragment_content_main,new UserListEditFragment()).addToBackStack(null);
+                fragmentTransaction.replace(R.id.nav_host_fragment_content_main,new UserProfileEditFragment()).addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });

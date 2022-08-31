@@ -12,18 +12,27 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
 import com.example.front.R;
+import com.example.front.data.database.DataBASE;
+import com.example.front.retrofit.RetrofitClient;
 
 import java.util.Calendar;
+import java.util.concurrent.RecursiveTask;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AddEventFragment extends Fragment {
 
-    private EditText title, palace;
+    private EditText title, palace,point;
     private TextView date;
-    private Button data, time;
+    private Button data, time,add;
     private Calendar dateAndTime = Calendar.getInstance();
 
 
@@ -32,6 +41,30 @@ public class AddEventFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_event, container, false);
         date = view.findViewById(R.id.textView9);
+        title = view.findViewById(R.id.etv_title_event);
+        palace = view.findViewById(R.id.etv_title_event2);
+        point = view.findViewById(R.id.etv_points_event4);
+        add = view.findViewById(R.id.bt_add);
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Call<ResponseBody> addEvent = RetrofitClient.getInstance().getApi().addEvent("Bearer "+ DataBASE.token,title.getText().toString(),palace.getText().toString(),date.getText().toString(),Integer.valueOf(point.getText().toString()));
+                addEvent.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.code()==200){
+                            Toast.makeText(getContext(), "Успешно", Toast.LENGTH_SHORT).show();
+                            getActivity().getSupportFragmentManager().popBackStack();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                    }
+                });
+            }
+        });
         setInitialDateTime();
         return view;
     }

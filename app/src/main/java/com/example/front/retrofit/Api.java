@@ -259,6 +259,9 @@ public interface Api {
     @GET("api/event")
     Call<ListRESPONSE<EventJSON>> getEventList();
 
+    @POST("api/event")
+    @Headers({"Accept: application/json"})
+    Call<ResponseBody> addEvent(@Header("Authorization") String token,@Query("title") String title, @Query("place")String place,@Query("date") String date,@Query("points") int points);
 
 
     @POST("api/auth/profile")
@@ -270,13 +273,16 @@ public interface Api {
     @Headers({"Accept: application/json"})
     Call<ResponseBody> editUserList(@Header("Authorization") String token, @Path("user_id") int user_id,@QueryMap Map<String,String> stringmap,@QueryMap Map<String,Integer> intmap);
 
-    @GET("/api/user/{user_id}")
-    Call<User> getUser(@Header("Authorization") String heder,@Path("user_id") int user_id);
 
 
     @Headers({"Accept: application/json"})
-    @POST("api/user/{user_id}")
-    Call<ResponseBody> setPoints(@Header("Authorization") String heder,@Path("user_id") int user_id,@Query("points") int points);
+    @POST("api/event/{event_id}")
+    Call<ResponseBody> addPointsQrCode(@Header("Authorization") String heder,@Path("event_id") int event_id,@Query("_method") String method,@Query("participant_id") int user_id);
+
+    @Headers({"Accept: application/json"})
+    @POST("api/event/{event_id}")
+    Call<ResponseBody> addPointsNFC(@Header("Authorization") String heder,@Path("event_id") int event_id,@Query("_method") String method,@Query("participant_card_id") int user_id);
+
 
     @GET("api/user")
     Call<ListRESPONSE<User>> getUsers(@Header("Authorization") String heder);

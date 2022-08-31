@@ -3,6 +3,8 @@ package com.example.front;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.nfc.NfcAdapter;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -82,6 +84,46 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentTransaction.replace(R.id.nav_host_fragment_content_main,new NewsFragment()).addToBackStack(null).commit();
 
     }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        resolveIntent(intent);
+    }
+
+    private void resolveIntent(Intent intent) {
+        String action = intent.getAction();
+        if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)
+                || NfcAdapter.ACTION_TECH_DISCOVERED.equals(action)
+                || NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
+            Tag tag = (Tag) intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+            assert tag != null;
+            byte[] payload = detectTagData(tag).getBytes();
+
+        }
+    }
+    private String detectTagData(Tag tag) {
+        StringBuilder sb = new StringBuilder();
+        byte[] id = tag.getId();
+        long card_id =toDec(id);
+        Toast.makeText(getApplicationContext(),""+card_id, Toast.LENGTH_SHORT).show();
+        return String.valueOf(card_id);
+    }
+
+    private long toDec(byte[] bytes) {
+        long result = 0;
+        long factor = 1;
+        for (int i = 0; i < bytes.length; ++i) {
+            long value = bytes[i] & 0xffl;
+            result += value * factor;
+            factor *= 256l;
+        }
+        return result;
+    }
+
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

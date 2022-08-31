@@ -31,6 +31,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -269,9 +270,9 @@ public interface Api {
     Call<ResponseBody> editProfile(@Header("Authorization") String token,@QueryMap Map<String,String> user);
 
 
-    @POST("api/user/{user_id}")
     @Headers({"Accept: application/json"})
-    Call<ResponseBody> editUserList(@Header("Authorization") String token, @Path("user_id") int user_id,@QueryMap Map<String,String> stringmap,@QueryMap Map<String,Integer> intmap);
+    @PUT("api/user/{user_id}")
+    Call<ResponseBody> editUser(@Header("Authorization") String token, @Path("user_id") int user_id, @Body User user);
 
 
 

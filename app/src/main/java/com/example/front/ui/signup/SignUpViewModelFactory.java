@@ -14,8 +14,8 @@ public class SignUpViewModelFactory implements ViewModelProvider.Factory {
     @Override
     @SuppressWarnings("unchecked")
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        if (modelClass.isAssignableFrom(SignUpViewModel.class)) {
-            return (T) new SignUpViewModel();
+        if (modelClass.isAssignableFrom(UserFormViewModel.class)) {
+            return (T) new UserFormViewModel();
         } else {
             throw new IllegalArgumentException("Unknown ViewModel class");
         }

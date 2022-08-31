@@ -32,7 +32,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class UserListEditFragment extends Fragment {
+public class UserProfileEditFragment extends Fragment {
 
     private EditText name, second_name,last_name,password,password_confirmation,address;
     private Button button;

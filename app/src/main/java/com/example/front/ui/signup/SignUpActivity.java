@@ -22,11 +22,12 @@ import android.widget.Toast;
 
 import com.example.front.databinding.ActivitySignUpBinding;
 import com.example.front.data.User;
+import com.example.front.retrofit.RetrofitClient;
 import com.example.front.ui.components.AppEditText;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    private SignUpViewModel viewModel;
+    private UserFormViewModel viewModel;
     private ActivitySignUpBinding binding;
 
     @Override
@@ -35,7 +36,7 @@ public class SignUpActivity extends AppCompatActivity {
         binding = ActivitySignUpBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         viewModel = new ViewModelProvider(this, new SignUpViewModelFactory())
-                .get(SignUpViewModel.class);
+                .get(UserFormViewModel.class);
         viewModel.setContext(this);
         final AppEditText usernameEditText = (AppEditText) binding.username;
         final AppEditText nameEt = (AppEditText) binding.name;
@@ -64,9 +65,9 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
-        viewModel.getSignupResult().observe(this, new Observer<SignUpResult>() {
+        viewModel.getSignupResult().observe(this, new Observer<UserFormResult>() {
             @Override
-            public void onChanged(@Nullable SignUpResult loginResult) {
+            public void onChanged(@Nullable UserFormResult loginResult) {
                 if (loginResult == null) {
                     return;
                 }
@@ -87,14 +88,10 @@ public class SignUpActivity extends AppCompatActivity {
 
         TextWatcher afterTextChangedListener = new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // ignore
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // ignore
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -119,13 +116,13 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 loadingProgressBar.setVisibility(View.VISIBLE);
-                viewModel.signUp(viewModel.getSignUpFormState().getValue());
+                viewModel.sendRequest(RetrofitClient.getInstance().getApi().registration(viewModel.getUserData().getValue()));
             }
         });
         phoneEt.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 loadingProgressBar.setVisibility(View.VISIBLE);
-                viewModel.signUp(viewModel.getSignUpFormState().getValue());
+                viewModel.sendRequest(RetrofitClient.getInstance().getApi().registration(viewModel.getUserData().getValue()));
             }
             return false;
         });

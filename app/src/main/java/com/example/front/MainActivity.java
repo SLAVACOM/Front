@@ -24,7 +24,7 @@ import com.example.front.CONST.CONST;
 import com.example.front.data.database.DataBASE;
 import com.example.front.retrofit.RetrofitClient;
 import com.example.front.ui.Map.MapFragment;
-import com.example.front.ui.User.UserFragment;
+import com.example.front.ui.User.UserProfileFragment;
 import com.example.front.ui.User.UsersListFragment;
 import com.example.front.ui.appeal.AppealFragment;
 import com.example.front.ui.appeal.RequestFragment;
@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 fragment= new UsersListFragment();
                 break;
             case R.id.nav_user:
-                fragment = new UserFragment();
+                fragment = new UserProfileFragment();
                 break;
             case R.id.nav_history:
                 fragment = new HistoryFragment();

@@ -96,6 +96,10 @@ public interface Api {
     @Headers({"Accept: application/json"})
     Call<JSONObject> editNews(@Header("Authorization") String authHeader,@Path("post_id") int postID, @Query("_method") String put,@Query("title") String title, @Query("description") String description, @Part MultipartBody.Part  post_photos );
 
+    @POST("api/post/{post_id}")
+    @Headers({"Accept: application/json"})
+    Call<JSONObject> editNewsNoPhoto(@Header("Authorization") String authHeader,@Path("post_id") int postID, @Query("_method") String put,@Query("title") String title, @Query("description") String description);
+
 
     @DELETE("api/post/{post_id}")
     Call<ResponseBody> deleteNews(@Header("Authorization") String authHeader,@Path("post_id") int id);

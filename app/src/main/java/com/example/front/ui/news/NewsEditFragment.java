@@ -86,41 +86,57 @@ public class NewsEditFragment extends Fragment {
 
 
         title.setText(item.getTitle());
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (path!=null){
+                    File file =new File(path);
+                    String name= "post_photos["+item.getPhotos().size()+"]";
+                    RequestBody filebody=RequestBody.create(MediaType.parse("multipart/form-data"),file);
+                    MultipartBody.Part body = MultipartBody.Part.createFormData(name,file.getName(),filebody);
+                    Call<JSONObject> saveNewsPost = RetrofitClient.getInstance().getApi().editNews("Bearer "+ DataBASE.token,item.getId(),"PUT",title.getText().toString(),content.getText().toString(),body);
+                    saveNewsPost.enqueue(new Callback<JSONObject>() {
+
+                        @Override
+                        public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
+                            Log.d(CONST.SERVER_LOG,response.toString());
+                            if (response.code()==200){
+                                Toast.makeText(getContext(), "Успешно изменено", Toast.LENGTH_SHORT).show();
+                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                fragmentManager.popBackStack();
+                            }
+                        }
+                        @Override
+                        public void onFailure(Call<JSONObject> call, Throwable t) {
+                            t.printStackTrace();
+                        }
+                    });
+                } else {
+                    Call<JSONObject> saveNewsPostNoPhoto = RetrofitClient.getInstance().getApi().editNewsNoPhoto("Bearer "+ DataBASE.token,item.getId(),"PUT",title.getText().toString(),content.getText().toString());
+                    saveNewsPostNoPhoto.enqueue(new Callback<JSONObject>() {
+                        @Override
+                        public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
+                            if (response.code()==200){
+                                Toast.makeText(getContext(), "Успешно изменено", Toast.LENGTH_SHORT).show();
+                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                fragmentManager.popBackStack();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<JSONObject> call, Throwable t) {
+                            t.printStackTrace();
+                        }
+                    });
+                }
+            }
+        });
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             content.setText(Html.fromHtml(item.getDescription(), Html.FROM_HTML_MODE_COMPACT));
         } else {
             content.setText(Html.fromHtml(item.getDescription()));
         }
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                File file =new File(path);
-                RequestBody filebody=RequestBody.create(MediaType.parse("multipart/form-data"),file);
-                if (item.getPhotos().size()==0){
-
-                }
-                String name= "post_photos["+item.getPhotos().size()+"]";
-                MultipartBody.Part body = MultipartBody.Part.createFormData(name,file.getName(),filebody);
-                Call<JSONObject> saveNewsPost = RetrofitClient.getInstance().getApi().editNews("Bearer "+ DataBASE.token,item.getId(),"PUT",title.getText().toString(),content.getText().toString(),body);
-                saveNewsPost.enqueue(new Callback<JSONObject>() {
-
-                    @Override
-                    public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
-                        Log.d(CONST.SERVER_LOG,response.toString());
-                        if (response.code()==200){
-                            Toast.makeText(getContext(), "Успешно отправлено", Toast.LENGTH_SHORT).show();
-                            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                            fragmentManager.popBackStack();
-                        }
-                    }
-                    @Override
-                    public void onFailure(Call<JSONObject> call, Throwable t) {
-                        t.printStackTrace();
-                    }
-                });
-            }
-        });
 
         addimage.setOnClickListener(new View.OnClickListener() {
             @Override

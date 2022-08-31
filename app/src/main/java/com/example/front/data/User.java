@@ -22,6 +22,8 @@ public class User {
     private String address;
     private News data;
 
+    
+
     public News getData() {
         return data;
     }

@@ -43,9 +43,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
 
-    SharedPreferences sharedPreferences;
-
-
     @Override
     protected void onStart() {
         super.onStart();

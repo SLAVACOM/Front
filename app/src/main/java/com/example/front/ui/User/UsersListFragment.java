@@ -71,6 +71,12 @@ public class UsersListFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        getUsers();
+    }
+
     private void getUsers(){
         Call<ListRESPONSE<User>> getUsers = RetrofitClient.getInstance().getApi().getUsers("Bearer "+ DataBASE.token);
         getUsers.enqueue(new Callback<ListRESPONSE<User>>() {
@@ -81,6 +87,7 @@ public class UsersListFragment extends Fragment {
                         DataBASE.USERS_LIST.clear();
                         DataBASE.USERS_LIST.addAll(response.body().getData());
                         Log.d(CONST.SERVER_LOG,DataBASE.USERS_LIST.toString());
+                        adapterUserList.notifyDataSetChanged();
                     } catch (Exception e){
                         e.printStackTrace();
                     }

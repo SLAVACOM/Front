@@ -17,14 +17,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.front.CONST.CONST;
 import com.example.front.R;
+import com.example.front.adapter.NewsEditPhotosViewPager;
 import com.example.front.data.News;
 import com.example.front.data.database.DataBASE;
 import com.example.front.retrofit.RetrofitClient;
@@ -45,21 +47,45 @@ import retrofit2.Response;
 public class NewsEditFragment extends Fragment {
 
     private EditText title,content;
-    private Button button,deleteBt,addimage;
-
+    private Button button,deleteBt,addimage,deletePhoto;
+    private ViewPager viewPager;
     private String path;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        News item = DataBASE.NEWS_JSON_LIST.get(getArguments().getInt("pos"));
         View view =  inflater.inflate(R.layout.fragment_news_edit, container, false);
         title = view.findViewById(R.id.etv_news_edit_title);
         content = view.findViewById(R.id.etv_news_edit_content);
         button = view.findViewById(R.id.buttonEdit);
+        deletePhoto= view.findViewById(R.id.deletePhoto);
+        viewPager = view.findViewById(R.id.viewPager);
+        NewsEditPhotosViewPager adapter = new NewsEditPhotosViewPager(getContext(),item.getPhotos());
+        viewPager.setAdapter(adapter);
         addimage = view.findViewById(R.id.bt_newsedit_addimage);
-        News item = DataBASE.NEWS_JSON_LIST.get(getArguments().getInt("pos"));
         deleteBt = view.findViewById(R.id.buttonDel);
+        deletePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int photoID =item.getPhotos().get(viewPager.getCurrentItem()).getId();
+                Call<JSONObject> deletePhoto= RetrofitClient.getInstance().getApi().editNewsDeletePhoto("Bearer " + DataBASE.token,Integer.valueOf(item.getId()),"PUT",item.getPhotos().get(viewPager.getCurrentItem()).getId());
+                deletePhoto.enqueue(new Callback<JSONObject>() {
+                    @Override
+                    public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
+                        if (response.code()==200){
+                            Toast.makeText(getContext(), "Фото удалено", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<JSONObject> call, Throwable t) {
+
+                    }
+                });
+            }
+        });
         deleteBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

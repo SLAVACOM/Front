@@ -7,9 +7,11 @@ import com.example.front.data.HistoryJSON;
 import com.example.front.data.ListRESPONSE;
 import com.example.front.data.MapObject;
 import com.example.front.data.News;
+import com.example.front.data.UserEdit;
 import com.example.front.retrofit.responses.ObjectResponse;
 import com.example.front.data.RequestTypeJSON;
 import com.example.front.data.User;
+import com.example.front.scanner.CaptureAct;
 import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
@@ -99,6 +101,10 @@ public interface Api {
     @POST("api/post/{post_id}")
     @Headers({"Accept: application/json"})
     Call<JSONObject> editNewsNoPhoto(@Header("Authorization") String authHeader,@Path("post_id") int postID, @Query("_method") String put,@Query("title") String title, @Query("description") String description);
+
+    @POST("api/post/{post_id}")
+    @Headers({"Accept: application/json"})
+    Call<JSONObject> editNewsDeletePhoto(@Header("Authorization") String authHeader,@Path("post_id") int postID, @Query("_method") String put,@Query("delete_photos[0]") int photoID);
 
 
     @DELETE("api/post/{post_id}")
@@ -249,32 +255,28 @@ public interface Api {
 
 
 
-    @FormUrlEncoded
-    @POST("api/event")
-    @Headers({"Accept: application/json","Authorization: Bearer {{token}}"})
-    Call<ResponseBody> addEvent(@Field("title") String title, @Field("place") String place, @Field("date") String date, @Field("points") String points);
-
 
     @GET("api/event")
     Call<ListRESPONSE<EventJSON>> getEventList();
 
 
 
-    @FormUrlEncoded
     @POST("api/auth/profile")
-    @Headers({"Accept: application/json","Authorization: Bearer {{token}}"})
-    Call<ResponseBody> edit_profile(@Field("_method") String method,@Field("name") String name,@Field("second_name")String second_name,@Field("last_name")String last_name,
-                                    @Field("password") String password, @Field("password_confirmation")String password_confirmation);
+    @Headers({"Accept: application/json"})
+    Call<ResponseBody> editProfile(@Header("Authorization") String token,@QueryMap Map<String,String> user);
 
 
     @POST("api/user/{user_id}")
     @Headers({"Accept: application/json"})
     Call<ResponseBody> editUserList(@Header("Authorization") String token, @Path("user_id") int user_id,@QueryMap Map<String,String> stringmap,@QueryMap Map<String,Integer> intmap);
 
-    @GET("api/user/3")
-    @Headers({"Authorization: Bearer {{token}}"})
-    Call<ResponseBody> getUserData();
+    @GET("/api/user/{user_id}")
+    Call<User> getUser(@Header("Authorization") String heder,@Path("user_id") int user_id);
 
+
+    @Headers({"Accept: application/json"})
+    @POST("api/user/{user_id}")
+    Call<ResponseBody> setPoints(@Header("Authorization") String heder,@Path("user_id") int user_id,@Query("points") int points);
 
     @GET("api/user")
     Call<ListRESPONSE<User>> getUsers(@Header("Authorization") String heder);

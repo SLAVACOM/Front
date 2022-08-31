@@ -3,6 +3,7 @@ package com.example.front.adapter;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -13,15 +14,14 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class NewsPhotosViewPager extends PagerAdapter {
+public class NewsEditPhotosViewPager extends PagerAdapter {
     private Context context;
     private ArrayList<Photo> imageUrls;
 
 
-    public NewsPhotosViewPager(Context context, ArrayList<Photo> imageUrls) {
+    public NewsEditPhotosViewPager(Context context, ArrayList<Photo> imageUrls) {
         this.context = context;
         this.imageUrls = imageUrls;
-        notifyDataSetChanged();
     }
         @Override
     public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
@@ -41,7 +41,6 @@ public class NewsPhotosViewPager extends PagerAdapter {
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
-
         ImageView imageView = new ImageView(context);
         Picasso.get().load("http://sugai.ru" +imageUrls.get(position).getFile()).fit().centerCrop().into(imageView);
         container.addView(imageView);

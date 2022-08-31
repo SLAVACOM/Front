@@ -38,9 +38,9 @@ public class BusEditFragment extends Fragment {
         button = view.findViewById(R.id.bt_fragment_busedit);
 
         BusJSON busJSON = DataBASE.BUS_JSON_LIST.get(bundle.getInt("pos"));
-        title.setText(busJSON.getTitle());
-        place.setText(busJSON.getPlace());
-        time.setText(busJSON.getTime());
+        title.setText("Номер маршрута: "+busJSON.getTitle());
+        place.setText("Маршрут: "+busJSON.getPlace());
+        time.setText("Время отправления: "+busJSON.getTime());
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override

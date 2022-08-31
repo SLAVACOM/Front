@@ -36,7 +36,6 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity  {
 
     public static final String LOGIN_PREFS = "login";
-    SharedPreferences sharedPreferences;
     EditText login, password;
     TextView signup, reset;
     Button button;

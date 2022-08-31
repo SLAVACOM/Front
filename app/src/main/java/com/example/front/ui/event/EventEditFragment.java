@@ -47,7 +47,7 @@ public class EventEditFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CodeScanner();
+                codeScanner();
 
             }
         });
@@ -56,7 +56,7 @@ public class EventEditFragment extends Fragment {
         return view;
     }
 
-    private void CodeScanner(){
+    private void codeScanner(){
         ScanOptions options = new ScanOptions();
         options.setPrompt("");
         options.setBeepEnabled(true);
@@ -68,8 +68,8 @@ public class EventEditFragment extends Fragment {
 
     ActivityResultLauncher<ScanOptions> activityResultLauncher = registerForActivityResult(new ScanContract(), result -> {
         if (result.getContents()!=null){
-            try {
-                Call<User> getUser = RetrofitClient.getInstance().getApi().getUser("Berar "+DataBASE.token,Integer.valueOf(result.getContents()));
+
+                Call<User> getUser = RetrofitClient.getInstance().getApi().getUser("Bearer "+DataBASE.token,Integer.valueOf(result.getContents()));
                 getUser.enqueue(new Callback<User>() {
                 @Override
                 public void onResponse(Call<User> call, Response<User> response) {
@@ -81,12 +81,10 @@ public class EventEditFragment extends Fragment {
 
                 @Override
                 public void onFailure(Call<User> call, Throwable t) {
-
+                    t.printStackTrace();
                 }
             });
-            }catch (Exception e){
-                e.printStackTrace();
-            }
+
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setTitle("Пользователь "+user.getFull_name());
             builder.setMessage(result.getContents());

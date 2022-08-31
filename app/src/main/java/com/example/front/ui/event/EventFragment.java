@@ -9,22 +9,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
+import com.example.front.CONST.CONST;
 import com.example.front.R;
 import com.example.front.adapter.AdapterEvents;
+import com.example.front.data.EventJSON;
+import com.example.front.data.ListRESPONSE;
 import com.example.front.data.database.DataBASE;
 import com.example.front.retrofit.RetrofitClient;
-import com.example.front.retrofit.maper.EventMaper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -105,24 +102,24 @@ public class EventFragment extends Fragment {
 
 
     public void getEvent(){
-        Call<JsonObject> getEventList = RetrofitClient.getInstance().getApi().getEventList();
-        getEventList.enqueue(new Callback<JsonObject>() {
+        Call<ListRESPONSE<EventJSON>> getEventList = RetrofitClient.getInstance().getApi().getEventList();
+        getEventList.enqueue(new Callback<ListRESPONSE<EventJSON>>() {
             @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+            public void onResponse(Call<ListRESPONSE<EventJSON>> call, Response<ListRESPONSE<EventJSON>> response) {
                 if(response.code()==200){
-                    DataBASE.EVENT_JSON_LIST.clear();
                     try {
-                        JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
-                        EventMaper.EventFromJSON(jsonObject);
+                        DataBASE.EVENT_JSON_LIST.clear();
+                        DataBASE.EVENT_JSON_LIST.addAll(response.body().getData());
+                        Log.d(CONST.SERVER_LOG,DataBASE.EVENT_JSON_LIST.toString());
                         adapter.notifyDataSetChanged();
-                    } catch (JSONException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
+            public void onFailure(Call<ListRESPONSE<EventJSON>> call, Throwable t) {
                 t.printStackTrace();
             }
         });

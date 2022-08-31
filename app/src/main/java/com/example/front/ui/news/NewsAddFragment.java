@@ -51,9 +51,8 @@ public class NewsAddFragment extends Fragment {
                     addEvent.enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                            Toast.makeText(getContext(), response.code(), Toast.LENGTH_SHORT).show();
                             if (response.code()==200){
-                                Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(),"Успешно", Toast.LENGTH_SHORT).show();
                                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                                 fragmentManager.popBackStack();
                             }

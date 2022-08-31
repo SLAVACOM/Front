@@ -66,6 +66,7 @@ public class AdapterUserList extends RecyclerView.Adapter<AdapterUserList.MyView
             fullname.setText("ФИО: "+user.getFull_name());
             phone.setText("Телефон: "+user.getPhone());
             adress.setText("Адрес: "+user.getAddress());
+            if (user.isCurator()) button.setVisibility(View.INVISIBLE);
             button.setOnClickListener(new View.OnClickListener() {
 
                 @Override

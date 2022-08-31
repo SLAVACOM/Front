@@ -16,14 +16,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.front.CONST.CONST;
 import com.example.front.R;
 import com.example.front.adapter.AdapterUserList;
+import com.example.front.data.ListRESPONSE;
+import com.example.front.data.User;
 import com.example.front.data.database.DataBASE;
 import com.example.front.retrofit.RetrofitClient;
-import com.example.front.retrofit.maper.UserMapper;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -76,23 +72,15 @@ public class UsersListFragment extends Fragment {
     }
 
     private void getUsers(){
-        Call<JsonObject> getUsers = RetrofitClient.getInstance().getApi().getUsers("Bearer "+ DataBASE.token);
-        getUsers.enqueue(new Callback<JsonObject>() {
+        Call<ListRESPONSE<User>> getUsers = RetrofitClient.getInstance().getApi().getUsers("Bearer "+ DataBASE.token);
+        getUsers.enqueue(new Callback<ListRESPONSE<User>>() {
             @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+            public void onResponse(Call<ListRESPONSE<User>> call, Response<ListRESPONSE<User>> response) {
                 if(response.code()==200){
                     try {
                         DataBASE.USERS_LIST.clear();
-                        JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body()));
-                        JSONArray array = jsonObject.getJSONArray("data");
-                        for (int i = 0; i < array.length() ; i++) {
-                            JSONObject jsonObject1 = array.getJSONObject(i);
-                            DataBASE.USERS_LIST.add(UserMapper.UserFullFromJson(jsonObject1));
-
-                        }
-                        Log.d(CONST.SERVER_LOG,""+ DataBASE.USERS_LIST);
-                        adapterUserList.notifyDataSetChanged();
-
+                        DataBASE.USERS_LIST.addAll(response.body().getData());
+                        Log.d(CONST.SERVER_LOG,DataBASE.USERS_LIST.toString());
                     } catch (Exception e){
                         e.printStackTrace();
                     }
@@ -101,7 +89,7 @@ public class UsersListFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
+            public void onFailure(Call<ListRESPONSE<User>> call, Throwable t) {
                 t.printStackTrace();
             }
         });

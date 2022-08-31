@@ -45,7 +45,7 @@ public class AdapterEvents extends RecyclerView.Adapter {
         public void bindView(int position){
              EventJSON event = DataBASE.EVENT_JSON_LIST.get(position);
             time.setText(""+event.getDate());
-            content.setText(""+event.getPlace());
+            content.setText(""+event.getPlace()+"\n\n"+event.getPoints()+" баллов благодарности");
             zagal.setText(""+event.getTitle());
 
         }

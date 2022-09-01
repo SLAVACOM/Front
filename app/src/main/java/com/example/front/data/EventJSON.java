@@ -1,12 +1,14 @@
 package com.example.front.data;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class EventJSON {
 
     private int id;
     private String title;
     private String place;
     private String date;
-    private int user_id;
     private String created_at;
     private String updated_at;
     private int points;
@@ -19,13 +21,12 @@ public class EventJSON {
                 ", title='" + title + '\'' +
                 ", place='" + place + '\'' +
                 ", date='" + date + '\'' +
-                ", user_id=" + user_id +
                 ", created_at='" + created_at + '\'' +
                 ", updated_at='" + updated_at + '\'' +
                 ", points=" + points +
+                ", data=" + data +
                 '}';
     }
-
     public News getData() {
         return data;
     }
@@ -66,13 +67,6 @@ public class EventJSON {
         this.date = date;
     }
 
-    public int getUser_id() {
-        return user_id;
-    }
-
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
-    }
 
     public String getCreated_at() {
         return created_at;

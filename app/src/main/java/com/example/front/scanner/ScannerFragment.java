@@ -43,27 +43,6 @@ public class ScannerFragment extends Fragment {
         return view;
     }
     ActivityResultLauncher<ScanOptions> activityResultLauncher = registerForActivityResult(new ScanContract(), result -> {
-        if (result.getContents()!=null){
-
-            Call<ResponseBody> getUser = RetrofitClient.getInstance().getApi().addPointsQrCode("Bearer "+ DataBASE.token,getArguments().getInt("event_id"),"PUT",Integer.valueOf(result.getContents()));
-            getUser.enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    if (response.code()==200){
-                        Toast.makeText(getContext(), "Успешно", Toast.LENGTH_SHORT).show();
-                        FragmentManager manager= getActivity().getSupportFragmentManager();
-                        manager.popBackStack();
-                    }
-
-
-
-                }
-
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    t.printStackTrace();
-                }
-            });
-        }
+            Toast.makeText(getContext(), "Успешно", Toast.LENGTH_SHORT).show();
     });
 }

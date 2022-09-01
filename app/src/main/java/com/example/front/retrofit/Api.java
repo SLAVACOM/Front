@@ -7,11 +7,9 @@ import com.example.front.data.HistoryJSON;
 import com.example.front.data.ListRESPONSE;
 import com.example.front.data.MapObject;
 import com.example.front.data.News;
-import com.example.front.data.UserEdit;
 import com.example.front.retrofit.responses.ObjectResponse;
 import com.example.front.data.RequestTypeJSON;
 import com.example.front.data.User;
-import com.example.front.scanner.CaptureAct;
 import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
@@ -257,13 +255,6 @@ public interface Api {
 
 
 
-    @GET("api/event")
-    Call<ListRESPONSE<EventJSON>> getEventList();
-
-    @POST("api/event")
-    @Headers({"Accept: application/json"})
-    Call<ResponseBody> addEvent(@Header("Authorization") String token,@Query("title") String title, @Query("place")String place,@Query("date") String date,@Query("points") int points);
-
 
     @POST("api/auth/profile")
     @Headers({"Accept: application/json"})
@@ -274,17 +265,18 @@ public interface Api {
     @PUT("api/user/{user_id}")
     Call<ResponseBody> editUser(@Header("Authorization") String token, @Path("user_id") int user_id, @Body User user);
 
-
-
-    @Headers({"Accept: application/json"})
-    @POST("api/event/{event_id}")
-    Call<ResponseBody> addPointsQrCode(@Header("Authorization") String heder,@Path("event_id") int event_id,@Query("_method") String method,@Query("participant_id") int user_id);
-
-    @Headers({"Accept: application/json"})
-    @POST("api/event/{event_id}")
-    Call<ResponseBody> addPointsNFC(@Header("Authorization") String heder,@Path("event_id") int event_id,@Query("_method") String method,@Query("participant_card_id") int user_id);
-
-
     @GET("api/user")
     Call<ListRESPONSE<User>> getUsers(@Header("Authorization") String heder);
+
+
+    @GET("api/event")
+    Call<ListRESPONSE<EventJSON>> getEventList();
+
+    @POST("api/event")
+    @Headers({"Accept: application/json"})
+    Call<ResponseBody> addEvent(@Header("Authorization") String token,@Query("title") String title, @Query("place")String place,@Query("date") String date,@Query("points") int points);
+
+    @Headers({"Accept: application/json"})
+    @PUT("api/event/{event_id}")
+    Call<ResponseBody> addEventParticipant(@Header("Authorization") String heder, @Path("event_id") int event_id, @Body Map<String,String> body);
 }

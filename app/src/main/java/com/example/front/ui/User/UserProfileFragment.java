@@ -26,7 +26,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class UserProfileFragment extends Fragment {
-    private TextView name, lastname,secondname, curator,cardId,email,phone,balance;
+    private TextView name;
     private FloatingActionButton editBt;
     private ImageView qrCode;
     private String url = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=";
@@ -46,44 +46,34 @@ public class UserProfileFragment extends Fragment {
         Picasso.get().load(url).into(qrCode);
 
         name = view.findViewById(R.id.tv_prof_name);
-        phone = view.findViewById(R.id.tv_prof_number);
-        balance = view.findViewById(R.id.tv_prof_balance);
-        email =view.findViewById(R.id.tv_prof_email);
-        secondname = view.findViewById(R.id.tv_prof_second_name);
-        lastname = view.findViewById(R.id.tv_prof_last_name);
-        cardId = view.findViewById(R.id.tv_prof_card_id);
-        curator = view.findViewById(R.id.tv_prof_role);
+
         editBt = view.findViewById(R.id.floatBt_editProf);
 
 
-        name.setText("Имя: "+ user.getName());
-        email.setText("Почта: "+ user.getEmail());
-        if (user.getSecond_name()!=null) secondname.setText("Фамилия:" +user.getSecond_name());
-        if (user.getLast_name()!=null){
-            lastname.setText("Фамилия:" +user.getLast_name());
-            if (user.isCurator()){
-                lastname.setText("Роль администратора: да");
+        if (user.getSecond_name()!=null) name.append("\nФамилия:" +user.getSecond_name());
+        name.setText("Имя: "+ user.getName()+"\nПочта: "+ user.getEmail());
+        name.setText("Полное имя: "+ user.getFull_name());
+        if (user.isCurator()){
+            name.append("\nРоль администратора: да");
             } else {
-                lastname.setText("Роль администратора: нет");
+            name.append("\nРоль администратора: нет");
             }
-            phone.setText("Номер телефона: "+user.getPhone());
-            balance.setText("Баланс: "+user.getPoints());
+        name.append("\nНомер телефона: "+user.getPhone());
+        name.append("\nБаланс: "+user.getPoints());
             if (user.getCard_id() != null && !user.getCard_id().isEmpty())
-                cardId.setText("Номер карты: " + user.getCard_id());
+                name.append("\nНомер карты: " + user.getCard_id());
 
-
-        }
         else {
             if (user.isCurator()){
-                lastname.setText("Роль администратора: да");
+                name.append("\nРоль администратора: да");
             } else {
-                lastname.setText("Роль администратора: нет");
+                name.append("\nРоль администратора: нет");
             }
-            curator.setText("Номер телефона: "+user.getPhone());
-            phone.setText("Почта: "+user.getEmail());
-            email.setText("Баланс: "+ user.getPoints());
+                name.append("\nНомер телефона: "+user.getPhone());
+                name.append("\nПочта: "+user.getEmail());
+                name.append("\nБаланс: "+ user.getPoints());
             if (user.getCard_id() != null && !user.getCard_id().isEmpty())
-                balance.setText("Номер карты: " + user.getCard_id());
+                name.append("\nНомер карты: " + user.getCard_id());
         }
 
 

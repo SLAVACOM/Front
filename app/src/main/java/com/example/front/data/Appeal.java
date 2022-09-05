@@ -3,6 +3,7 @@ package com.example.front.data;
 import java.util.ArrayList;
 
 public class Appeal{
+    private int id;
     private String title;
     private String description;
     private String comment;
@@ -21,6 +22,14 @@ public class Appeal{
         this.date =time;
         this.comment = theme;
 
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {

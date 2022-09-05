@@ -23,6 +23,11 @@ import retrofit2.Response;
 
 
 public class AppealEditFragment extends Fragment {
+    public static final int MODE_ADDLIB = 128;
+    public static final int MODE_ADD_REQ_TYPE = 0;
+    int mode = 0;
+    public AppealEditFragment(){};
+    public AppealEditFragment(int mode){this.mode = mode;}
 
 
     EditText appeal_content;
@@ -35,8 +40,39 @@ public class AppealEditFragment extends Fragment {
         appeal_content = view.findViewById(R.id.etv_add_appeal_content);
         bt_send_appeal = view.findViewById(R.id.bt_add_appeal);
 
+        if (mode==128){
+            bt_send_appeal.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (appeal_content.getText().toString().length()>= CONST.CONTENT_LENGTH){
+                        Call<ResponseBody> addRequest = RetrofitClient.getInstance().getApi().addReqLib("Bearer " + DataBASE.token,appeal_content.getText().toString(),2);
+                        addRequest.enqueue(new Callback<ResponseBody>() {
+                            @Override
+                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                if(response.code()==200){
+                                    Toast.makeText(getContext(), "Добавлено", Toast.LENGTH_SHORT).show();
+                                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                    fragmentManager.popBackStack();
+                                }
+                                else {
+                                    Toast.makeText(getContext(),response.message(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
 
-        bt_send_appeal.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                            }
+                        });
+
+                    }else{
+                        Toast.makeText(getActivity(), "Количество символов в поле имя должно быть не менее 10", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
+        }
+        if (mode==0)bt_send_appeal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (appeal_content.getText().toString().length()>= CONST.CONTENT_LENGTH){

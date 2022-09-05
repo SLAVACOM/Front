@@ -10,6 +10,8 @@
     <color name="fill">#BAE6E5E5</color>
     <color name="dark_title">#FF39393A</color>
     <color name="input_text">#FF4A4A4A</color>
+    <color name="like">#FF0000</color>
+    <color name="dislike">#8E8080</color>
 
 
     <color name="MapPolygonFill">#3400FFFF</color>

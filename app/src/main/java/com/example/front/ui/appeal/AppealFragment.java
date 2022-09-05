@@ -147,5 +147,10 @@ public class AppealFragment extends Fragment  {
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
+
+
+    }
+    public void update(){
+        adapter.notifyDataSetChanged();
     }
 }

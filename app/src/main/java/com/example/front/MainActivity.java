@@ -3,8 +3,6 @@ package com.example.front;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.nfc.NfcAdapter;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,6 +30,8 @@ import com.example.front.ui.appeal.RequestFragment;
 import com.example.front.ui.bus.FragmentBus;
 import com.example.front.ui.event.EventFragment;
 import com.example.front.ui.hisory.HistoryFragment;
+import com.example.front.ui.request.AdminREQFragment;
+import com.example.front.ui.request.LibraryFragment;
 import com.example.front.ui.news.NewsFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.yandex.mapkit.MapKitFactory;
@@ -45,19 +45,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
+    Toolbar toolbar;
 
     @Override
     protected void onStart() {
         super.onStart();
         DataBASE.token= userToken(getBaseContext());
-
-
-
     }
     public static String userToken(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(LoginActivity.LOGIN_PREFS, 0);
         return sharedPreferences.getString(CONST.USER_TOKEN, null);
     }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+         toolbar = findViewById(R.id.toolbar);
 
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
@@ -83,47 +83,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.nav_host_fragment_content_main,new NewsFragment()).addToBackStack(null).commit();
+        toolbar.setTitle(R.string.map_fragment);
+
 
     }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        setIntent(intent);
-        resolveIntent(intent);
-    }
-
-    private void resolveIntent(Intent intent) {
-        String action = intent.getAction();
-        if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)
-                || NfcAdapter.ACTION_TECH_DISCOVERED.equals(action)
-                || NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
-            Tag tag = (Tag) intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-            assert tag != null;
-            byte[] payload = detectTagData(tag).getBytes();
-
-        }
-    }
-    private String detectTagData(Tag tag) {
-        StringBuilder sb = new StringBuilder();
-        byte[] id = tag.getId();
-        long card_id =toDec(id);
-        Toast.makeText(getApplicationContext(),""+card_id, Toast.LENGTH_SHORT).show();
-        return String.valueOf(card_id);
-    }
-
-    private long toDec(byte[] bytes) {
-        long result = 0;
-        long factor = 1;
-        for (int i = 0; i < bytes.length; ++i) {
-            long value = bytes[i] & 0xffl;
-            result += value * factor;
-            factor *= 256l;
-        }
-        return result;
-    }
-
-
 
 
     @Override
@@ -139,11 +102,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        DrawerLayout layout = findViewById(R.id.drawer_layout);
-        if (layout.isDrawerOpen(GravityCompat.START)){
-            layout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+        if (count>1){
+            DrawerLayout layout = findViewById(R.id.drawer_layout);
+            if (layout.isDrawerOpen(GravityCompat.START)){
+                layout.closeDrawer(GravityCompat.START);
+            } else {
+                super.onBackPressed();
+            }
         }
     }
     private static void removeAllFragments(FragmentManager fragmentManager) {
@@ -159,35 +125,53 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (id){
             case R.id.nav_map:
                 fragment =  new MapFragment();
+                toolbar.setTitle(R.string.map_fragment);
                 break;
             case R.id.nav_news:
                 fragment = new NewsFragment();
-
+                toolbar.setTitle(R.string.news_fragment);
                 break;
             case R.id.nav_bus:
                 fragment = new FragmentBus();
+                toolbar.setTitle(R.string.bus_fragment);
 
                 break;
             case R.id.nav_event:
                 fragment = new EventFragment();
+                toolbar.setTitle(R.string.event_fragment);
+
                 break;
             case R.id.nav_appeal:
                 fragment = new AppealFragment();
+                toolbar.setTitle(R.string.appeal_fragment);
                 break;
             case R.id.nav_my_appeal:
                 fragment = new AppealFragment(AppealFragment.MODE_MY);
+                toolbar.setTitle(R.string.appeal_my_fragment);
                 break;
             case R.id.nav_request_types:
                 fragment = new RequestFragment();
+                toolbar.setTitle(R.string.request_types);
                 break;
             case R.id.nav_user_list:
                 fragment= new UsersListFragment();
+                toolbar.setTitle(R.string.user_list);
+                break;
+            case R.id.nav_response_to_lib:
+                fragment = new LibraryFragment();
+                toolbar.setTitle(R.string.response_to_lib);
                 break;
             case R.id.nav_user:
                 fragment = new UserProfileFragment();
+                toolbar.setTitle(R.string.user_fragment);
                 break;
             case R.id.nav_history:
                 fragment = new HistoryFragment();
+                toolbar.setTitle(R.string.event_his);
+                break;
+            case R.id.nav_response_to_admin:
+                fragment = new AdminREQFragment();
+                toolbar.setTitle(R.string.response_to_admin);
                 break;
             case R.id.nav_exit:
                 Call<ResponseBody> logout = RetrofitClient.getInstance().getApi().logout("Bearer "+ DataBASE.token);

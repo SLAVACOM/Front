@@ -3,7 +3,6 @@ package com.example.front.data;
 public class RequestTypeJSON {
 
     private int id;
-
     private String name;
 
     public int getId() {

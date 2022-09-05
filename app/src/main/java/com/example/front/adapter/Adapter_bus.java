@@ -78,4 +78,10 @@ public class Adapter_bus extends RecyclerView.Adapter {
         void onItemLongClick(int position, View v);
     }
 
+    private View noData(View view,ViewGroup viewGroup){
+
+
+        return view;
+    }
+
 }

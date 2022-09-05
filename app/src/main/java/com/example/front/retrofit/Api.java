@@ -7,6 +7,7 @@ import com.example.front.data.HistoryJSON;
 import com.example.front.data.ListRESPONSE;
 import com.example.front.data.MapObject;
 import com.example.front.data.News;
+import com.example.front.data.ResponsLibrary;
 import com.example.front.retrofit.responses.ObjectResponse;
 import com.example.front.data.RequestTypeJSON;
 import com.example.front.data.User;
@@ -125,20 +126,20 @@ public interface Api {
     @Headers({"Accept: application/json"})
     Call<ResponseBody> editUserRespons(@Header("Authorization") String authHeader,@Field("_method") String method,@Field("title") String title, @Field("description") String description,@Field("post_photos[0]") File file,@Field("post_photos[1]") File file1,@Field("delete_photos[0]") int id);
 
-    @DELETE("api/user/post/{{user_post_id}}")
-    Call<ResponseBody> deleteUserRespons(@Header("Authorization") String authHeader);
+    @DELETE("api/user/post/{user_post_id}")
+    Call<ResponseBody> deleteUserRespons(@Header("Authorization") String authHeader,@Path("user_post_id") int id);
 
-    @POST("api/user/post/{{user_post_id}}/accept")
-    Call<ResponseBody> userResponsStatusExecution(@Header("Authorization") String authHeader);
+    @POST("api/user/post/{user_post_id}/accept")
+    Call<ResponseBody> userResponsStatusExecution(@Header("Authorization") String authHeader,@Path("user_post_id") int id);
 
-    @POST("api/user/post/{{user_post_id}}/confirm")
-    Call<ResponseBody> userResponsStatusExecuted(@Header("Authorization") String authHeader);
+    @POST("api/user/post/{user_post_id}/confirm")
+    Call<ResponseBody> userResponsStatusExecuted(@Header("Authorization") String authHeader,@Path("user_post_id") int id);
 
-    @POST("api/user/post/{{user_post_id}}/dislike")
-    Call<ResponseBody> userResponsDislike(@Header("Authorization") String authHeader);
+    @POST("api/user/post/{user_post_id}/dislike")
+    Call<ResponseBody> userResponsDislike(@Header("Authorization") String authHeader,@Path("user_post_id") int id);
 
-    @POST("api/user/post/{{user_post_id}}/like")
-    Call<ResponseBody> userResponsLike(@Header("Authorization") String authHeader);
+    @POST("api/user/post/{user_post_id}/like")
+    Call<ResponseBody> userResponsLike(@Header("Authorization") String authHeader,@Path("user_post_id") int id);
 
     @GET("api/user/post/")
     Call<ListRESPONSE<Appeal>> getAppeals(@Header("Authorization") String authHeader, @Query("mode") String mode, @Query("page") String page);
@@ -172,36 +173,6 @@ public interface Api {
 
 
 
-
-
-
-
-
-    @FormUrlEncoded
-    @POST("api/request")
-    @Headers({"Accept: application/json","Authorization: Bearer {{token}}"})
-    Call<ResponseBody> addRequest(@Field("text") String text, @Field("role") int role, @Field("type") int i);
-
-    @FormUrlEncoded
-    @POST("api/request/{{request_id}}")
-    @Headers({"Accept: application/json","Authorization: Bearer {{token}}"})
-    Call<ResponseBody> addPhotoToRequest(@Field("_method") String _method, @Field("post_files[0]") File post_files,@Field("post_files[1]")File file2);
-
-    @FormUrlEncoded
-    @POST("api/request/{{request_id}}/messages")
-    @Headers({"Accept: application/json","Authorization: Bearer {{token}}"})
-    Call<ResponseBody> addMessageToRequest(@Field("text") String text);
-
-    @GET("api/request/{{request_id}}/messages")
-    @Headers({"Accept: application/json","Authorization: Bearer {{token}}"})
-    Call<ResponseBody> getRequestForMessages();
-
-    @DELETE("api/request/{{request_id}}")
-    @Headers({"Authorization: Bearer {{token}}"})
-    Call<ResponseBody> geleteRequest();
-
-    @GET("api/post")
-    Call<ResponseBody> getRequestList();
 
 
 
@@ -279,4 +250,16 @@ public interface Api {
     @Headers({"Accept: application/json"})
     @PUT("api/event/{event_id}")
     Call<ResponseBody> addEventParticipant(@Header("Authorization") String heder, @Path("event_id") int event_id, @Body Map<String,String> body);
+
+    @GET("api/request/?role=128")
+    Call<ListRESPONSE<ResponsLibrary>> getLibRespons(@Header("Authorization") String heder);
+    @GET("api/request/?role=1024")
+    Call<ListRESPONSE<ResponsLibrary>> getAdminRespons(@Header("Authorization") String heder);
+
+    @POST("api/request/?role=128")
+    Call<ResponseBody> addReqLib(@Header("Authorization") String heder, @Query("text")String body,@Query("type") int idtype);
+
+
+
+
 }

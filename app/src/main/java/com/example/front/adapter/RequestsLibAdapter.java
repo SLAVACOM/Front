@@ -10,16 +10,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.front.R;
-import com.example.front.data.database.DataBASE;
 import com.example.front.data.RequestTypeJSON;
+import com.example.front.data.ResponsLibrary;
+import com.example.front.data.database.DataBASE;
 
 
-public class RequestsTypeAdapter extends RecyclerView.Adapter {
+public class RequestsLibAdapter extends RecyclerView.Adapter {
 
     public static ClickListener clickListener;
     public Context context;
 
-    public RequestsTypeAdapter(Context context) {
+    public RequestsLibAdapter(Context context) {
         this.context = context;
     }
 
@@ -38,7 +39,7 @@ public class RequestsTypeAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return DataBASE.REQUEST_TYPEJSON_LIST.size();
+        return DataBASE.REQUEST_LIB_LIST.size();
     }
 
 
@@ -51,8 +52,9 @@ public class RequestsTypeAdapter extends RecyclerView.Adapter {
         }
 
         public void bindView(int position){
-            RequestTypeJSON appeal = DataBASE.REQUEST_TYPEJSON_LIST.get(position);
-            content.setText("ID" + appeal.getId()+"\nОбращение: "+appeal.getName());
+            ResponsLibrary appeal = DataBASE.REQUEST_LIB_LIST.get(position);
+            content.setText("Требование: " + appeal.getText()+"\nПользователь: "+appeal.getUser().getFull_name()+"\nОпубликовано: " +appeal.getCreated_at().replaceAll("T"," ").replaceAll(".000000Z",""));
+
         }
 
 
@@ -66,7 +68,7 @@ public class RequestsTypeAdapter extends RecyclerView.Adapter {
     }
 
     public void setOnItemClickListener(ClickListener clickListener) {
-        RequestsTypeAdapter.clickListener = clickListener;
+        RequestsLibAdapter.clickListener = clickListener;
     }
 
     public interface ClickListener {

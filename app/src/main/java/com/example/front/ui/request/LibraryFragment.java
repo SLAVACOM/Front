@@ -1,4 +1,4 @@
-package com.example.front.ui.appeal;
+package com.example.front.ui.request;
 
 import android.os.Bundle;
 
@@ -16,23 +16,26 @@ import android.view.ViewGroup;
 
 import com.example.front.CONST.CONST;
 import com.example.front.R;
+import com.example.front.adapter.RequestsLibAdapter;
 import com.example.front.adapter.RequestsTypeAdapter;
-import com.example.front.data.database.DataBASE;
 import com.example.front.data.ListRESPONSE;
-import com.example.front.retrofit.RetrofitClient;
 import com.example.front.data.RequestTypeJSON;
+import com.example.front.data.ResponsLibrary;
+import com.example.front.data.database.DataBASE;
+import com.example.front.retrofit.RetrofitClient;
+import com.example.front.ui.appeal.AppealEditFragment;
+import com.example.front.ui.appeal.RequesEditFragment;
+import com.example.front.ui.appeal.RequestByIdFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
-public class RequestFragment extends Fragment {
-
+public class LibraryFragment extends Fragment {
 
     FloatingActionButton flbt_add;
-    RequestsTypeAdapter adapter;
+    RequestsLibAdapter adapter;
     RecyclerView recyclerView;
     SwipeRefreshLayout swipeRefreshLayout;
 
@@ -40,15 +43,13 @@ public class RequestFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view= inflater.inflate(R.layout.fragment_my_appeal, container, false);
+        View view= inflater.inflate(R.layout.fragment_library, container, false);
         getREQUEST();
         flbt_add =view.findViewById(R.id.flBt_my_appeal);
         recyclerView = view.findViewById(R.id.recycler_appeal_byrequest);
-        adapter = new RequestsTypeAdapter(getActivity());
-        adapter.setOnItemClickListener(new RequestsTypeAdapter.ClickListener() {
-
-
-            @Override
+        adapter = new RequestsLibAdapter(getActivity());
+        adapter.setOnItemClickListener(new RequestsLibAdapter.ClickListener() {
+              @Override
             public void onItemLongClick(int position, View v) {
                 RequesEditFragment editFragment = new RequesEditFragment();
                 Bundle bundle = new Bundle();
@@ -78,7 +79,7 @@ public class RequestFragment extends Fragment {
             public void onClick(View view) {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.nav_host_fragment_content_main, new AppealEditFragment(AppealEditFragment.MODE_ADD_REQ_TYPE)).addToBackStack(null);
+                fragmentTransaction.replace(R.id.nav_host_fragment_content_main, new AppealEditFragment(AppealEditFragment.MODE_ADDLIB)).addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
@@ -88,15 +89,15 @@ public class RequestFragment extends Fragment {
     }
 
     public void getREQUEST(){
-        Call<ListRESPONSE<RequestTypeJSON>> getREQUEST = RetrofitClient.getInstance().getApi().getRequestType();
-        getREQUEST.enqueue(new Callback<ListRESPONSE<RequestTypeJSON>>() {
+        Call<ListRESPONSE<ResponsLibrary>> getREQUEST = RetrofitClient.getInstance().getApi().getLibRespons("Bearer "+DataBASE.token);
+        getREQUEST.enqueue(new Callback<ListRESPONSE<ResponsLibrary>>() {
             @Override
-            public void onResponse(Call<ListRESPONSE<RequestTypeJSON>> call, Response<ListRESPONSE<RequestTypeJSON>> response) {
+            public void onResponse(Call<ListRESPONSE<ResponsLibrary>> call, Response<ListRESPONSE<ResponsLibrary>> response) {
                 if(response.code()==200){
                     try {
-                        DataBASE.REQUEST_TYPEJSON_LIST.clear();
-                        DataBASE.REQUEST_TYPEJSON_LIST.addAll(response.body().getData());
-                        Log.d(CONST.SERVER_LOG, DataBASE.REQUEST_TYPEJSON_LIST.toString());
+                        DataBASE.REQUEST_LIB_LIST.clear();
+                        DataBASE.REQUEST_LIB_LIST.addAll(response.body().getData());
+                        Log.d(CONST.SERVER_LOG, DataBASE.REQUEST_LIB_LIST.toString());
                         adapter.notifyDataSetChanged();
                     } catch (Exception e){
                         e.printStackTrace();
@@ -105,9 +106,10 @@ public class RequestFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<ListRESPONSE<RequestTypeJSON>> call, Throwable t) {
+            public void onFailure(Call<ListRESPONSE<ResponsLibrary>> call, Throwable t) {
                 t.printStackTrace();
             }
         });
     }
+
 }

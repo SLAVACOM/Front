@@ -1,7 +1,5 @@
 package com.example.front.data;
 
-import java.util.HashMap;
-import java.util.Map;
 
 public class EventJSON {
 

@@ -18,6 +18,7 @@ import com.journeyapps.barcodescanner.ScanOptions;
 public class AdapterEvents extends RecyclerView.Adapter {
     public static ClickListener clickListener;
 
+
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

@@ -104,7 +104,6 @@ public class UserProfileFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ObjectResponse<User>> call, Throwable t) {
-
                 t.printStackTrace();
             }
         });

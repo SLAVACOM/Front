@@ -81,7 +81,7 @@ public class NewsEditFragment extends Fragment {
 
                     @Override
                     public void onFailure(Call<JSONObject> call, Throwable t) {
-
+                        t.printStackTrace();
                     }
                 });
             }

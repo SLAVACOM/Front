@@ -52,7 +52,7 @@ public class FragmentBusAdd extends Fragment {
 
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
-
+                        t.printStackTrace();
                     }
                 });
             }

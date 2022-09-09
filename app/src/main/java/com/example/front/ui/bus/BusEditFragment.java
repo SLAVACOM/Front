@@ -59,7 +59,7 @@ public class BusEditFragment extends Fragment {
 
                         @Override
                         public void onFailure(Call<JsonObject> call, Throwable t) {
-
+                            t.printStackTrace();
                         }
                     });
 

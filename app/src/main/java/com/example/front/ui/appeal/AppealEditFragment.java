@@ -61,7 +61,7 @@ public class AppealEditFragment extends Fragment {
 
                             @Override
                             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                                t.printStackTrace();
                             }
                         });
 
@@ -89,7 +89,7 @@ public class AppealEditFragment extends Fragment {
 
                         @Override
                         public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                            t.printStackTrace();
                         }
                     });
 

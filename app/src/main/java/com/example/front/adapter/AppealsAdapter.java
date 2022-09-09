@@ -114,7 +114,7 @@ public class AppealsAdapter extends RecyclerView.Adapter {
 
                                 @Override
                                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                                    t.printStackTrace();
                                 }
                             });
                             dialogInterface.cancel();
@@ -162,7 +162,7 @@ public class AppealsAdapter extends RecyclerView.Adapter {
 
                                 @Override
                                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                                    t.printStackTrace();
                                 }
                             });
                             dialogInterface.cancel();

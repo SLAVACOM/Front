@@ -1,5 +1,6 @@
 package com.example.front.ui.news;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -16,6 +17,8 @@ import com.example.front.CONST.CONST;
 import com.example.front.R;
 import com.example.front.data.database.DataBASE;
 import com.example.front.retrofit.RetrofitClient;
+import com.example.front.retrofit.call.ValidateCallback;
+import com.example.front.retrofit.responses.ValidationResponse;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -39,28 +42,26 @@ public class NewsAddFragment extends Fragment {
         addBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (CONST.NEWS_THEM_LENGTH>=title.getText().length()){
-                    Toast.makeText(getContext(), "Количество символов в поле заголовок должно быть не менее 10", Toast.LENGTH_SHORT).show();
-                    if (CONST.NEWS_DESCRIPTION_LENGTH>=content.getText().length()){
-                        Toast.makeText(getContext(), "Слишком короткое описание", Toast.LENGTH_SHORT).show();
-                    }
-                    return;
-                }
                 try {
                     Call<ResponseBody> addEvent = RetrofitClient.getInstance().getApi().addNews("Bearer " + DataBASE.token, title.getText().toString(),content.getText().toString());
-                    addEvent.enqueue(new Callback<ResponseBody>() {
+                    addEvent.enqueue(new ValidateCallback<ResponseBody>() {
                         @Override
-                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                            if (response.code()==200){
-                                Toast.makeText(getContext(),"Успешно", Toast.LENGTH_SHORT).show();
-                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                                fragmentManager.popBackStack();
-                            }
+                        public void on422(Call<ResponseBody> call, Response<ResponseBody> response, ValidationResponse errors) {
+                            String error = errors.getError("title");
+                            if (error != null) title.setError(error);
+                            error = errors.getError("description");
+                            if (error != null) content.setError(error);
                         }
 
                         @Override
-                        public void onFailure(Call<ResponseBody> call, Throwable t) {
-                            t.printStackTrace();
+                        public void onSuccess(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                            fragmentManager.popBackStack();
+                        }
+
+                        @Override
+                        public Context getContext() {
+                            return getActivity();
                         }
                     });
 

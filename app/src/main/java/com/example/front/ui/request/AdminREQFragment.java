@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -16,13 +17,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.front.CONST.CONST;
 import com.example.front.R;
 import com.example.front.adapter.RequestsAdminAdapter;
-import com.example.front.adapter.RequestsLibAdapter;
 import com.example.front.data.ListRESPONSE;
 import com.example.front.data.ResponsLibrary;
 import com.example.front.data.database.DataBASE;
 import com.example.front.retrofit.RetrofitClient;
-import com.example.front.ui.appeal.AppealEditFragment;
-import com.example.front.ui.appeal.RequesEditFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import retrofit2.Call;
@@ -48,14 +46,8 @@ public class AdminREQFragment extends Fragment {
         adapter.setOnItemClickListener(new RequestsAdminAdapter.ClickListener() {
               @Override
             public void onItemLongClick(int position, View v) {
-                RequesEditFragment editFragment = new RequesEditFragment();
                 Bundle bundle = new Bundle();
                 bundle.putInt("pos",position);
-                editFragment.setArguments(bundle);
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.nav_host_fragment_content_main,editFragment).addToBackStack(null);
-                fragmentTransaction.commit();
 
             }
         });
@@ -74,10 +66,7 @@ public class AdminREQFragment extends Fragment {
         flbt_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.nav_host_fragment_content_main, new AppealEditFragment(AppealEditFragment.MODE_ADDLIB)).addToBackStack(null);
-                fragmentTransaction.commit();
+                Toast.makeText(getActivity(), "AdminREQFragment no action", Toast.LENGTH_SHORT).show();
             }
         });
 

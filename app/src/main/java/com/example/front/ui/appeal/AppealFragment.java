@@ -2,7 +2,6 @@ package com.example.front.ui.appeal;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -14,12 +13,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.front.CONST.CONST;
 import com.example.front.LoginActivity;
 import com.example.front.R;
 import com.example.front.adapter.AppealsAdapter;
-import com.example.front.adapter.LoadMoreAdapter;
 import com.example.front.data.Appeal;
 import com.example.front.data.User;
 import com.example.front.data.database.DataBASE;
@@ -27,13 +26,7 @@ import com.example.front.data.ListRESPONSE;
 import com.example.front.retrofit.RetrofitClient;
 import com.example.front.ui.news.NewsAddFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -92,14 +85,15 @@ public class AppealFragment extends Fragment  {
 
             @Override
             public void onItemLongClick(int position, View view) {
-                AppealEditFragment editFragment = new AppealEditFragment();
-                Bundle bundle = new Bundle();
-                bundle.putInt("pos",position);
-                editFragment.setArguments(bundle);
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.nav_host_fragment_content_main,editFragment).addToBackStack(null);
-                fragmentTransaction.commit();
+                Toast.makeText(getActivity(), "no edit fragment", Toast.LENGTH_SHORT).show();
+//                RequestTypeEditFragment editFragment = new RequestTypeEditFragment();
+//                Bundle bundle = new Bundle();
+//                bundle.putInt("pos",position);
+//                editFragment.setArguments(bundle);
+//                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                fragmentTransaction.replace(R.id.nav_host_fragment_content_main,editFragment).addToBackStack(null);
+//                fragmentTransaction.commit();
 
             }
         });

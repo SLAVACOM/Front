@@ -60,4 +60,7 @@
     <string name="phone">Телефон</string>
     <string name="address">Адрес</string>
     <string name="title_activity_scanner">ScannerActivity</string>
+    <string name="type_request">Тип запроса</string>
+    <string name="remove_title">Удалить</string>
+    <string name="save_title">Сохранить</string>
 </resources>

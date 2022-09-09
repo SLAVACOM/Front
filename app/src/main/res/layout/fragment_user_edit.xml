@@ -10,10 +10,12 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -21,43 +23,11 @@
             android:orientation="vertical">
 
             <EditText
-                android:id="@+id/etv_prof_edi_numcard"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Номер карты"
-                android:inputType="number" />
-
-            <EditText
                 android:id="@+id/etv_prof_edit_second_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="Фамилия"
-                android:inputType="textPersonName" />
-
-            <EditText
-                android:id="@+id/etv_prof_edit_adress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Адрес"
-                android:inputType="textPersonName" />
-
-            <EditText
-                android:id="@+id/etv_prof_edit_last_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Отчество"
-                android:inputType="textPersonName" />
-
-            <EditText
-                android:id="@+id/etv_prof_edit_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Почта"
                 android:inputType="textPersonName" />
 
             <EditText
@@ -69,11 +39,43 @@
                 android:inputType="textPersonName" />
 
             <EditText
+                android:id="@+id/etv_prof_edit_last_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Отчество"
+                android:inputType="textPersonName" />
+
+            <EditText
+                android:id="@+id/etv_prof_edit_adress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Адрес"
+                android:inputType="textPersonName" />
+
+            <EditText
+                android:id="@+id/etv_prof_edit_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Почта"
+                android:inputType="textPersonName" />
+
+            <EditText
                 android:id="@+id/etv_prof_edit_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="Телефон"
+                android:inputType="number" />
+
+            <EditText
+                android:id="@+id/etv_prof_edi_numcard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Номер карты"
                 android:inputType="number" />
 
             <EditText
@@ -90,11 +92,13 @@
                 android:layout_height="wrap_content"
                 android:text="Староста" />
 
-            <Button
+            <com.example.front.ui.components.AppButton
                 android:id="@+id/bt_editProf"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Сохранить" />
+                android:layout_height="32dp"
+                android:height="32dp"
+                android:text="Сохранить"
+                android:textAllCaps="false" />
         </LinearLayout>
     </ScrollView>
 

@@ -26,7 +26,7 @@ import com.example.front.ui.Map.MapFragment;
 import com.example.front.ui.User.UserProfileFragment;
 import com.example.front.ui.User.UsersListFragment;
 import com.example.front.ui.appeal.AppealFragment;
-import com.example.front.ui.appeal.RequestFragment;
+import com.example.front.ui.request.RequestTypesFragment;
 import com.example.front.ui.bus.FragmentBus;
 import com.example.front.ui.event.EventFragment;
 import com.example.front.ui.hisory.HistoryFragment;
@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 toolbar.setTitle(R.string.appeal_my_fragment);
                 break;
             case R.id.nav_request_types:
-                fragment = new RequestFragment();
+                fragment = new RequestTypesFragment();
                 toolbar.setTitle(R.string.request_types);
                 break;
             case R.id.nav_user_list:

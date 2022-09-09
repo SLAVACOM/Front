@@ -1,6 +1,11 @@
-package com.example.front.ui.appeal;
+package com.example.front.ui.request;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -9,18 +14,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.example.front.CONST.CONST;
 import com.example.front.R;
 import com.example.front.adapter.RequestsTypeAdapter;
-import com.example.front.data.database.DataBASE;
 import com.example.front.data.ListRESPONSE;
-import com.example.front.retrofit.RetrofitClient;
 import com.example.front.data.RequestTypeJSON;
+import com.example.front.data.database.DataBASE;
+import com.example.front.retrofit.RetrofitClient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import retrofit2.Call;
@@ -28,10 +28,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class RequestFragment extends Fragment {
+public class RequestTypesFragment extends Fragment {
 
 
-    FloatingActionButton flbt_add;
+    FloatingActionButton addTypeBtn;
     RequestsTypeAdapter adapter;
     RecyclerView recyclerView;
     SwipeRefreshLayout swipeRefreshLayout;
@@ -41,8 +41,8 @@ public class RequestFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view= inflater.inflate(R.layout.fragment_my_appeal, container, false);
-        getREQUEST();
-        flbt_add =view.findViewById(R.id.flBt_my_appeal);
+        getItems();
+        addTypeBtn =view.findViewById(R.id.flBt_my_appeal);
         recyclerView = view.findViewById(R.id.recycler_appeal_byrequest);
         adapter = new RequestsTypeAdapter(getActivity());
         adapter.setOnItemClickListener(new RequestsTypeAdapter.ClickListener() {
@@ -50,13 +50,13 @@ public class RequestFragment extends Fragment {
 
             @Override
             public void onItemLongClick(int position, View v) {
-                RequesEditFragment editFragment = new RequesEditFragment();
+                RequestTypeEditFragment editFragment = new RequestTypeEditFragment();
                 Bundle bundle = new Bundle();
                 bundle.putInt("pos",position);
                 editFragment.setArguments(bundle);
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.nav_host_fragment_content_main,editFragment).addToBackStack(null);
+                fragmentTransaction.replace(RequestTypesFragment.this.getId(),editFragment).addToBackStack(null);
                 fragmentTransaction.commit();
 
             }
@@ -66,19 +66,23 @@ public class RequestFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getREQUEST();
+                getItems();
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        flbt_add.setOnClickListener(new View.OnClickListener() {
+        addTypeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.nav_host_fragment_content_main, new AppealEditFragment(AppealEditFragment.MODE_ADD_REQ_TYPE)).addToBackStack(null);
+                RequestTypeEditFragment editFragment = new RequestTypeEditFragment();
+                Bundle bundle = new Bundle();
+                bundle.putInt("pos",-1);
+                editFragment.setArguments(bundle);
+                fragmentTransaction.replace(R.id.nav_host_fragment_content_main, editFragment).addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
@@ -87,21 +91,19 @@ public class RequestFragment extends Fragment {
         return view;
     }
 
-    public void getREQUEST(){
-        Call<ListRESPONSE<RequestTypeJSON>> getREQUEST = RetrofitClient.getInstance().getApi().getRequestType();
-        getREQUEST.enqueue(new Callback<ListRESPONSE<RequestTypeJSON>>() {
+    public void getItems(){
+        Call<ListRESPONSE<RequestTypeJSON>> call = RetrofitClient.getInstance().getApi().getRequestTypes();
+        call.enqueue(new Callback<ListRESPONSE<RequestTypeJSON>>() {
             @Override
             public void onResponse(Call<ListRESPONSE<RequestTypeJSON>> call, Response<ListRESPONSE<RequestTypeJSON>> response) {
-                if(response.code()==200){
-                    try {
-                        DataBASE.REQUEST_TYPEJSON_LIST.clear();
-                        DataBASE.REQUEST_TYPEJSON_LIST.addAll(response.body().getData());
-                        Log.d(CONST.SERVER_LOG, DataBASE.REQUEST_TYPEJSON_LIST.toString());
-                        adapter.notifyDataSetChanged();
-                    } catch (Exception e){
-                        e.printStackTrace();
-                    }
+                if(!response.isSuccessful()){
+                    Toast.makeText(getActivity(), "Ошибка получения списка типов запроса", Toast.LENGTH_SHORT).show();
+                    return;
                 }
+                DataBASE.REQUEST_TYPEJSON_LIST.clear();
+                DataBASE.REQUEST_TYPEJSON_LIST.addAll(response.body().getData());
+                Log.d(CONST.SERVER_LOG, DataBASE.REQUEST_TYPEJSON_LIST.toString());
+                adapter.notifyDataSetChanged();
             }
 
             @Override

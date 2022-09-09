@@ -75,11 +75,11 @@ public interface Api {
 
 
     @GET("api/type")
-    Call<ListRESPONSE<RequestTypeJSON>> getRequestType();
+    Call<ListRESPONSE<RequestTypeJSON>> getRequestTypes();
 
     @POST("/api/type")
     @Headers({"Accept: application/json"})
-    Call<ResponseBody> addRequestType(@Header("Authorization") String authHeader,@Query("name") String name);
+    Call<ObjectResponse<RequestTypeJSON>> addRequestType(@Header("Authorization") String authHeader,@Query("name") String name);
 
     @DELETE("api/type/{type_id}")
     Call<ResponseBody> deleteRequest(@Header("Authorization") String authHeader,@Path("type_id") int id);

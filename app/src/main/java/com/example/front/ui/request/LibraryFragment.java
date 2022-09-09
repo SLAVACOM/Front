@@ -1,6 +1,10 @@
 package com.example.front.ui.request;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -9,23 +13,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.example.front.CONST.CONST;
 import com.example.front.R;
 import com.example.front.adapter.RequestsLibAdapter;
-import com.example.front.adapter.RequestsTypeAdapter;
 import com.example.front.data.ListRESPONSE;
-import com.example.front.data.RequestTypeJSON;
 import com.example.front.data.ResponsLibrary;
 import com.example.front.data.database.DataBASE;
 import com.example.front.retrofit.RetrofitClient;
-import com.example.front.ui.appeal.AppealEditFragment;
-import com.example.front.ui.appeal.RequesEditFragment;
-import com.example.front.ui.appeal.RequestByIdFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import retrofit2.Call;
@@ -51,15 +45,8 @@ public class LibraryFragment extends Fragment {
         adapter.setOnItemClickListener(new RequestsLibAdapter.ClickListener() {
               @Override
             public void onItemLongClick(int position, View v) {
-                RequesEditFragment editFragment = new RequesEditFragment();
                 Bundle bundle = new Bundle();
                 bundle.putInt("pos",position);
-                editFragment.setArguments(bundle);
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.nav_host_fragment_content_main,editFragment).addToBackStack(null);
-                fragmentTransaction.commit();
-
             }
         });
         recyclerView.setAdapter(adapter);
@@ -79,7 +66,7 @@ public class LibraryFragment extends Fragment {
             public void onClick(View view) {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.nav_host_fragment_content_main, new AppealEditFragment(AppealEditFragment.MODE_ADDLIB)).addToBackStack(null);
+                fragmentTransaction.replace(R.id.nav_host_fragment_content_main, new RequestTypeEditFragment()).addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });

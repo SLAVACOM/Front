@@ -14,7 +14,7 @@ public class CONST {
 
 
 
-    public static final int NEWS_THEM_LENGTH = 20;
+    public static final int NEWS_THEM_LENGTH = 10;
     public static final int NEWS_DESCRIPTION_LENGTH = 50;
     public static final int CONTENT_LENGTH = 10;
 

@@ -43,7 +43,6 @@ public class UserEditFragment extends Fragment implements View.OnClickListener {
     private EditText name, second_name, last_name, email, phone, points, adress, cardnum;
     private Button saveBtn;
     private CheckBox checkBox;
-    private int curator;
     private UserFormViewModel viewModel;
 
     public void init(View view) {
@@ -127,14 +126,7 @@ public class UserEditFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_user_edit, container, false);
         init(view);
         user = DataBASE.USERS_LIST.get(getArguments().getInt("pos"));
-        if (user.isCurator()) {
-            checkBox.setChecked(true);
-            curator = 1;
-
-        } else {
-            checkBox.setChecked(false);
-            curator = 0;
-        }
+        checkBox.setChecked(user.isCurator());
         name.setText(user.getName());
         second_name.setText(user.getSecond_name());
         last_name.setText(user.getLast_name());
@@ -142,17 +134,12 @@ public class UserEditFragment extends Fragment implements View.OnClickListener {
         phone.setText(String.valueOf(user.getPhone()));
         points.setText(String.valueOf(user.getPoints()));
         adress.setText(user.getAddress());
-        cardnum.setText(String.valueOf(user.getCard_id()));
+        String card_id = user.getCard_id();
+        cardnum.setText(card_id == null ? "" :card_id);
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (checkBox.isChecked()) {
-                    curator = 1;
-                    Toast.makeText(getContext(), String.valueOf(curator), Toast.LENGTH_SHORT).show();
-                } else {
-                    curator = 0;
-                }
-
+                viewModel.getUserData().getValue().setCurator(b);
             }
         });
         saveBtn.setOnClickListener(this);

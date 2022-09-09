@@ -186,6 +186,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
                         t.printStackTrace();
+                        finish();
                     }
                 });
                 return true;

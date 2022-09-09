@@ -174,20 +174,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 toolbar.setTitle(R.string.response_to_admin);
                 break;
             case R.id.nav_exit:
-                Call<ResponseBody> logout = RetrofitClient.getInstance().getApi().logout("Bearer "+ DataBASE.token);
+                Call<ResponseBody> logout = RetrofitClient.getInstance().getApi().logout("Bearer "+ MainActivity.userToken(this));
+                LoginActivity.saveUserToken(getBaseContext(), null);
                 logout.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        if (response.code()==200){
-                            LoginActivity.saveUserToken(getBaseContext(), null);
-                            startActivity(new Intent(getBaseContext(), LoginActivity.class));
-                            finish();
-                        }
+                        startActivity(new Intent(getBaseContext(), LoginActivity.class));
+                        finish();
                     }
 
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
-
                         t.printStackTrace();
                     }
                 });

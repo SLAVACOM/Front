@@ -7,9 +7,12 @@ public class CONST {
 
     public static String SERVER_LOG = "SERVER_LOG";
 
-    public static int REQUEST_to_LIB = 128;
+    public static int LIBRARIAN_ROLE = 128;
 
-    public static int REQUEST_to_ADMIN = 1024;
+    public static int ADMIN_ROLE = 1024;
+    public static int CURATOR_ROLE = 32;
+
+
 
     public static final int NEWS_THEM_LENGTH = 20;
     public static final int NEWS_DESCRIPTION_LENGTH = 50;

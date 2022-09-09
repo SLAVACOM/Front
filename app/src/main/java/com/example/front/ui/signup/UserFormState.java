@@ -13,6 +13,8 @@ public class UserFormState {
     @Nullable
     private Object passwordError;
     @Nullable
+    private Object password_confirmationError;
+    @Nullable
     private Object usernameError;
     @Nullable
     private Object secondNameError;
@@ -71,6 +73,12 @@ public class UserFormState {
                 break;
             case "points" :
                 this.pointsError = error;
+                break;
+            case "password" :
+                this.passwordError = error;
+                break;
+            case "password_confirmation" :
+                this.password_confirmationError = error;
                 break;
             case "curator" :
                 this.curatorError = error;
@@ -152,4 +160,8 @@ public class UserFormState {
         return formError;
     }
 
+    @Nullable
+    public Object getPassword_confirmationError() {
+        return password_confirmationError;
+    }
 }

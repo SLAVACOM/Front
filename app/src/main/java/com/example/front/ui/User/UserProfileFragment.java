@@ -32,16 +32,12 @@ public class UserProfileFragment extends Fragment {
     private String url = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=";
 
 
-
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_user,container,false);
-        User user= DataBASE.user;
+        View view = inflater.inflate(R.layout.fragment_user, container, false);
 
-        url =  url+user.getId();
+        url = url + DataBASE.user.getId();
         qrCode = view.findViewById(R.id.iv_prof_QrCode);
         Picasso.get().load(url).into(qrCode);
 
@@ -49,56 +45,48 @@ public class UserProfileFragment extends Fragment {
 
         editBt = view.findViewById(R.id.floatBt_editProf);
 
-
-        if (user.getSecond_name()!=null) name.append("\nФамилия:" +user.getSecond_name());
-        name.setText("Имя: "+ user.getName()+"\nПочта: "+ user.getEmail());
-        name.setText("Полное имя: "+ user.getFull_name());
-        if (user.isCurator()){
-            name.append("\nРоль администратора: да");
-            } else {
-            name.append("\nРоль администратора: нет");
-            }
-        name.append("\nНомер телефона: "+user.getPhone());
-        name.append("\nБаланс: "+user.getPoints());
-            if (user.getCard_id() != null && !user.getCard_id().isEmpty())
-                name.append("\nНомер карты: " + user.getCard_id());
-
-        else {
-            if (user.isCurator()){
-                name.append("\nРоль администратора: да");
-            } else {
-                name.append("\nРоль администратора: нет");
-            }
-                name.append("\nНомер телефона: "+user.getPhone());
-                name.append("\nПочта: "+user.getEmail());
-                name.append("\nБаланс: "+ user.getPoints());
-            if (user.getCard_id() != null && !user.getCard_id().isEmpty())
-                name.append("\nНомер карты: " + user.getCard_id());
-        }
-
-
+        printUser(DataBASE.user);
         editBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.nav_host_fragment_content_main,new UserProfileEditFragment()).addToBackStack(null);
+                fragmentTransaction.replace(R.id.nav_host_fragment_content_main, new UserProfileEditFragment()).addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
         return view;
     }
 
+    public void printUser(User user) {
+        name.setText("");
+        name.append("Полное имя: " + user.getFull_name());
+        name.append("\nНомер телефона: " + user.getPhone());
+        name.append("\nПочта: " + user.getEmail());
+        name.append("\nАдрес: " + (!user.getAddress().isEmpty() ? user.getAddress() : "не указан"));
+        name.append("\nБаланс: " + user.getPoints());
+        if (user.getCard_id() != null && !user.getCard_id().isEmpty())
+            name.append("\nНомер карты: " + user.getCard_id());
+        if (user.getRole() >= CONST.ADMIN_ROLE) {
+            name.append("\nРоль администратора: да");
+        }
+        if ((user.getRole() & CONST.CURATOR_ROLE) > 1) {
+            name.append("\nВы куратор.");
+        }
+    }
+
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onResume() {
+        super.onResume();
         Call<ObjectResponse<User>> getProfileData = RetrofitClient.getInstance().getApi().getProfile("Bearer " + DataBASE.token);
         getProfileData.enqueue(new Callback<ObjectResponse<User>>() {
             @Override
             public void onResponse(Call<ObjectResponse<User>> call, Response<ObjectResponse<User>> response) {
                 if (response.isSuccessful()) {
-                    DataBASE.user = response.body().getData();
+                    User reponseUser = response.body().getData();
+                    DataBASE.user = reponseUser;
                     Log.d(CONST.SERVER_LOG, "USERS " + DataBASE.user);
+                    printUser(reponseUser);
                 }
             }
 
@@ -108,6 +96,4 @@ public class UserProfileFragment extends Fragment {
             }
         });
     }
-
-
 }

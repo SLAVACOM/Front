@@ -44,8 +44,6 @@ public class UserEditFragment extends Fragment implements View.OnClickListener {
     private Button saveBtn;
     private CheckBox checkBox;
     private int curator;
-    Map<String, String> String_map = new HashMap<>();
-    Map<String, Integer> integerMap_map = new HashMap<>();
     private UserFormViewModel viewModel;
 
     public void init(View view) {
@@ -154,14 +152,11 @@ public class UserEditFragment extends Fragment implements View.OnClickListener {
                 } else {
                     curator = 0;
                 }
-                integerMap_map.put("curator", curator);
 
             }
         });
         saveBtn.setOnClickListener(this);
-
         return view;
-
     }
 
     @Override

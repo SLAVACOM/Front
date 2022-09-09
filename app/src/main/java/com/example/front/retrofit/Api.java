@@ -227,9 +227,9 @@ public interface Api {
 
 
 
-    @POST("api/auth/profile")
+    @PUT("api/auth/profile")
     @Headers({"Accept: application/json"})
-    Call<ResponseBody> editProfile(@Header("Authorization") String token,@QueryMap Map<String,String> user);
+    Call<ResponseBody> editProfile(@Header("Authorization") String token,@Body User user);
 
 
     @Headers({"Accept: application/json"})

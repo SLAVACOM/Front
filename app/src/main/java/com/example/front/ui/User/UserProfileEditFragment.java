@@ -7,125 +7,114 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.front.R;
-import com.example.front.data.UserEdit;
+import com.example.front.data.User;
 import com.example.front.data.database.DataBASE;
 import com.example.front.retrofit.RetrofitClient;
-import com.squareup.picasso.Picasso;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
+import com.example.front.ui.components.AppEditText;
+import com.example.front.ui.signup.SignUpViewModelFactory;
+import com.example.front.ui.signup.UserFormResult;
+import com.example.front.ui.signup.UserFormState;
+import com.example.front.ui.signup.UserFormViewModel;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
-public class UserProfileEditFragment extends Fragment {
+public class UserProfileEditFragment extends Fragment implements View.OnClickListener {
 
-    private EditText name, second_name,last_name,password,password_confirmation,address;
-    private Button button;
-    private CheckBox checkBox;
+    private AppEditText name, second_name, last_name, password, password_confirmation, address;
+    private Button saveBtn;
+    private UserFormViewModel viewModel;
+    private User user;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view= inflater.inflate(R.layout.fragment_userlist_edit, container, false);
-
+        View view = inflater.inflate(R.layout.fragment_userlist_edit, container, false);
+        viewModel = new ViewModelProvider(this, new SignUpViewModelFactory())
+                .get(UserFormViewModel.class);
+        viewModel.setContext(getActivity());
         name = view.findViewById(R.id.etv_prof_edit_name);
         second_name = view.findViewById(R.id.etv_prof_edit_second_name);
         last_name = view.findViewById(R.id.etv_prof_edit_last_name);
         password = view.findViewById(R.id.etv_prof_edit_password);
         password_confirmation = view.findViewById(R.id.etv_prof_edit_password_confirmation);
-        checkBox = view.findViewById(R.id.cb_curator);
-        address= view.findViewById(R.id.etv_prof_edit_adress);
-        name.setText(DataBASE.user.getName());
-        second_name.setText(DataBASE.user.getSecond_name());
-        last_name.setText(DataBASE.user.getLast_name());
-
-        button = view.findViewById(R.id.bt_editProf);
-        if (password.getText().toString().length()<=6){
-            button.setEnabled(false);
-        }
-        String stringChange="";
-
-        password_confirmation.addTextChangedListener(new TextWatcher() {
+        address = view.findViewById(R.id.etv_prof_edit_adress);
+        user = DataBASE.user;
+        name.setText(user.getName());
+        second_name.setText(user.getSecond_name());
+        last_name.setText(user.getLast_name());
+        address.setText(user.getAddress());
+        saveBtn = view.findViewById(R.id.bt_editProf);
+        saveBtn.setOnClickListener(this);
+        viewModel.getSignUpFormState().observe(getActivity(), new Observer<UserFormState>() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (password_confirmation.getText().toString().length() < 6) {
-                    button.setEnabled(false);
-                }else {
-                    button.setEnabled(true);
+            public void onChanged(@Nullable UserFormState userForm) {
+                if (userForm == null) {
+                    return;
                 }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
+                saveBtn.setEnabled(userForm.isDataValid());
+                userForm.setError(userForm.getNameError(), name);
+                userForm.setError(userForm.getLastNameError(), last_name);
+                userForm.setError(userForm.getSecondNameError(), second_name);
+                userForm.setError(userForm.getAddressError(), address);
+                userForm.setError(userForm.getPasswordError(), password);
+                userForm.setError(userForm.getPassword_confirmationError(), password_confirmation);
             }
         });
-
-        button.setOnClickListener(new View.OnClickListener() {
+        viewModel.getUserEditResult().observe(getActivity(), new Observer<UserFormResult>() {
             @Override
-            public void onClick(View view) {
-                if (password.getText().toString().equals(password_confirmation.getText().toString())) {
-
-                    UserEdit userEdit = new UserEdit();
-                    userEdit.setName(name.getText().toString());
-                    userEdit.setLast_name(last_name.getText().toString());
-                    userEdit.setSecond_name(second_name.getText().toString());
-                    userEdit.setPassword(password.getText().toString());
-                    userEdit.getPassword_confirmation(password_confirmation.getText().toString());
-                    Map<String,String> user= new HashMap<>();
-                    user.put("password",password.getText().toString());
-                    user.put("password_confirmation",password_confirmation.getText().toString());
-                    user.put("last_name",last_name.getText().toString());
-                    user.put("second_name",second_name.getText().toString());
-                    user.put("name",name.getText().toString());
-                    user.put("_method","PUT");
-                    user.put("address",address.getText().toString());
-
-                    Call<ResponseBody> editProfile = RetrofitClient.getInstance().getApi().editProfile("Bearer " + DataBASE.token, user);
-                    editProfile.enqueue(new Callback<ResponseBody>() {
-                        @Override
-
-                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                            if (response.code()==200){
-                                Toast.makeText(getContext(), "Успешно", Toast.LENGTH_SHORT).show();
-                                FragmentManager manager = getActivity().getSupportFragmentManager();
-                                manager.popBackStack();
-                            }
-                            else {
-                                Toast.makeText(getContext(), response.errorBody().toString(), Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                        @Override
-                        public void onFailure(Call<ResponseBody> call, Throwable t) {
-                            t.printStackTrace();
-                        }
-                    });
+            public void onChanged(UserFormResult userFormResult) {
+                if (userFormResult == null) {
+                    return;
                 }
-                else {
-                    Toast.makeText(getContext(), "Пароли не совпадают", Toast.LENGTH_SHORT).show();
+                if (userFormResult.getSuccess() != null) {
+                    DataBASE.user = userFormResult.getSuccess();
+                    Toast.makeText(getActivity(), "Данные обновлены", Toast.LENGTH_LONG).show();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(UserProfileEditFragment.this.getId(), new UserProfileFragment()).commit();
                 }
             }
         });
+        TextWatcher watcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                viewModel.profileDataChanged(
+                        name.getText().toString(),
+                        second_name.getText().toString(),
+                        last_name.getText().toString(),
+                        address.getText().toString(),
+                        password.getText().toString(),
+                        password_confirmation.getText().toString()
+                );
+            }
+        };
+        name.addTextChangedListener(watcher);
+        last_name.addTextChangedListener(watcher);
+        second_name.addTextChangedListener(watcher);
+        address.addTextChangedListener(watcher);
+        password.addTextChangedListener(watcher);
+        password_confirmation.addTextChangedListener(watcher);
         return view;
+    }
+
+    @Override
+    public void onClick(View view) {
+        User value = viewModel.getUserData().getValue();
+        Call<ResponseBody> editProfile = RetrofitClient.getInstance().getApi().editProfile("Bearer " + DataBASE.token, value);
+        viewModel.sendRequest(editProfile);
     }
 }

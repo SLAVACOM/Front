@@ -76,8 +76,18 @@ public class UserFormViewModel extends ViewModel {
     public void loginDataChanged(String username, String name, String second, String last, String address, String phone) {
         loginDataChanged(username, name, second,last,address,phone, null, null, null);
     }
+    public void profileDataChanged( String name, String second, String last, String address, String password, String password_confirmation) {
+        loginDataChanged(null, name, second,last,address,null, null, null, null, password, password_confirmation);
+    }
     public void loginDataChanged(String username, String name, String second, String last, String address, String phone, String card, String points, Boolean curator) {
-        if (!isUserNameValid(username)) {
+        loginDataChanged(username, name, second, last, address,phone, card, points, curator, null, null);
+    }
+    public void loginDataChanged(String username, String name, String second, String last, String address, String phone, String card, String points, Boolean curator, String p, String p2) {
+        if (p != null && !isPasswordValid(p)) {
+            signUpFormState.setValue(new UserFormState("password", R.string.invalid_password));
+        } else if (p2 != null && !p2.equals(p)) {
+            signUpFormState.setValue(new UserFormState("password_confirmation", R.string.invalid_password2));
+        } else if (username != null && !isUserNameValid(username)) {
             signUpFormState.setValue(new UserFormState("email", R.string.invalid_username));
         } else if (!isNameValid(name)) {
             signUpFormState.setValue(new UserFormState("name", R.string.invalid_name));
@@ -87,7 +97,7 @@ public class UserFormViewModel extends ViewModel {
             signUpFormState.setValue(new UserFormState("last_name", R.string.invalid_last_name));
         } else if (!isLastValid(address)) {
             signUpFormState.setValue(new UserFormState("address", R.string.invalid_address));
-        } else if (!isPhoneValid(phone)) {
+        } else if (phone != null && !isPhoneValid(phone)) {
             if (phone.matches("^\\+?7")) signUpFormState.setValue(new UserFormState("phone", R.string.invalid_phone));
             else if (phone.length()!=10) signUpFormState.setValue(new UserFormState("phone", R.string.invalid_phone_length));
         } else {
@@ -98,6 +108,8 @@ public class UserFormViewModel extends ViewModel {
             value.setName(name);
             value.setLast_name(last);
             value.setSecond_name(second);
+            value.setPassword(p);
+            value.setPassword_confirmation(p2);
             if(card != null && !card.isEmpty()) value.setCard_id(card);
             else value.setCard_id("");
             try {
@@ -121,7 +133,7 @@ public class UserFormViewModel extends ViewModel {
 
     // A placeholder password validation check
     private boolean isPasswordValid(String password) {
-        return password != null && password.trim().length() > 6;
+        return password != null && password.trim().length() >= 6;
     }// A placeholder password validation check
     private boolean isNameValid(String name) {
         return name != null && name.trim().length() > 2;

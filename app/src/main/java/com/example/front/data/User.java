@@ -9,6 +9,8 @@ public class User {
     private String email;
     private String email_verified_at;
     private String password_reset_at;
+    private String password;
+    private String password_confirmation;
     private int role;
     private int blocked;
     private String created_at;
@@ -36,7 +38,7 @@ public class User {
     }
 
     public String getAddress() {
-        return address;
+        return address == null ? "" : address;
     }
 
     public void setAddress(String address) {
@@ -177,6 +179,22 @@ public class User {
 
     public void setAccept(boolean accept) {
         this.accept = accept;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPassword_confirmation() {
+        return password_confirmation;
+    }
+
+    public void setPassword_confirmation(String password_confirmation) {
+        this.password_confirmation = password_confirmation;
     }
 
     @Override

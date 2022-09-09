@@ -136,8 +136,8 @@ public class LoginActivity extends AppCompatActivity  {
                 if (response.isSuccessful()) {
                     DataBASE.user = response.body().getData();
                     Log.d(CONST.SERVER_LOG, "USERS " + DataBASE.user);
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 }
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 button.setEnabled(true);
             }
 
@@ -149,6 +149,7 @@ public class LoginActivity extends AppCompatActivity  {
                 t.printStackTrace();
             }
         });
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
         return  DataBASE.user;
     }
     public static String userToken(Context context) {

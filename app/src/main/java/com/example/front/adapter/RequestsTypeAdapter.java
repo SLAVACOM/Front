@@ -52,7 +52,7 @@ public class RequestsTypeAdapter extends RecyclerView.Adapter {
 
         public void bindView(int position){
             RequestTypeJSON appeal = DataBASE.REQUEST_TYPEJSON_LIST.get(position);
-            content.setText("ID" + appeal.getId()+"\nОбращение: "+appeal.getName());
+            content.setText("Тип: "+appeal.getName());
         }
 
 

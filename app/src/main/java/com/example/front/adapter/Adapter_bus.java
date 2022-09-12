@@ -48,9 +48,9 @@ public class Adapter_bus extends RecyclerView.Adapter {
 
         public void bindView(int position){
             BusJSON bus = DataBASE.BUS_JSON_LIST.get(position);
-            time.setText(bus.getTime());
-            bus_title.setText(bus.getTitle());
-            bus_place.setText(bus.getPlace());
+            time.setText(bus.getPlace());
+            bus_title.setText(bus.getTime());
+            bus_place.setText(bus.getTitle());
 
         }
 

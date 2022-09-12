@@ -80,8 +80,6 @@ public class EventFragment extends Fragment {
             @Override
             public void onRefresh() {
                 getEvent();
-                swipeRefreshLayout.setRefreshing(false);
-
             }
         });
         return view;
@@ -106,21 +104,19 @@ public class EventFragment extends Fragment {
         getEventList.enqueue(new Callback<ListRESPONSE<EventJSON>>() {
             @Override
             public void onResponse(Call<ListRESPONSE<EventJSON>> call, Response<ListRESPONSE<EventJSON>> response) {
-                if(response.code()==200){
-                    try {
-                        DataBASE.EVENT_JSON_LIST.clear();
-                        DataBASE.EVENT_JSON_LIST.addAll(response.body().getData());
-                        Log.d(CONST.SERVER_LOG,DataBASE.EVENT_JSON_LIST.toString());
-                        adapter.notifyDataSetChanged();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                if(response.isSuccessful()){
+                    DataBASE.EVENT_JSON_LIST.clear();
+                    DataBASE.EVENT_JSON_LIST.addAll(response.body().getData());
+                    Log.d(CONST.SERVER_LOG,DataBASE.EVENT_JSON_LIST.toString());
+                    adapter.notifyDataSetChanged();
                 }
+                swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Call<ListRESPONSE<EventJSON>> call, Throwable t) {
                 t.printStackTrace();
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
 

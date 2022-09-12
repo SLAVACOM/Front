@@ -245,7 +245,7 @@ public interface Api {
 
     @POST("api/event")
     @Headers({"Accept: application/json"})
-    Call<ResponseBody> addEvent(@Header("Authorization") String token,@Query("title") String title, @Query("place")String place,@Query("date") String date,@Query("points") int points);
+    Call<ResponseBody> addEvent(@Header("Authorization") String token,@Query("title") String title, @Query("place")String place,@Query("date") String date,@Query("points") String points);
 
     @Headers({"Accept: application/json"})
     @PUT("api/event/{event_id}")

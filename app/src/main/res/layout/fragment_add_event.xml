@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.event.AddEventFragment">
 
-    <EditText
+    <com.example.front.ui.components.AppEditText
         android:id="@+id/etv_title_event"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
-    <EditText
+    <com.example.front.ui.components.AppEditText
         android:id="@+id/etv_title_event2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
         app:layout_constraintStart_toStartOf="@+id/etv_title_event"
         app:layout_constraintTop_toBottomOf="@+id/etv_title_event" />
 
-    <EditText
+    <com.example.front.ui.components.AppEditText
         android:id="@+id/etv_points_event4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -56,30 +56,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/bt_date_event"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:onClick="setDate"
-        android:text="Выберите дату"
-        app:layout_constraintEnd_toEndOf="@+id/etv_points_event4"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/etv_points_event4"
-        app:layout_constraintTop_toBottomOf="@+id/textView9" />
-
-    <Button
-        android:id="@+id/bt_time_event"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:onClick="setTime"
-        android:text="Выберите время"
-        app:layout_constraintEnd_toEndOf="@+id/etv_points_event4"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/etv_points_event4"
-        app:layout_constraintTop_toBottomOf="@+id/textView9" />
-
     <TextView
         android:id="@+id/textView9"
         android:layout_width="0dp"
@@ -91,16 +67,17 @@
         app:layout_constraintStart_toStartOf="@+id/etv_points_event4"
         app:layout_constraintTop_toBottomOf="@+id/etv_points_event4" />
 
-    <Button
+    <com.example.front.ui.components.AppButton
         android:id="@+id/bt_add"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:text="Создать"
-        app:layout_constraintEnd_toEndOf="@+id/bt_time_event"
-        app:layout_constraintStart_toStartOf="@+id/bt_date_event"
-        app:layout_constraintTop_toBottomOf="@+id/bt_date_event" />
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="@+id/textView9"
+        app:layout_constraintStart_toStartOf="@+id/textView9"
+        app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -26,7 +26,7 @@ public class RequestsTypeAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_my_appeal,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_request_type,parent,false);
         return new MyViewHolder(view);
     }
 

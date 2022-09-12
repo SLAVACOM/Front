@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.Front" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#1565C0</item>
-        <item name="colorPrimaryVariant">#1565C0</item>
+        <item name="colorPrimary">@color/nav</item>
+        <item name="colorPrimaryVariant">@color/nav</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -24,4 +24,5 @@
     <style name="Theme.Front.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Front.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>

@@ -63,12 +63,9 @@ public class RequestTypeEditFragment extends Fragment implements View.OnClickLis
 
         return view;
     }
+
     public void onClick(View view) {
-        if (typeItem != null) {
-            delete();
-        } else {
-            create();
-        }
+        create();
     }
 
     private void create() {
@@ -89,27 +86,6 @@ public class RequestTypeEditFragment extends Fragment implements View.OnClickLis
             @Override
             public Context getContext() {
                 return getActivity();
-            }
-        });
-    }
-
-    private void delete() {
-        Call<ResponseBody> deleteResp = RetrofitClient.getInstance().getApi().deleteRequest("Bearer " + MainActivity.userToken(getActivity()), typeItem.getId());
-        deleteResp.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.code() == 200) {
-                    Toast.makeText(getContext(), "Удалено", Toast.LENGTH_SHORT).show();
-                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                    fragmentManager.popBackStack();
-                } else {
-                    Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                t.printStackTrace();
             }
         });
     }

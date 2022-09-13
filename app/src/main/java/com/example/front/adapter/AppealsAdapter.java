@@ -4,19 +4,17 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
@@ -25,11 +23,9 @@ import com.example.front.data.Appeal;
 import com.example.front.data.Photo;
 import com.example.front.data.database.DataBASE;
 import com.example.front.retrofit.RetrofitClient;
-import com.example.front.ui.appeal.AppealFragment;
+import com.example.front.ui.components.ViewPagerCarouselView;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -72,7 +68,7 @@ public class AppealsAdapter extends RecyclerView.Adapter {
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         Button like, status, delete;
         TextView name,content,theme;
-        ViewPager viewPager;
+        ViewPagerCarouselView viewPager;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             like = itemView.findViewById(R.id.bt_like);
@@ -215,8 +211,8 @@ public class AppealsAdapter extends RecyclerView.Adapter {
             });
             ArrayList<Photo> photos = appeal.getPhotos();
             if (photos.size()> 0) {
-                NewsPhotosViewPager adapter_news = new NewsPhotosViewPager(context, photos);
-                viewPager.setAdapter(adapter_news);
+                NewsPhotosViewPagerAdapter adapter_news = new NewsPhotosViewPagerAdapter(context, photos);
+                viewPager.setData(((AppCompatActivity)context).getSupportFragmentManager(), photos, 5000);
                 viewPager.setVisibility(View.VISIBLE);
             }
         }

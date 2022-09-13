@@ -1,6 +1,8 @@
 package com.example.front.data;
 
-public class Photo {
+import java.io.Serializable;
+
+public class Photo implements Serializable {
     private int id;
     private String file;
     private int user_post_id;

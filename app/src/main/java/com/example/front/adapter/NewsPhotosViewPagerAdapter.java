@@ -8,24 +8,26 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.example.front.CONST.CONST;
 import com.example.front.data.Photo;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class NewsPhotosViewPager extends PagerAdapter {
+public class NewsPhotosViewPagerAdapter extends PagerAdapter {
     private Context context;
     private ArrayList<Photo> imageUrls;
 
 
-    public NewsPhotosViewPager(Context context, ArrayList<Photo> imageUrls) {
+    public NewsPhotosViewPagerAdapter(Context context, ArrayList<Photo> imageUrls) {
         this.context = context;
         this.imageUrls = imageUrls;
         notifyDataSetChanged();
     }
-        @Override
+
+    @Override
     public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-        return view ==object;
+        return view == object;
     }
 
     @Override
@@ -41,12 +43,9 @@ public class NewsPhotosViewPager extends PagerAdapter {
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
-
         ImageView imageView = new ImageView(context);
-        Picasso.get().load("http://sugai.ru" +imageUrls.get(position).getFile()).fit().centerCrop().into(imageView);
+        Picasso.get().load(CONST.SERVER_URl + imageUrls.get(position).getFile()).fit().centerCrop().into(imageView);
         container.addView(imageView);
         return imageView;
-
-
     }
 }

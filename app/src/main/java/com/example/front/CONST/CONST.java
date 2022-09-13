@@ -18,5 +18,5 @@ public class CONST {
     public static final int NEWS_DESCRIPTION_LENGTH = 50;
     public static final int CONTENT_LENGTH = 10;
 
-    public static final String SERVER_URl ="http://sugai.ru/";
+    public static final String SERVER_URl ="http://192.168.1.195:8000";
 }

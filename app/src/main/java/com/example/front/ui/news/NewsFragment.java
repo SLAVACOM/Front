@@ -99,6 +99,7 @@ public class NewsFragment extends Fragment {
             public void onResponse(Call<ListRESPONSE<News>> call, Response<ListRESPONSE<News>> response) {
                 if(response.code()==200){
                     DataBASE.NEWS_JSON_LIST.clear();
+                    adapter.notifyDataSetChanged();
                     DataBASE.NEWS_JSON_LIST.addAll(response.body().getData());
                     adapter.notifyDataSetChanged();
                 } else {

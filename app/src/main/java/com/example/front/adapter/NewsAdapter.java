@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
@@ -16,6 +17,7 @@ import com.example.front.R;
 import com.example.front.data.News;
 import com.example.front.data.Photo;
 import com.example.front.data.database.DataBASE;
+import com.example.front.ui.components.ViewPagerCarouselView;
 
 import java.util.ArrayList;
 
@@ -53,7 +55,7 @@ public class NewsAdapter extends RecyclerView.Adapter {
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         TextView content, zagal;
-        ViewPager viewPager;
+        ViewPagerCarouselView viewPager;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -74,8 +76,7 @@ public class NewsAdapter extends RecyclerView.Adapter {
             }
             ArrayList<Photo> photos = DataBASE.NEWS_JSON_LIST.get(position).getPhotos();
             if (photos.size()> 0) {
-                NewsPhotosViewPager adapter_news = new NewsPhotosViewPager(context, photos);
-                viewPager.setAdapter(adapter_news);
+                viewPager.setData(((AppCompatActivity)context).getSupportFragmentManager(), photos, 5000);
                 viewPager.setVisibility(View.VISIBLE);
             }
         }

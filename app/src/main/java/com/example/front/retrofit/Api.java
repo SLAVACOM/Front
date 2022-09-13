@@ -238,6 +238,8 @@ public interface Api {
 
     @GET("api/user")
     Call<ListRESPONSE<User>> getUsers(@Header("Authorization") String heder);
+    @GET("api/user")
+    Call<ListRESPONSE<User>> getUsers(@Header("Authorization") String heder, @Query("name") String name);
 
 
     @GET("api/event")

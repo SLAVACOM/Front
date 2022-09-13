@@ -1,8 +1,12 @@
 package com.example.front.ui.User;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -20,6 +24,7 @@ import com.example.front.data.ListRESPONSE;
 import com.example.front.data.User;
 import com.example.front.data.database.DataBASE;
 import com.example.front.retrofit.RetrofitClient;
+import com.example.front.ui.components.AppEditText;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,13 +34,16 @@ public class UsersListFragment extends Fragment {
 
     AdapterUserList adapterUserList ;
     RecyclerView recyclerView;
+    AppEditText search;
     SwipeRefreshLayout swipeRefreshLayout;
+    Handler handler;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_users_list, container, false);
         recyclerView = view.findViewById(R.id.recycler_userList);
+        search = view.findViewById(R.id.user_search);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
@@ -68,6 +76,45 @@ public class UsersListFragment extends Fragment {
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
+        TextWatcher w = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (handler != null) handler.removeCallbacksAndMessages(null);
+                handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        getUsers();
+                    }
+                }, 2000);
+            }
+        };
+        search.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_RIGHT = 2;
+
+                if(event.getAction() == MotionEvent.ACTION_UP) {
+                    if(event.getRawX() >= (search.getRight() - search.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        if (handler!=null) handler.removeCallbacksAndMessages(null);
+                       getUsers();
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+        search.addTextChangedListener(w);
         return view;
     }
 
@@ -78,7 +125,7 @@ public class UsersListFragment extends Fragment {
     }
 
     private void getUsers(){
-        Call<ListRESPONSE<User>> getUsers = RetrofitClient.getInstance().getApi().getUsers("Bearer "+ DataBASE.token);
+        Call<ListRESPONSE<User>> getUsers = RetrofitClient.getInstance().getApi().getUsers("Bearer "+ DataBASE.token, search.getText().toString());
         getUsers.enqueue(new Callback<ListRESPONSE<User>>() {
             @Override
             public void onResponse(Call<ListRESPONSE<User>> call, Response<ListRESPONSE<User>> response) {

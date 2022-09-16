@@ -253,6 +253,10 @@ public interface Api {
     @PUT("api/event/{event_id}")
     Call<ResponseBody> addEventParticipant(@Header("Authorization") String heder, @Path("event_id") int event_id, @Body Map<String,String> body);
 
+    @Headers({"Accept: application/json"})
+    @PUT("api/event/{event_id}")
+    Call<ResponseBody> editEvent(@Header("Authorization") String heder, @Path("event_id") int event_id, @Body EventJSON body);
+
     @GET("api/request/?role=128")
     Call<ListRESPONSE<ResponsLibrary>> getLibRespons(@Header("Authorization") String heder);
     @GET("api/request/?role=1024")

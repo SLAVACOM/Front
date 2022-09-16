@@ -63,4 +63,5 @@
     <string name="type_request">Тип запроса</string>
     <string name="remove_title">Удалить</string>
     <string name="save_title">Сохранить</string>
+    <string name="edit_event_fragment_title">Редактирование мероприятия</string>
 </resources>

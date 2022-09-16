@@ -45,14 +45,9 @@ public class EventFragment extends Fragment {
         add = view.findViewById(R.id.fab_event_add);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
         recyclerView = view.findViewById(R.id.recycler_event);
-        adapter.setOnItemClickListener(new AdapterEvents.ClickListener() {
-            @Override
+        adapter.setOnItemClickListener(new AdapterEvents.ClickListener(){
             public void onItemClick(int position, View view) {
-            }
-
-            @Override
-            public void onItemLongClick(int position, View view) {
-                EventEditFragment fragment = new EventEditFragment();
+                AddEventFragment fragment = new AddEventFragment();
                 Bundle bundle = new Bundle();
                 bundle.putInt("pos",position);
                 fragment.setArguments(bundle);
@@ -60,7 +55,6 @@ public class EventFragment extends Fragment {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.nav_host_fragment_content_main,fragment).addToBackStack(null);
                 fragmentTransaction.commit();
-
             }
         });
         recyclerView.setAdapter(adapter);

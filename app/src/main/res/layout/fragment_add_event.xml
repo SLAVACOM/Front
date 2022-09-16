@@ -7,77 +7,117 @@
     android:layout_height="match_parent"
     tools:context=".ui.event.AddEventFragment">
 
-    <com.example.front.ui.components.AppEditText
-        android:id="@+id/etv_title_event"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:hint="Заголовок"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7" />
-
-    <com.example.front.ui.components.AppEditText
-        android:id="@+id/etv_title_event2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:hint="Место проведения"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/etv_title_event"
-        app:layout_constraintTop_toBottomOf="@+id/etv_title_event" />
-
-    <com.example.front.ui.components.AppEditText
-        android:id="@+id/etv_points_event4"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:hint="Баллы"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/etv_title_event"
-        app:layout_constraintTop_toBottomOf="@+id/etv_title_event2" />
-
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Добавление мероприятия"
-        android:textSize="24sp"
+    <ScrollView
+        android:id="@+id/scrollView3"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:paddingBottom="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
-    <TextView
-        android:id="@+id/textView9"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Дата не выбрана!"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/etv_points_event4"
-        app:layout_constraintStart_toStartOf="@+id/etv_points_event4"
-        app:layout_constraintTop_toBottomOf="@+id/etv_points_event4" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
 
-    <com.example.front.ui.components.AppButton
-        android:id="@+id/bt_add"
-        android:layout_width="match_parent"
-        android:layout_height="32dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:text="Создать"
-        android:textAllCaps="false"
-        app:layout_constraintEnd_toEndOf="@+id/textView9"
-        app:layout_constraintStart_toStartOf="@+id/textView9"
-        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="Добавление мероприятия"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.example.front.ui.components.AppEditText
+                android:id="@+id/etv_title_event"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="32dp"
+                android:hint="Заголовок" />
+
+            <com.example.front.ui.components.AppEditText
+                android:id="@+id/etv_title_event2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:hint="Место проведения" />
+
+            <com.example.front.ui.components.AppEditText
+                android:id="@+id/etv_points_event4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                android:hint="Баллы"
+                android:inputType="number" />
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="match_parent"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Дата не выбрана!"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="@+id/etv_points_event4"
+                app:layout_constraintStart_toStartOf="@+id/etv_points_event4"
+                app:layout_constraintTop_toBottomOf="@+id/etv_points_event4" />
+
+            <com.example.front.ui.components.AppButton
+                android:id="@+id/bt_add"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                android:text="Создать"
+                android:textAllCaps="false"
+                app:layout_constraintEnd_toEndOf="@+id/textView9"
+                app:layout_constraintStart_toStartOf="@+id/textView9"
+                app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="165dp"
+        android:layout_height="44dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/scanner2"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="56dp"
+            android:background="@drawable/ic_baseline_qr_code_scanner_24" />
+
+        <Button
+            android:id="@+id/scanner"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="248dp"
+            android:background="@drawable/nfc_icon" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

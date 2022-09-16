@@ -79,8 +79,8 @@ public class AdapterEvents extends RecyclerView.Adapter {
         AdapterEvents.clickListener = clickListener;
     }
 
-    public interface ClickListener{
-        void onItemClick(int position,View view);
-        void onItemLongClick(int position,View view);
+    public abstract static class ClickListener{
+        public abstract void onItemClick(int position, View view);
+        void onItemLongClick(int position,View view) {};
     }
 }

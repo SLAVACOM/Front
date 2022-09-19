@@ -1,5 +1,8 @@
 package com.example.front.data;
 
+import com.example.front.CONST.CONST;
+import com.example.front.data.database.DataBASE;
+
 public class User {
     public static int VIILAGE_USER_ROLE = 1;
     private int id;
@@ -121,6 +124,12 @@ public class User {
         return role;
     }
 
+    public boolean isAdmin() {
+        return (DataBASE.user.getRole() & CONST.ADMIN_ROLE) > 0;
+    }
+    public boolean isUser() {
+        return (DataBASE.user.getRole() & CONST.USER_ROLE) > 0;
+    }
     public void setRole(int role) {
         this.role = role;
     }

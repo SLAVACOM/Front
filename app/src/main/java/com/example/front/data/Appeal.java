@@ -10,6 +10,8 @@ public class Appeal{
     private String date;
     public int state;
     public int likes;
+
+    public int user_id;
     public int user_like;
     public User author;
     public ArrayList<Photo> photos;
@@ -104,6 +106,14 @@ public class Appeal{
         this.photos = photos;
     }
 
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
+    }
     @Override
     public String toString() {
         return "Appeal{" +

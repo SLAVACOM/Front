@@ -130,16 +130,13 @@ public interface Api {
     Call<ResponseBody> deleteUserRespons(@Header("Authorization") String authHeader,@Path("user_post_id") int id);
 
     @POST("api/user/post/{user_post_id}/accept")
-    Call<ResponseBody> userResponsStatusExecution(@Header("Authorization") String authHeader,@Path("user_post_id") int id);
+    Call<ResponseBody> userResponsStatusExecution(@Header("Authorization") String authHeader,@Path("user_post_id") int id, @Query("comment") String comment);
 
     @POST("api/user/post/{user_post_id}/confirm")
     Call<ResponseBody> userResponsStatusExecuted(@Header("Authorization") String authHeader,@Path("user_post_id") int id);
 
-    @POST("api/user/post/{user_post_id}/dislike")
-    Call<ResponseBody> userResponsDislike(@Header("Authorization") String authHeader,@Path("user_post_id") int id);
-
-    @POST("api/user/post/{user_post_id}/like")
-    Call<ResponseBody> userResponsLike(@Header("Authorization") String authHeader,@Path("user_post_id") int id);
+    @POST("api/user/post/{user_post_id}/{like}")
+    Call<ResponseBody> appealLikeAcation(@Header("Authorization") String authHeader, @Path("user_post_id") int id, @Path("like") String like);
 
     @GET("api/user/post/")
     Call<ListRESPONSE<Appeal>> getAppeals(@Header("Authorization") String authHeader, @Query("mode") String mode, @Query("page") String page);

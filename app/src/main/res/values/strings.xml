@@ -64,4 +64,7 @@
     <string name="remove_title">Удалить</string>
     <string name="save_title">Сохранить</string>
     <string name="edit_event_fragment_title">Редактирование мероприятия</string>
+    <string name="comment_title">Комментарий</string>
+    <string name="confirm_btn_title">Потвердить</string>
+    <string name="close_btn_title">Потвердить</string>
 </resources>

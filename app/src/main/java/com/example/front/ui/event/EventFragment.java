@@ -18,7 +18,7 @@ import com.example.front.CONST.CONST;
 import com.example.front.R;
 import com.example.front.adapter.AdapterEvents;
 import com.example.front.data.EventJSON;
-import com.example.front.data.ListRESPONSE;
+import com.example.front.data.ServerListResponse;
 import com.example.front.data.database.DataBASE;
 import com.example.front.retrofit.RetrofitClient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -94,10 +94,10 @@ public class EventFragment extends Fragment {
 
 
     public void getEvent(){
-        Call<ListRESPONSE<EventJSON>> getEventList = RetrofitClient.getInstance().getApi().getEventList();
-        getEventList.enqueue(new Callback<ListRESPONSE<EventJSON>>() {
+        Call<ServerListResponse<EventJSON>> getEventList = RetrofitClient.getInstance().getApi().getEventList();
+        getEventList.enqueue(new Callback<ServerListResponse<EventJSON>>() {
             @Override
-            public void onResponse(Call<ListRESPONSE<EventJSON>> call, Response<ListRESPONSE<EventJSON>> response) {
+            public void onResponse(Call<ServerListResponse<EventJSON>> call, Response<ServerListResponse<EventJSON>> response) {
                 if(response.isSuccessful()){
                     DataBASE.EVENT_JSON_LIST.clear();
                     DataBASE.EVENT_JSON_LIST.addAll(response.body().getData());
@@ -108,7 +108,7 @@ public class EventFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<ListRESPONSE<EventJSON>> call, Throwable t) {
+            public void onFailure(Call<ServerListResponse<EventJSON>> call, Throwable t) {
                 t.printStackTrace();
                 swipeRefreshLayout.setRefreshing(false);
             }

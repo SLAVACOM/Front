@@ -8,8 +8,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -17,7 +15,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.front.CONST.CONST;
 import com.example.front.R;
 import com.example.front.adapter.RequestsAdminAdapter;
-import com.example.front.data.ListRESPONSE;
+import com.example.front.data.ServerListResponse;
 import com.example.front.data.ResponsLibrary;
 import com.example.front.data.database.DataBASE;
 import com.example.front.retrofit.RetrofitClient;
@@ -75,10 +73,10 @@ public class AdminREQFragment extends Fragment {
     }
 
     public void getREQUEST(){
-        Call<ListRESPONSE<ResponsLibrary>> getREQUEST = RetrofitClient.getInstance().getApi().getAdminRespons("Bearer "+DataBASE.token);
-        getREQUEST.enqueue(new Callback<ListRESPONSE<ResponsLibrary>>() {
+        Call<ServerListResponse<ResponsLibrary>> getREQUEST = RetrofitClient.getInstance().getApi().getAdminRespons("Bearer "+DataBASE.token);
+        getREQUEST.enqueue(new Callback<ServerListResponse<ResponsLibrary>>() {
             @Override
-            public void onResponse(Call<ListRESPONSE<ResponsLibrary>> call, Response<ListRESPONSE<ResponsLibrary>> response) {
+            public void onResponse(Call<ServerListResponse<ResponsLibrary>> call, Response<ServerListResponse<ResponsLibrary>> response) {
                 if(response.code()==200){
                     try {
                         DataBASE.REQUEST_LIB_LIST.clear();
@@ -92,7 +90,7 @@ public class AdminREQFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<ListRESPONSE<ResponsLibrary>> call, Throwable t) {
+            public void onFailure(Call<ServerListResponse<ResponsLibrary>> call, Throwable t) {
                 t.printStackTrace();
             }
         });

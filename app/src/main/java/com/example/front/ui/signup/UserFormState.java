@@ -5,6 +5,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.example.front.ui.components.AppEditText;
+
 /**
  * Data validation state of the login form.
  */
@@ -138,6 +140,22 @@ public class UserFormState {
         return addressError;
     }
 
+    public String setError(Object error, AppEditText view) {
+        String err;
+        Context baseContext = view.getContext();
+        if (error == null) {
+            view.setError(null);
+            return null;
+        }
+        if (error instanceof Integer) {
+            err = baseContext.getString((Integer) error);
+        }
+        else {
+            err = error.toString();
+        }
+        view.setError(err);
+        return err;
+    }
     public String setError(Object error, TextView view) {
         String err;
         Context baseContext = view.getContext();

@@ -20,7 +20,7 @@ import com.example.front.CONST.CONST;
 import com.example.front.MainActivity;
 import com.example.front.R;
 import com.example.front.adapter.RequestsTypeAdapter;
-import com.example.front.data.ListRESPONSE;
+import com.example.front.data.ServerListResponse;
 import com.example.front.data.RequestTypeJSON;
 import com.example.front.data.database.DataBASE;
 import com.example.front.helpers.SwipeHelper;
@@ -101,10 +101,10 @@ public class RequestTypesFragment extends Fragment {
     }
 
     public void getItems(){
-        Call<ListRESPONSE<RequestTypeJSON>> call = RetrofitClient.getInstance().getApi().getRequestTypes();
-        call.enqueue(new Callback<ListRESPONSE<RequestTypeJSON>>() {
+        Call<ServerListResponse<RequestTypeJSON>> call = RetrofitClient.getInstance().getApi().getRequestTypes();
+        call.enqueue(new Callback<ServerListResponse<RequestTypeJSON>>() {
             @Override
-            public void onResponse(Call<ListRESPONSE<RequestTypeJSON>> call, Response<ListRESPONSE<RequestTypeJSON>> response) {
+            public void onResponse(Call<ServerListResponse<RequestTypeJSON>> call, Response<ServerListResponse<RequestTypeJSON>> response) {
                 if(!response.isSuccessful()){
                     Toast.makeText(getActivity(), "Ошибка получения списка типов запроса", Toast.LENGTH_SHORT).show();
                     return;
@@ -116,7 +116,7 @@ public class RequestTypesFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<ListRESPONSE<RequestTypeJSON>> call, Throwable t) {
+            public void onFailure(Call<ServerListResponse<RequestTypeJSON>> call, Throwable t) {
                 t.printStackTrace();
             }
         });

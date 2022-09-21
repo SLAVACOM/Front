@@ -15,12 +15,12 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class NewsEditPhotosViewPager extends PagerAdapter {
+public class PhotosPagerAdapter extends PagerAdapter {
     private Context context;
     private ArrayList<Photo> imageUrls;
 
 
-    public NewsEditPhotosViewPager(Context context, ArrayList<Photo> imageUrls) {
+    public PhotosPagerAdapter(Context context, ArrayList<Photo> imageUrls) {
         this.context = context;
         this.imageUrls = imageUrls;
     }

@@ -22,7 +22,7 @@ import com.example.front.adapter.AppealsAdapter;
 import com.example.front.data.Appeal;
 import com.example.front.data.User;
 import com.example.front.data.database.DataBASE;
-import com.example.front.data.ListRESPONSE;
+import com.example.front.data.ServerListResponse;
 import com.example.front.retrofit.RetrofitClient;
 import com.example.front.ui.news.NewsAddFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -119,11 +119,11 @@ public class AppealFragment extends Fragment  {
         getAppeals(1);
     }
     private void getAppeals(int page) {
-        Call<ListRESPONSE<Appeal>> getNewsList = RetrofitClient.getInstance().getApi().getAppeals(
+        Call<ServerListResponse<Appeal>> getNewsList = RetrofitClient.getInstance().getApi().getAppeals(
                 "Bearer " + LoginActivity.userToken(getActivity().getBaseContext()), mode == MODE_MY ? "me" : null, page + "");
-        getNewsList.enqueue(new Callback<ListRESPONSE<Appeal>>() {
+        getNewsList.enqueue(new Callback<ServerListResponse<Appeal>>() {
             @Override
-            public void onResponse(Call<ListRESPONSE<Appeal>> call, Response<ListRESPONSE<Appeal>> response) {
+            public void onResponse(Call<ServerListResponse<Appeal>> call, Response<ServerListResponse<Appeal>> response) {
                 if (response.code() == 200) {
                     if (page == 1) DataBASE.APPEALS_LIST.clear();
                     List<Appeal> data = response.body().getData();
@@ -136,7 +136,7 @@ public class AppealFragment extends Fragment  {
             }
 
             @Override
-            public void onFailure(Call<ListRESPONSE<Appeal>> call, Throwable t) {
+            public void onFailure(Call<ServerListResponse<Appeal>> call, Throwable t) {
                 t.printStackTrace();
                 swipeRefreshLayout.setRefreshing(false);
             }

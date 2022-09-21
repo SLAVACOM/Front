@@ -20,7 +20,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.front.CONST.CONST;
 import com.example.front.R;
 import com.example.front.adapter.AdapterUserList;
-import com.example.front.data.ListRESPONSE;
+import com.example.front.data.ServerListResponse;
 import com.example.front.data.User;
 import com.example.front.data.database.DataBASE;
 import com.example.front.retrofit.RetrofitClient;
@@ -105,7 +105,7 @@ public class UsersListFragment extends Fragment {
                 final int DRAWABLE_RIGHT = 2;
 
                 if(event.getAction() == MotionEvent.ACTION_UP) {
-                    if(event.getRawX() >= (search.getRight() - search.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                    if(event.getRawX() >= (search.getRight() - search.getEt().getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
                         if (handler!=null) handler.removeCallbacksAndMessages(null);
                        getUsers();
                         return true;
@@ -125,10 +125,10 @@ public class UsersListFragment extends Fragment {
     }
 
     private void getUsers(){
-        Call<ListRESPONSE<User>> getUsers = RetrofitClient.getInstance().getApi().getUsers("Bearer "+ DataBASE.token, search.getText().toString());
-        getUsers.enqueue(new Callback<ListRESPONSE<User>>() {
+        Call<ServerListResponse<User>> getUsers = RetrofitClient.getInstance().getApi().getUsers("Bearer "+ DataBASE.token, search.getText().toString());
+        getUsers.enqueue(new Callback<ServerListResponse<User>>() {
             @Override
-            public void onResponse(Call<ListRESPONSE<User>> call, Response<ListRESPONSE<User>> response) {
+            public void onResponse(Call<ServerListResponse<User>> call, Response<ServerListResponse<User>> response) {
                 if(response.code()==200){
                     try {
                         DataBASE.USERS_LIST.clear();
@@ -143,7 +143,7 @@ public class UsersListFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<ListRESPONSE<User>> call, Throwable t) {
+            public void onFailure(Call<ServerListResponse<User>> call, Throwable t) {
                 t.printStackTrace();
             }
         });

@@ -17,7 +17,7 @@ import com.example.front.CONST.CONST;
 import com.example.front.R;
 import com.example.front.adapter.Adapter_bus;
 import com.example.front.data.BusJSON;
-import com.example.front.data.ListRESPONSE;
+import com.example.front.data.ServerListResponse;
 import com.example.front.data.database.DataBASE;
 import com.example.front.retrofit.RetrofitClient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -98,10 +98,10 @@ public class FragmentBus extends Fragment {
 
 
     private void getBus() {
-        Call<ListRESPONSE<BusJSON>> getBus = RetrofitClient.getInstance().getApi().getBusList();
-        getBus.enqueue(new Callback<ListRESPONSE<BusJSON>>() {
+        Call<ServerListResponse<BusJSON>> getBus = RetrofitClient.getInstance().getApi().getBusList();
+        getBus.enqueue(new Callback<ServerListResponse<BusJSON>>() {
             @Override
-            public void onResponse(Call<ListRESPONSE<BusJSON>> call, Response<ListRESPONSE<BusJSON>> response) {
+            public void onResponse(Call<ServerListResponse<BusJSON>> call, Response<ServerListResponse<BusJSON>> response) {
                 if (response.code() == 200) {
                     try {
                         DataBASE.BUS_JSON_LIST.clear();
@@ -117,7 +117,7 @@ public class FragmentBus extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<ListRESPONSE<BusJSON>> call, Throwable t) {
+            public void onFailure(Call<ServerListResponse<BusJSON>> call, Throwable t) {
                 t.printStackTrace();
             }
         });

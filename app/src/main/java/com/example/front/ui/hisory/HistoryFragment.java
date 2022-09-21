@@ -14,7 +14,7 @@ import com.example.front.CONST.CONST;
 import com.example.front.R;
 import com.example.front.adapter.AdapterHistory;
 import com.example.front.data.HistoryJSON;
-import com.example.front.data.ListRESPONSE;
+import com.example.front.data.ServerListResponse;
 import com.example.front.data.database.DataBASE;
 import com.example.front.retrofit.RetrofitClient;
 
@@ -49,10 +49,10 @@ public class HistoryFragment extends Fragment {
     }
 
     public void getHistory(){
-        Call<ListRESPONSE<HistoryJSON>> getHistory = RetrofitClient.getInstance().getApi().getEventHistory("Bearer " + DataBASE.token);
-        getHistory.enqueue(new Callback<ListRESPONSE<HistoryJSON>>() {
+        Call<ServerListResponse<HistoryJSON>> getHistory = RetrofitClient.getInstance().getApi().getEventHistory("Bearer " + DataBASE.token);
+        getHistory.enqueue(new Callback<ServerListResponse<HistoryJSON>>() {
             @Override
-            public void onResponse(Call<ListRESPONSE<HistoryJSON>> call, Response<ListRESPONSE<HistoryJSON>> response) {
+            public void onResponse(Call<ServerListResponse<HistoryJSON>> call, Response<ServerListResponse<HistoryJSON>> response) {
 
                 if(response.code()==200){
                     try {
@@ -68,7 +68,7 @@ public class HistoryFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<ListRESPONSE<HistoryJSON>> call, Throwable t) {
+            public void onFailure(Call<ServerListResponse<HistoryJSON>> call, Throwable t) {
                 t.printStackTrace();
             }
         });

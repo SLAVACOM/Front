@@ -1,7 +1,6 @@
 package com.example.front.ui.news;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.front.CONST.CONST;
 import com.example.front.R;
 import com.example.front.adapter.NewsAdapter;
-import com.example.front.data.ListRESPONSE;
+import com.example.front.data.ServerListResponse;
 import com.example.front.data.database.DataBASE;
-import com.example.front.data.ListRESPONSE;
 import com.example.front.data.News;
-import com.example.front.data.database.DataBASE;
 import com.example.front.retrofit.RetrofitClient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -93,10 +89,10 @@ public class NewsFragment extends Fragment {
 
     }
     private void getNews(){
-        Call<ListRESPONSE<News>> getNewsList = RetrofitClient.getInstance().getApi().getNewsList();
-        getNewsList.enqueue(new Callback<ListRESPONSE<News>>() {
+        Call<ServerListResponse<News>> getNewsList = RetrofitClient.getInstance().getApi().getNewsList();
+        getNewsList.enqueue(new Callback<ServerListResponse<News>>() {
             @Override
-            public void onResponse(Call<ListRESPONSE<News>> call, Response<ListRESPONSE<News>> response) {
+            public void onResponse(Call<ServerListResponse<News>> call, Response<ServerListResponse<News>> response) {
                 if(response.code()==200){
                     DataBASE.NEWS_JSON_LIST.clear();
                     adapter.notifyDataSetChanged();
@@ -108,7 +104,7 @@ public class NewsFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<ListRESPONSE<News>> call, Throwable t) {
+            public void onFailure(Call<ServerListResponse<News>> call, Throwable t) {
                 t.printStackTrace();
 
             }

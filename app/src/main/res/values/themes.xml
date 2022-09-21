@@ -25,4 +25,17 @@
 
     <style name="Theme.Front.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="Widget.App.ExtendedFloatingActionButton" parent="Widget.Material3.ExtendedFloatingActionButton.Icon.Primary">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.AddPhoto</item>
+    </style>
+
+    <style name="Widget.App.FloatingActionButton" parent="Widget.Material3.FloatingActionButton.Primary">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.AddPhoto</item>
+    </style>
+
+    <style name="ThemeOverlay.App.AddPhoto" parent="">
+        <item name="colorContainer">@color/fill</item>
+        <item name="colorOnContainer">@color/dark_title</item>
+    </style>
+
 </resources>

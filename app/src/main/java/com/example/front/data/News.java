@@ -1,5 +1,11 @@
 package com.example.front.data;
 
+import android.content.Context;
+
+import androidx.annotation.NonNull;
+
+import com.example.front.adapter.PhotosPagerAdapter;
+
 import java.util.ArrayList;
 
 public class News {
@@ -12,6 +18,7 @@ public class News {
     private ArrayList<Photo> photos;
     private User author;
     private String date;
+    PhotosPagerAdapter adapter;
 
     public String getDate() {
         return date;
@@ -85,6 +92,15 @@ public class News {
         this.photos = photos;
     }
 
+    public void initAdapter(Context context){
+        adapter = new PhotosPagerAdapter(context, getPhotos());
+    }
+
+    public PhotosPagerAdapter getAdapter() {
+        return adapter;
+    }
+
+    @NonNull
     @Override
     public String toString() {
         return "Data{" +

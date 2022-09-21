@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment;
 import com.example.front.CONST.CONST;
 import com.example.front.R;
 import com.example.front.data.Cords;
-import com.example.front.data.ListRESPONSE;
+import com.example.front.data.ServerListResponse;
 import com.example.front.data.MapObject;
 import com.example.front.retrofit.RetrofitClient;
 import com.yandex.mapkit.Animation;
@@ -57,10 +57,10 @@ public class MapFragment extends Fragment {
                 new Animation(Animation.Type.SMOOTH, 0),
                 null);
 
-        Call<ListRESPONSE<MapObject>> getObject = RetrofitClient.getInstance().getApi().getMapObject();
-        getObject.enqueue(new Callback<ListRESPONSE<MapObject>>() {
+        Call<ServerListResponse<MapObject>> getObject = RetrofitClient.getInstance().getApi().getMapObject();
+        getObject.enqueue(new Callback<ServerListResponse<MapObject>>() {
             @Override
-            public void onResponse(Call<ListRESPONSE<MapObject>> call, Response<ListRESPONSE<MapObject>> response) {
+            public void onResponse(Call<ServerListResponse<MapObject>> call, Response<ServerListResponse<MapObject>> response) {
                 if (response.code()==200){
                     List<MapObject> data = response.body().getData();
                     Log.d(CONST.SERVER_LOG, data.toString());
@@ -71,7 +71,7 @@ public class MapFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<ListRESPONSE<MapObject>> call, Throwable t) {
+            public void onFailure(Call<ServerListResponse<MapObject>> call, Throwable t) {
                 t.printStackTrace();
             }
         });

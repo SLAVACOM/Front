@@ -4,7 +4,8 @@ import com.example.front.data.Appeal;
 import com.example.front.data.BusJSON;
 import com.example.front.data.EventJSON;
 import com.example.front.data.HistoryJSON;
-import com.example.front.data.ListRESPONSE;
+import com.example.front.data.ServerItemResponse;
+import com.example.front.data.ServerListResponse;
 import com.example.front.data.MapObject;
 import com.example.front.data.News;
 import com.example.front.data.ResponsLibrary;
@@ -34,7 +35,6 @@ import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
-import retrofit2.http.QueryMap;
 
 public interface Api {
 
@@ -68,14 +68,14 @@ public interface Api {
     Call<JsonObject> editProfile(@Header("Authorization") String authHeader,@Path("user_id") int id,@Query("_method") String method ,@Query("blocked") int block);
 
     @GET("api/user/event")
-    Call<ListRESPONSE<HistoryJSON>> getEventHistory(@Header("Authorization") String authHeader);
+    Call<ServerListResponse<HistoryJSON>> getEventHistory(@Header("Authorization") String authHeader);
 
 
 
 
 
     @GET("api/type")
-    Call<ListRESPONSE<RequestTypeJSON>> getRequestTypes();
+    Call<ServerListResponse<RequestTypeJSON>> getRequestTypes();
 
     @POST("/api/type")
     @Headers({"Accept: application/json"})
@@ -93,14 +93,14 @@ public interface Api {
     Call<ResponseBody> addNews(@Header("Authorization") String authHeader, @Query("title") String title,@Query("description") String description);
 
 
+    @PUT("api/post/{post_id}")
+    @Headers({"Accept: application/json"})
+    Call<ServerItemResponse<News>> editNews(@Header("Authorization") String authHeader, @Path("post_id") int postID,@Query("title") String title, @Query("description") String description);
+
     @Multipart
     @POST("api/post/{post_id}")
     @Headers({"Accept: application/json"})
-    Call<JSONObject> editNews(@Header("Authorization") String authHeader,@Path("post_id") int postID, @Query("_method") String put,@Query("title") String title, @Query("description") String description, @Part MultipartBody.Part  post_photos );
-
-    @POST("api/post/{post_id}")
-    @Headers({"Accept: application/json"})
-    Call<JSONObject> editNewsNoPhoto(@Header("Authorization") String authHeader,@Path("post_id") int postID, @Query("_method") String put,@Query("title") String title, @Query("description") String description);
+    Call<ServerItemResponse<News>> editNews(@Header("Authorization") String authHeader, @Path("post_id") int postID, @Query("_method") String put, @Query("title") String title, @Query("description") String description, @Part MultipartBody.Part  post_photos );
 
     @POST("api/post/{post_id}")
     @Headers({"Accept: application/json"})
@@ -112,7 +112,7 @@ public interface Api {
 
 
     @GET("api/post")
-    Call<ListRESPONSE<News>> getNewsList();
+    Call<ServerListResponse<News>> getNewsList();
 
 
     @FormUrlEncoded
@@ -139,7 +139,7 @@ public interface Api {
     Call<ResponseBody> appealLikeAcation(@Header("Authorization") String authHeader, @Path("user_post_id") int id, @Path("like") String like);
 
     @GET("api/user/post/")
-    Call<ListRESPONSE<Appeal>> getAppeals(@Header("Authorization") String authHeader, @Query("mode") String mode, @Query("page") String page);
+    Call<ServerListResponse<Appeal>> getAppeals(@Header("Authorization") String authHeader, @Query("mode") String mode, @Query("page") String page);
 
 
 
@@ -155,7 +155,7 @@ public interface Api {
     Call<JsonObject> deleteBusEvent(@Header("Authorization") String token,@Path("bus_event_id") int id);
 
     @GET("api/bus/event")
-    Call<ListRESPONSE<BusJSON>> getBusList();
+    Call<ServerListResponse<BusJSON>> getBusList();
 
 
 
@@ -218,7 +218,7 @@ public interface Api {
     Call<ResponseBody> deleteMapObject();
 
     @GET("api/mapObject")
-    Call<ListRESPONSE<MapObject>> getMapObject();
+    Call<ServerListResponse<MapObject>> getMapObject();
 
 
 
@@ -234,13 +234,13 @@ public interface Api {
     Call<ResponseBody> editUser(@Header("Authorization") String token, @Path("user_id") int user_id, @Body User user);
 
     @GET("api/user")
-    Call<ListRESPONSE<User>> getUsers(@Header("Authorization") String heder);
+    Call<ServerListResponse<User>> getUsers(@Header("Authorization") String heder);
     @GET("api/user")
-    Call<ListRESPONSE<User>> getUsers(@Header("Authorization") String heder, @Query("name") String name);
+    Call<ServerListResponse<User>> getUsers(@Header("Authorization") String heder, @Query("name") String name);
 
 
     @GET("api/event")
-    Call<ListRESPONSE<EventJSON>> getEventList();
+    Call<ServerListResponse<EventJSON>> getEventList();
 
     @POST("api/event")
     @Headers({"Accept: application/json"})
@@ -255,9 +255,9 @@ public interface Api {
     Call<ResponseBody> editEvent(@Header("Authorization") String heder, @Path("event_id") int event_id, @Body EventJSON body);
 
     @GET("api/request/?role=128")
-    Call<ListRESPONSE<ResponsLibrary>> getLibRespons(@Header("Authorization") String heder);
+    Call<ServerListResponse<ResponsLibrary>> getLibRespons(@Header("Authorization") String heder);
     @GET("api/request/?role=1024")
-    Call<ListRESPONSE<ResponsLibrary>> getAdminRespons(@Header("Authorization") String heder);
+    Call<ServerListResponse<ResponsLibrary>> getAdminRespons(@Header("Authorization") String heder);
 
     @POST("api/request/?role=128")
     Call<ResponseBody> addReqLib(@Header("Authorization") String heder, @Query("text")String body,@Query("type") int idtype);

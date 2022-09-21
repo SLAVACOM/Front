@@ -50,8 +50,8 @@ public class LoginActivity extends AppCompatActivity  {
         login = findViewById(R.id.etv_login_login);
         signup = findViewById(R.id.signup);
         reset = findViewById(R.id.reset);
-        login.setText("a@sugai.ru");
-        password.setText("admin1");
+        login.setText("a@mail.ru");
+        password.setText("admin2");
         button = findViewById(R.id.bt_login);
         button.setOnClickListener(new View.OnClickListener() {
             @Override

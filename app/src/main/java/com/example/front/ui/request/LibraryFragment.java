@@ -16,7 +16,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.front.CONST.CONST;
 import com.example.front.R;
 import com.example.front.adapter.RequestsLibAdapter;
-import com.example.front.data.ListRESPONSE;
+import com.example.front.data.ServerListResponse;
 import com.example.front.data.ResponsLibrary;
 import com.example.front.data.database.DataBASE;
 import com.example.front.retrofit.RetrofitClient;
@@ -76,10 +76,10 @@ public class LibraryFragment extends Fragment {
     }
 
     public void getREQUEST(){
-        Call<ListRESPONSE<ResponsLibrary>> getREQUEST = RetrofitClient.getInstance().getApi().getLibRespons("Bearer "+DataBASE.token);
-        getREQUEST.enqueue(new Callback<ListRESPONSE<ResponsLibrary>>() {
+        Call<ServerListResponse<ResponsLibrary>> getREQUEST = RetrofitClient.getInstance().getApi().getLibRespons("Bearer "+DataBASE.token);
+        getREQUEST.enqueue(new Callback<ServerListResponse<ResponsLibrary>>() {
             @Override
-            public void onResponse(Call<ListRESPONSE<ResponsLibrary>> call, Response<ListRESPONSE<ResponsLibrary>> response) {
+            public void onResponse(Call<ServerListResponse<ResponsLibrary>> call, Response<ServerListResponse<ResponsLibrary>> response) {
                 if(response.code()==200){
                     try {
                         DataBASE.REQUEST_LIB_LIST.clear();
@@ -93,7 +93,7 @@ public class LibraryFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<ListRESPONSE<ResponsLibrary>> call, Throwable t) {
+            public void onFailure(Call<ServerListResponse<ResponsLibrary>> call, Throwable t) {
                 t.printStackTrace();
             }
         });

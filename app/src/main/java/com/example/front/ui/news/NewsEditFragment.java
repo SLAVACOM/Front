@@ -154,10 +154,12 @@ public class NewsEditFragment extends Fragment {
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                view.setEnabled(false);
                 Call<ResponseBody> delete = RetrofitClient.getInstance().getApi().deleteNews("Bearer " + DataBASE.token, item.getId());
                 delete.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        view.setEnabled(true);
                         Toast.makeText(getContext(), String.valueOf(response.message()), Toast.LENGTH_SHORT).show();
                         if (response.isSuccessful()) {
                             getActivity().getSupportFragmentManager().popBackStack();
@@ -168,6 +170,7 @@ public class NewsEditFragment extends Fragment {
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
                         t.printStackTrace();
                         onError();
+                        view.setEnabled(true);
                     }
                 });
             }

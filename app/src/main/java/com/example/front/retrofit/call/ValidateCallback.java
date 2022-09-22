@@ -23,12 +23,13 @@ public abstract class ValidateCallback <T> implements Callback<T> {
     public void on500(Call<T> call, Response<T> response) {}
     public void on422(Call<T> call, Response<T> response, ValidationResponse errors) {
         Toast.makeText(getContext(), "Проверьте данные", Toast.LENGTH_LONG).show();
+
     }
     public void on401(Call<T> call, Response<T> response) {}
     abstract public Context getContext();
     @Override
     public void onResponse(Call<T> call, Response<T> response) {
-        if (response.code() >= 500) {
+        if (response.code() >= 500||response.code() == 404) {
             Toast.makeText(getContext(), "Ошибка сервера, попробуйте обновить приложение", Toast.LENGTH_LONG).show();
             on500(call,response);
             return;

@@ -16,7 +16,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -29,19 +28,22 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.front.CONST.CONST;
 import com.example.front.R;
 import com.example.front.TextEditActivity;
+import com.example.front.data.Photo;
 import com.example.front.data.ServerItemResponse;
 import com.example.front.data.News;
 import com.example.front.data.database.DataBASE;
+import com.example.front.retrofit.Api;
 import com.example.front.retrofit.RetrofitClient;
 import com.example.front.retrofit.call.ValidateCallback;
 import com.example.front.retrofit.responses.ValidationResponse;
-import com.example.front.ui.components.AppButton;
 import com.example.front.ui.components.AppEditText;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -66,7 +68,14 @@ public class NewsEditFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        item = DataBASE.NEWS_JSON_LIST.get(getArguments().getInt("pos"));
+        Bundle arguments = getArguments();
+        int pos = arguments == null ? -1 : arguments.getInt("pos", -1);
+        if (pos != -1) {
+            item = DataBASE.NEWS_JSON_LIST.get(pos);
+        } else {
+            item = new News();
+        }
+
         View view = inflater.inflate(R.layout.fragment_news_edit, container, false);
         title = view.findViewById(R.id.etv_news_edit_title);
         description = view.findViewById(R.id.etv_news_edit_content);
@@ -74,14 +83,7 @@ public class NewsEditFragment extends Fragment {
         saveBtn = view.findViewById(R.id.buttonEdit);
         ((GradientDrawable) saveBtn.getBackground()).setColor(ContextCompat.getColor(getContext(), R.color.accept));
         viewPager = view.findViewById(R.id.viewPager);
-
-        if (item.getPhotos().size() > 0) {
-            item.initAdapter(getContext());
-            viewPager.setAdapter(item.getAdapter());
-            viewPager.setVisibility(View.VISIBLE);
-        } else {
-            viewPager.setVisibility(View.GONE);
-        }
+        updatePhotos();
         addimage = view.findViewById(R.id.bt_newsedit_addimage);
         ((GradientDrawable) addimage.getBackground()).setColor(ContextCompat.getColor(getContext(), R.color.accept));
         deletePhotoBtn = view.findViewById(R.id.deletePhoto);
@@ -117,6 +119,12 @@ public class NewsEditFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 int photoID = item.getPhotos().get(viewPager.getCurrentItem()).getId();
+                if (photoID == 0) {
+                    item.getPhotos().remove(viewPager.getCurrentItem());
+                    item.getAdapter().notifyDataSetChanged();
+                    updatePhotos();
+                    return;
+                }
                 Call<JSONObject> deletePhoto = RetrofitClient.getInstance().getApi().editNewsDeletePhoto("Bearer " + DataBASE.token, item.getId(), "PUT", photoID);
                 deletePhoto.enqueue(new Callback<JSONObject>() {
                     @Override
@@ -124,6 +132,9 @@ public class NewsEditFragment extends Fragment {
                         if (response.isSuccessful()) {
                             item.getPhotos().remove(viewPager.getCurrentItem());
                             item.getAdapter().notifyDataSetChanged();
+                            viewPager.setVisibility(View.GONE);
+                            viewPager.invalidate();
+                            viewPager.setVisibility(View.VISIBLE);
                             viewPager.setCurrentItem(Math.min(viewPager.getCurrentItem(), item.getPhotos().size() - 1));
                             Toast.makeText(getContext(), "Фото удалено", Toast.LENGTH_SHORT).show();
                             if (item.getPhotos().size() == 0) {
@@ -169,27 +180,49 @@ public class NewsEditFragment extends Fragment {
         return view;
     }
 
+    private void updatePhotos() {
+        if (item.getPhotos().size() > 0) {
+            item.initAdapter(getContext());
+            viewPager.setAdapter(item.getAdapter());
+            viewPager.setVisibility(View.VISIBLE);
+        } else {
+            viewPager.setVisibility(View.GONE);
+        }
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PHOTO_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            Uri uri = data.getData();
-            Context context = getContext();
-            String path = RealPathUtil.getRealPath(context, uri);
-            if (path != null) {
-                File file = new File(path);
-                String name = "post_photos[0]";
-                RequestBody filebody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-                MultipartBody.Part photos = MultipartBody.Part.createFormData(name, file.getName(), filebody);
-                saveNews(photos);
+        try {
+            if (requestCode == PHOTO_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+                Uri uri = data.getData();
+                Context context = getContext();
+                String path = RealPathUtil.getRealPath(context, uri);
+                if (path != null) {
+                    File file = new File(path);
+                    String name = "post_photos[0]";
+                    RequestBody filebody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+                    List<MultipartBody.Part> photos = new ArrayList<>();
+                    photos.add(MultipartBody.Part.createFormData(name, file.getName(), filebody));
+                    item.getPhotos().add(new Photo(file.getAbsolutePath()));
+                    item.getAdapter().notifyDataSetChanged();
+                    if (item.getId() == 0) {
+                        updatePhotos();
+                    } else {
+                        saveNews(photos, false);
+                    }
+                }
+            } else if (requestCode == TEXT_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+                item.setDescription(data.getStringExtra("text").replaceAll("(<br */>)+$", ""));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    description.getEt().setText(Html.fromHtml(item.getDescription(), Html.FROM_HTML_MODE_COMPACT));
+                } else {
+                    description.getEt().setText(Html.fromHtml(item.getDescription()));
+                }
             }
-        } else if (requestCode == TEXT_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            item.setDescription(data.getStringExtra("text"));
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                description.getEt().setText(Html.fromHtml(item.getDescription(), Html.FROM_HTML_MODE_COMPACT));
-            } else {
-                description.getEt().setText(Html.fromHtml(item.getDescription()));
-            }
+        } catch (Throwable t) {
+            t.printStackTrace();
+            throw t;
         }
     }
 
@@ -198,31 +231,49 @@ public class NewsEditFragment extends Fragment {
     }
 
     public void saveNews() {
-        saveNews(null);
+        saveNews(null, true);
     }
-    public void saveNews(MultipartBody.Part photos) {
+    public void saveNews(List<MultipartBody.Part> photos, boolean close) {
         Call<ServerItemResponse<News>> saveNewsPost;
-        if (photos == null) {
-            saveNewsPost = RetrofitClient.getInstance().getApi()
-                    .editNews("Bearer " + DataBASE.token, item.getId(), title.getText().toString(), item.getDescription());
+        final String id = item.getId() > 0 ? item.getId()+"" : "";
+        Api r = RetrofitClient.getInstance().getApi();
+        String header = "Bearer " + DataBASE.token;
+        boolean addPhoto = false;
+        if (photos == null || id.isEmpty()) {
+            if (id.isEmpty()) {
+                saveNewsPost = r.addNews(header, title.getText(), item.getDescription());
+                if (!item.getPhotos().isEmpty()) {
+                    photos = item.getPhotosMultipart();
+                }
+            } else {
+                saveNewsPost = r.editNews(header, id, title.getText(), item.getDescription());
+            }
         } else {
-            saveNewsPost = RetrofitClient.getInstance().getApi()
-                    .editNews("Bearer " + DataBASE.token, item.getId(), "PUT", title.getText().toString(), item.getDescription(), photos);
+            addPhoto = photos.size() > 0;
+            saveNewsPost = r.editNews(header, id, "PUT", title.getText(), item.getDescription(), photos);
         }
+        List<MultipartBody.Part> finalPhotos = photos;
+        boolean finalAddPhoto = addPhoto;
         saveNewsPost.enqueue(new ValidateCallback<ServerItemResponse<News>>() {
             @Override
             public void onSuccess(Call<ServerItemResponse<News>> call, Response<ServerItemResponse<News>> response) {
                 Log.d(CONST.SERVER_LOG, response.body().toString());
-                Toast.makeText(getContext(), "Успешно изменено", Toast.LENGTH_SHORT).show();
-                item.setPhotos(response.body().getData().getPhotos());
-                if (item.getPhotos().size() == 0) {
+                if (finalAddPhoto) Toast.makeText(getContext(), "Фото загружено", Toast.LENGTH_SHORT).show();
+                viewPager.setVisibility(View.GONE);
+                item = response.body().getData();
+                NewsEditFragment.this.getView().invalidate();
+                if (item.getPhotos().size() == 0 && finalPhotos.isEmpty()) {
                     viewPager.setVisibility(View.GONE);
                 } else {
                     viewPager.setVisibility(View.VISIBLE);
                 }
                 item.initAdapter(getContext());
                 viewPager.setAdapter(item.getAdapter());
-                if (null != photos) return;
+                if(id.isEmpty() && finalPhotos != null) {
+                    saveNews(finalPhotos, close);
+                    return;
+                }
+                if (!close) return;
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 fragmentManager.popBackStack();
             }

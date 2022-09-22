@@ -17,6 +17,8 @@ import com.google.gson.JsonObject;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.MultipartBody;
@@ -90,17 +92,17 @@ public interface Api {
 
     @POST("api/post")
     @Headers({"Accept: application/json"})
-    Call<ResponseBody> addNews(@Header("Authorization") String authHeader, @Query("title") String title,@Query("description") String description);
+    Call<ServerItemResponse<News>> addNews(@Header("Authorization") String authHeader, @Query("title") String title,@Query("description") String description);
 
 
     @PUT("api/post/{post_id}")
     @Headers({"Accept: application/json"})
-    Call<ServerItemResponse<News>> editNews(@Header("Authorization") String authHeader, @Path("post_id") int postID,@Query("title") String title, @Query("description") String description);
+    Call<ServerItemResponse<News>> editNews(@Header("Authorization") String authHeader, @Path("post_id") String postID,@Query("title") String title, @Query("description") String description);
 
     @Multipart
     @POST("api/post/{post_id}")
     @Headers({"Accept: application/json"})
-    Call<ServerItemResponse<News>> editNews(@Header("Authorization") String authHeader, @Path("post_id") int postID, @Query("_method") String put, @Query("title") String title, @Query("description") String description, @Part MultipartBody.Part  post_photos );
+    Call<ServerItemResponse<News>> editNews(@Header("Authorization") String authHeader, @Path("post_id") String postID, @Query("_method") String put, @Query("title") String title, @Query("description") String description, @Part List<MultipartBody.Part> post_photos );
 
     @POST("api/post/{post_id}")
     @Headers({"Accept: application/json"})

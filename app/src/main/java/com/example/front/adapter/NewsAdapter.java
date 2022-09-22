@@ -64,6 +64,7 @@ public class NewsAdapter extends RecyclerView.Adapter {
             zagal = itemView.findViewById(R.id.news_title);
             viewPager.setVisibility(View.GONE);
             itemView.setOnLongClickListener(this);
+            itemView.setOnClickListener(this);
         }
 
         public void bindView(int position) {

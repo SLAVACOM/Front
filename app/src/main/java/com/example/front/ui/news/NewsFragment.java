@@ -43,14 +43,14 @@ public class NewsFragment extends Fragment {
             public void onClick(View view) {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.nav_host_fragment_content_main,new NewsAddFragment()).addToBackStack(null);
+                fragmentTransaction.replace(R.id.nav_host_fragment_content_main, new NewsEditFragment()).addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
         adapter.setClickListener(new NewsAdapter.ClickListener() {
             @Override
             public void onItemClick(int position, View view) {
-
+                this.onItemLongClick(position, view);
             }
 
             @Override

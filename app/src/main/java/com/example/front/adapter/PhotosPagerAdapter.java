@@ -13,6 +13,7 @@ import com.example.front.CONST.CONST;
 import com.example.front.data.Photo;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class PhotosPagerAdapter extends PagerAdapter {
@@ -43,7 +44,12 @@ public class PhotosPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         ImageView imageView = new ImageView(context);
-        Picasso.get().load(CONST.SERVER_URl +imageUrls.get(position).getFile()).fit().centerCrop().into(imageView);
+        Photo photo = imageUrls.get(position);
+        if (photo.getId() > 0) {
+            Picasso.get().load(CONST.SERVER_URl + photo.getFile()).fit().centerCrop().into(imageView);
+        } else {
+            Picasso.get().load(new File(photo.getFile())).fit().centerCrop().into(imageView);
+        }
         container.addView(imageView);
         return imageView;
 

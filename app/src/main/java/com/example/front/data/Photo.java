@@ -1,5 +1,7 @@
 package com.example.front.data;
 
+import com.example.front.data.database.DataBASE;
+
 import java.io.Serializable;
 
 public class Photo implements Serializable {
@@ -8,6 +10,14 @@ public class Photo implements Serializable {
     private int user_post_id;
     private String created_at;
     private String updated_at;
+
+    public Photo(String absolutePath) {
+        id = 0;
+        file  = absolutePath;
+        user_post_id = DataBASE.user.getId();
+        created_at = "";
+        updated_at = "";
+    }
 
 
     @Override

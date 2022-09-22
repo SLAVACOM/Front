@@ -6,18 +6,24 @@ import androidx.annotation.NonNull;
 
 import com.example.front.adapter.PhotosPagerAdapter;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 public class News {
     private int id;
-    private String title;
-    private String description;
+    private String title ="";
+    private String description="";
     private int user_id;
     private String created_at;
     private String updated_at;
-    private ArrayList<Photo> photos;
+    private ArrayList<Photo> photos = new ArrayList<Photo>();
     private User author;
-    private String date;
+    private String date ="";
     PhotosPagerAdapter adapter;
 
     public String getDate() {
@@ -114,6 +120,20 @@ public class News {
                 ", author=" + author +
                 ", date='" + date + '\'' +
                 '}';
+    }
+
+    public List<MultipartBody.Part> getPhotosMultipart() {
+        MultipartBody.Part photos = null;
+        int i = 0;
+        List<MultipartBody.Part> parts = new ArrayList<>();
+        String name = "post_photos[]";
+        for (Photo p : getPhotos()) {
+            File file = new File(p.getFile());
+            RequestBody filebody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+            parts.add(MultipartBody.Part.createFormData(name,file.getName(),filebody));
+            i++;
+        }
+        return parts;
     }
 }
 

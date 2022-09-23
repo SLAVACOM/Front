@@ -30,7 +30,7 @@ import com.example.front.ui.request.RequestTypesFragment;
 import com.example.front.ui.bus.FragmentBus;
 import com.example.front.ui.event.EventFragment;
 import com.example.front.ui.hisory.HistoryFragment;
-import com.example.front.ui.request.UserRequestFragments;
+import com.example.front.ui.request.UserRequestsFragment;
 import com.example.front.ui.news.NewsFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.yandex.mapkit.MapKitFactory;
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         updateMenuItems(navigationView);
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.nav_host_fragment_content_main,new NewsFragment()).addToBackStack(null).commit();
+        fragmentTransaction.replace(R.id.nav_host_fragment_content_main,new UserRequestsFragment()).addToBackStack(null).commit();
         toolbar.setTitle(R.string.news_fragment);
 
 
@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 toolbar.setTitle(R.string.user_list);
                 break;
             case R.id.nav_response_to_lib:
-                fragment = new UserRequestFragments();
+                fragment = new UserRequestsFragment();
                 bundle.putInt("role", CONST.LIBRARIAN_ROLE);
                 toolbar.setTitle(R.string.response_to_lib);
                 break;
@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 toolbar.setTitle(R.string.event_his);
                 break;
             case R.id.nav_response_to_admin:
-                fragment = new UserRequestFragments();
+                fragment = new UserRequestsFragment();
                 bundle.putInt("role", CONST.ADMIN_ROLE);
                 toolbar.setTitle(R.string.response_to_admin);
                 break;

@@ -31,7 +31,6 @@ public class UserRequestsAdapter extends RecyclerView.Adapter {
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_user_request,parent,false);
-
         return new MyViewHolder(view);
     }
 
@@ -47,18 +46,19 @@ public class UserRequestsAdapter extends RecyclerView.Adapter {
     }
 
 
-    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener{
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener, View.OnClickListener{
         TextView authorTv, typeTv;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             authorTv = itemView.findViewById(R.id.from_name);
             typeTv = itemView.findViewById(R.id.type_name);
             itemView.setOnLongClickListener(this);
+            itemView.setOnClickListener(this);
         }
 
         public void bindView(int position){
             UserRequest ur = items.get(position);
-            authorTv.setText(ur.getUser().getFull_name());
+            authorTv.setText(ur.getUser().getFull_name() + ur.getId());
             typeTv.setText(ur.getType().getName()+ur.getType().getName()+ur.getType().getName()+ur.getType().getName());
 
         }
@@ -71,13 +71,18 @@ public class UserRequestsAdapter extends RecyclerView.Adapter {
 
             return false;
         }
+
+        @Override
+        public void onClick(View view) {
+            onLongClick(view);
+        }
     }
 
     public void setOnItemClickListener(ClickListener clickListener) {
         UserRequestsAdapter.clickListener = clickListener;
     }
 
-    public interface ClickListener {
-        void onItemLongClick(int position, View v);
+    public abstract static class ClickListener {
+        public abstract void onItemLongClick(int position, View v);
     }
 }

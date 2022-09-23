@@ -33,7 +33,7 @@ public abstract class ValidateCallback <T> implements Callback<T> {
             Toast.makeText(getContext(), "Ошибка сервера, попробуйте обновить приложение", Toast.LENGTH_LONG).show();
             on500(call,response);
             return;
-        } else if (response.code() == 401 ) {
+        } else if (response.code() == 403 || response.code() == 401 ) {
             Toast.makeText(getContext(), "Доступ запрещен. Попробуйте войти снова!", Toast.LENGTH_LONG).show();
             on401(call, response);
             return;

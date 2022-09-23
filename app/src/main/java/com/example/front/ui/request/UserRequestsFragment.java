@@ -1,7 +1,10 @@
 package com.example.front.ui.request;
 
+import android.animation.ValueAnimator;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,10 +23,13 @@ import com.example.front.adapter.UserRequestsAdapter;
 import com.example.front.data.ServerListResponse;
 import com.example.front.data.UserRequest;
 import com.example.front.data.database.DataBASE;
+import com.example.front.helpers.CurrentToTopHelper;
 import com.example.front.helpers.SwipeHelper;
 import com.example.front.retrofit.Retrofit;
+import com.example.front.retrofit.call.ValidateCallback;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -31,7 +37,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UserRequestFragments extends Fragment {
+public class UserRequestsFragment extends Fragment {
 
     FloatingActionButton addBtn;
     UserRequestsAdapter adapter;
@@ -39,6 +45,8 @@ public class UserRequestFragments extends Fragment {
     SwipeRefreshLayout swipeRefreshLayout;
     private int role = CONST.LIBRARIAN_ROLE;
     private String bearer;;
+    private boolean transformstarted;
+    private long ANIMATION_DURATION;
 
 
     @Override
@@ -57,7 +65,17 @@ public class UserRequestFragments extends Fragment {
             public void onItemLongClick(int position, View v) {
                 Bundle bundle = new Bundle();
                 bundle.putInt("pos", position);
+                Fragment fragment = new UserRequestShowFragment();
+//                fragment.setArguments(bundle);
+//                getActivity().getSupportFragmentManager()
+//                        .beginTransaction()
+//                        .replace(R.id.nav_host_fragment_content_main, fragment)
+//                        .addToBackStack(null)
+//                        .commit();
+
+                transformToSingleItem(position);
             }
+
         });
         SwipeHelper swh = new SwipeHelper(getActivity(), recyclerView) {
             @Override
@@ -84,7 +102,6 @@ public class UserRequestFragments extends Fragment {
             @Override
             public void onRefresh() {
                 loadItems();
-                swipeRefreshLayout.setRefreshing(false);
             }
         });
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -101,11 +118,41 @@ public class UserRequestFragments extends Fragment {
         return view;
     }
 
+    private void transformToSingleItem(int adapterPosition) {
+        if (transformstarted) return;
+        transformstarted = true;
+        ValueAnimator animator  = new ValueAnimator();
+        animator.setFloatValues(0F, 1F);
+        CurrentToTopHelper updater = new CurrentToTopHelper(adapterPosition,  getContext().getResources().getDisplayMetrics().widthPixels);
+        updater.attachToRecycler(recyclerView);
+        animator.addUpdateListener(valueAnimator -> {
+            updater.update((Float) valueAnimator.getAnimatedValue());
+        });
+        ANIMATION_DURATION = 300L;
+        animator.setDuration(ANIMATION_DURATION);
+        animator.start();
+        Handler handler = new Handler();
+        handler.postDelayed(()->{
+            animator.removeAllUpdateListeners();
+            removeAndNotifyOtherItems(adapterPosition);
+            transformstarted=false;
+        }, ANIMATION_DURATION);
+    }
+
+    private void removeAndNotifyOtherItems(int adapterPosition) {
+        for (int i = 0; i < getItemsList().size(); i++) {
+            if (adapterPosition != i) {
+                getItemsList().remove(i<adapterPosition ? 0 : 1);
+                adapter.notifyItemRemoved(i<adapterPosition ? 0 : 1);
+            }
+        }
+    }
+
     private void deleteItem(UserRequest userRequest) {
         Call<ResponseBody> call = Retrofit.getApi().deleteUserRequest(bearer, userRequest.getId() + "");
-        call.enqueue(new Callback<ResponseBody>() {
+        call.enqueue(new ValidateCallback<ResponseBody>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onSuccess(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     getItemsList().remove(userRequest);
                     adapter.notifyDataSetChanged();
@@ -113,9 +160,8 @@ public class UserRequestFragments extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                t.printStackTrace();
-                onError();
+            public Context getContext() {
+                return UserRequestsFragment.this.getContext();
             }
         });
     }
@@ -132,11 +178,13 @@ public class UserRequestFragments extends Fragment {
                     adapter.notifyDataSetChanged();
                     Log.d(CONST.SERVER_LOG, getItemsList().toString());
                 } else onError();
+                swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Call<ServerListResponse<UserRequest>> call, Throwable t) {
                 t.printStackTrace();
+                swipeRefreshLayout.setRefreshing(false);
                 onError();
             }
         });

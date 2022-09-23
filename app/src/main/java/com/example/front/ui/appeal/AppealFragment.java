@@ -1,5 +1,6 @@
 package com.example.front.ui.appeal;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -61,6 +62,7 @@ public class AppealFragment extends Fragment  {
         adapter = new AppealsAdapter(getContext(), recyclerView);
         recyclerView = view.findViewById(R.id.recycler_appeal_byrequest);
         recyclerView.setAdapter(adapter);
+        recyclerView.setBackgroundColor(Color.WHITE);
         actionButton = view.findViewById(R.id.fab_addNews);
         actionButton.setVisibility(View.INVISIBLE);
         if (mode == MODE_MY) {

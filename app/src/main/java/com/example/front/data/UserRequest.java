@@ -1,6 +1,6 @@
 package com.example.front.data;
 
-public class ResponsLibrary {
+public class UserRequest implements Comparable<UserRequest> {
     private int id;
     private int role;
     private int type_id;
@@ -9,7 +9,7 @@ public class ResponsLibrary {
     private String created_at;
     private String updated_at;
     private String deleted_at;
-    private RequestTypeJSON type;
+    private UserRequestType type;
     private User user;
     private String date;
 
@@ -78,11 +78,11 @@ public class ResponsLibrary {
         this.deleted_at = deleted_at;
     }
 
-    public RequestTypeJSON getType() {
+    public UserRequestType getType() {
         return type;
     }
 
-    public void setType(RequestTypeJSON type) {
+    public void setType(UserRequestType type) {
         this.type = type;
     }
 
@@ -100,5 +100,10 @@ public class ResponsLibrary {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    @Override
+    public int compareTo(UserRequest userRequest) {
+        return Integer.compare(this.id, userRequest.id);
     }
 }

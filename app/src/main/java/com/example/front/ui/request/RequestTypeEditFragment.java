@@ -14,7 +14,7 @@ import androidx.fragment.app.FragmentManager;
 import com.example.front.MainActivity;
 import com.example.front.R;
 import com.example.front.data.database.DataBASE;
-import com.example.front.data.RequestTypeJSON;
+import com.example.front.data.UserRequestType;
 import com.example.front.retrofit.Retrofit;
 import com.example.front.retrofit.call.ValidateCallback;
 import com.example.front.retrofit.responses.ObjectResponse;
@@ -30,7 +30,7 @@ public class RequestTypeEditFragment extends Fragment implements View.OnClickLis
     TextView textView;
     AppEditText et;
     Button button;
-    private RequestTypeJSON typeItem;
+    private UserRequestType typeItem;
 
 
     @Override
@@ -66,16 +66,16 @@ public class RequestTypeEditFragment extends Fragment implements View.OnClickLis
     }
 
     private void create() {
-        Call<ObjectResponse<RequestTypeJSON>> call = Retrofit.getInstance().getApi().addRequestType("Bearer " + MainActivity.userToken(getActivity()), et.getText().toString());
-        call.enqueue(new ValidateCallback<ObjectResponse<RequestTypeJSON>>() {
+        Call<ObjectResponse<UserRequestType>> call = Retrofit.getInstance().getApi().addRequestType("Bearer " + MainActivity.userToken(getActivity()), et.getText().toString());
+        call.enqueue(new ValidateCallback<ObjectResponse<UserRequestType>>() {
             @Override
-            public void on422(Call<ObjectResponse<RequestTypeJSON>> call, Response<ObjectResponse<RequestTypeJSON>> response, ValidationResponse errors) {
+            public void on422(Call<ObjectResponse<UserRequestType>> call, Response<ObjectResponse<UserRequestType>> response, ValidationResponse errors) {
                 String error = errors.getError("name");
                 if (error != null) et.setError(error);
             }
 
             @Override
-            public void onSuccess(Call<ObjectResponse<RequestTypeJSON>> call, Response<ObjectResponse<RequestTypeJSON>> response) {
+            public void onSuccess(Call<ObjectResponse<UserRequestType>> call, Response<ObjectResponse<UserRequestType>> response) {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 fragmentManager.popBackStack();
             }

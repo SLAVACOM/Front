@@ -6,8 +6,8 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="4dp"
     android:layout_marginBottom="4dp"
-    android:background="@drawable/ic_recycler"
-    app:srcCompat="@drawable/ic_recycler"
+    android:background="@drawable/white_with_border_block"
+    app:srcCompat="@drawable/white_with_border_block"
     tools:visibility="visible">
 
 
@@ -69,8 +69,8 @@
             android:layout_marginStart="2dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="2dp"
-            android:background="@drawable/ic_recycler"
-            app:srcCompat="@drawable/ic_recycler" />
+            android:background="@drawable/white_with_border_block"
+            app:srcCompat="@drawable/white_with_border_block" />
     </com.example.front.ui.components.ViewPagerCarouselView>
 
     <Button

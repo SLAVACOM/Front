@@ -155,8 +155,8 @@ public class AppealsAdapter extends RecyclerView.Adapter {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             Toast.makeText(context, comm.getText().toString(), Toast.LENGTH_SHORT).show();;
                             Call<ResponseBody> accept;
-                            if (DataBASE.user.isAdmin()) accept = Retrofit.getInstance().getApi().userResponsStatusExecution("Bearer "+DataBASE.token,appeal.getId(), comm.getText().toString());
-                            else accept = Retrofit.getInstance().getApi().userResponsStatusExecuted("Bearer "+DataBASE.token,appeal.getId());
+                            if (DataBASE.user.isAdmin()) accept = Retrofit.getInstance().getApi().acceptAppealByAdmin("Bearer "+DataBASE.token,appeal.getId(), comm.getText().toString());
+                            else accept = Retrofit.getInstance().getApi().acceptAppealByAuthor("Bearer "+DataBASE.token,appeal.getId());
                             accept.enqueue(new Callback<ResponseBody>() {
                                 @Override
                                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -200,7 +200,7 @@ public class AppealsAdapter extends RecyclerView.Adapter {
                     builder.setPositiveButton("Да", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            Call<ResponseBody> accept = Retrofit.getInstance().getApi().deleteUserRespons("Bearer "+DataBASE.token,appeal.getId());
+                            Call<ResponseBody> accept = Retrofit.getApi().deleteUserAppeal("Bearer "+DataBASE.token,appeal.getId());
                             accept.enqueue(new Callback<ResponseBody>() {
                                 @Override
                                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -228,7 +228,7 @@ public class AppealsAdapter extends RecyclerView.Adapter {
             likeBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Call<ResponseBody> likeReq = Retrofit.getInstance().getApi().appealLikeAcation("Bearer "+DataBASE.token,appeal.getId(), appeal.getUser_like()!=1 ? "like" : "dislike");
+                    Call<ResponseBody> likeReq = Retrofit.getInstance().getApi().likeAppeal("Bearer "+DataBASE.token,appeal.getId(), appeal.getUser_like()!=1 ? "like" : "dislike");
                     likeReq.enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

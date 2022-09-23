@@ -21,7 +21,7 @@ import com.example.front.MainActivity;
 import com.example.front.R;
 import com.example.front.adapter.RequestsTypeAdapter;
 import com.example.front.data.ServerListResponse;
-import com.example.front.data.RequestTypeJSON;
+import com.example.front.data.UserRequestType;
 import com.example.front.data.database.DataBASE;
 import com.example.front.helpers.SwipeHelper;
 import com.example.front.retrofit.Retrofit;
@@ -71,6 +71,7 @@ public class RequestTypesFragment extends Fragment {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swh);
         itemTouchHelper.attachToRecyclerView(recyclerView);
         recyclerView.setAdapter(adapter);
+        recyclerView.setBackgroundColor(Color.WHITE);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -101,10 +102,10 @@ public class RequestTypesFragment extends Fragment {
     }
 
     public void getItems(){
-        Call<ServerListResponse<RequestTypeJSON>> call = Retrofit.getInstance().getApi().getRequestTypes();
-        call.enqueue(new Callback<ServerListResponse<RequestTypeJSON>>() {
+        Call<ServerListResponse<UserRequestType>> call = Retrofit.getInstance().getApi().getRequestTypes();
+        call.enqueue(new Callback<ServerListResponse<UserRequestType>>() {
             @Override
-            public void onResponse(Call<ServerListResponse<RequestTypeJSON>> call, Response<ServerListResponse<RequestTypeJSON>> response) {
+            public void onResponse(Call<ServerListResponse<UserRequestType>> call, Response<ServerListResponse<UserRequestType>> response) {
                 if(!response.isSuccessful()){
                     Toast.makeText(getActivity(), "Ошибка получения списка типов запроса", Toast.LENGTH_SHORT).show();
                     return;
@@ -116,13 +117,13 @@ public class RequestTypesFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<ServerListResponse<RequestTypeJSON>> call, Throwable t) {
+            public void onFailure(Call<ServerListResponse<UserRequestType>> call, Throwable t) {
                 t.printStackTrace();
             }
         });
     }
-    private void delete(RequestTypeJSON typeItem) {
-        Call<ResponseBody> deleteResp = Retrofit.getInstance().getApi().deleteRequest("Bearer " + MainActivity.userToken(getActivity()), typeItem.getId());
+    private void delete(UserRequestType typeItem) {
+        Call<ResponseBody> deleteResp = Retrofit.getInstance().getApi().deleteRequestType("Bearer " + MainActivity.userToken(getActivity()), typeItem.getId());
         deleteResp.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

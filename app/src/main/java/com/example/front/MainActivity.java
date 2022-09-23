@@ -30,8 +30,7 @@ import com.example.front.ui.request.RequestTypesFragment;
 import com.example.front.ui.bus.FragmentBus;
 import com.example.front.ui.event.EventFragment;
 import com.example.front.ui.hisory.HistoryFragment;
-import com.example.front.ui.request.AdminREQFragment;
-import com.example.front.ui.request.LibraryFragment;
+import com.example.front.ui.request.UserRequestFragments;
 import com.example.front.ui.news.NewsFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.yandex.mapkit.MapKitFactory;
@@ -92,8 +91,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void updateMenuItems(NavigationView navigationView) {
         navigationView.getMenu().findItem(R.id.nav_my_appeal).setVisible(!DataBASE.user.isAdmin());
         navigationView.getMenu().findItem(R.id.nav_request_types).setVisible(DataBASE.user.isAdmin());
-        navigationView.getMenu().findItem(R.id.nav_response_to_lib).setVisible(DataBASE.user.isLibrarian() || DataBASE.user.isAdmin());
-        navigationView.getMenu().findItem(R.id.nav_response_to_admin).setVisible(DataBASE.user.isAdmin());
+//        navigationView.getMenu().findItem(R.id.nav_response_to_lib).setVisible(DataBASE.user.isLibrarian() || DataBASE.user.isAdmin());
+        navigationView.getMenu().findItem(R.id.nav_response_to_admin).setVisible(DataBASE.user.isAdmin()||DataBASE.user.isUser());
         navigationView.getMenu().findItem(R.id.nav_user_list).setVisible(DataBASE.user.isAdmin() || DataBASE.user.isCurator());
         navigationView.getMenu().findItem(R.id.nav_history).setVisible(DataBASE.user.isUser());
     }
@@ -132,6 +131,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         Fragment fragment = null;
+
+        Bundle bundle = new Bundle();
         switch (id){
             case R.id.nav_map:
                 fragment =  new MapFragment();
@@ -168,7 +169,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 toolbar.setTitle(R.string.user_list);
                 break;
             case R.id.nav_response_to_lib:
-                fragment = new LibraryFragment();
+                fragment = new UserRequestFragments();
+                bundle.putInt("role", CONST.LIBRARIAN_ROLE);
                 toolbar.setTitle(R.string.response_to_lib);
                 break;
             case R.id.nav_user:
@@ -180,7 +182,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 toolbar.setTitle(R.string.event_his);
                 break;
             case R.id.nav_response_to_admin:
-                fragment = new AdminREQFragment();
+                fragment = new UserRequestFragments();
+                bundle.putInt("role", CONST.ADMIN_ROLE);
                 toolbar.setTitle(R.string.response_to_admin);
                 break;
             case R.id.nav_exit:
@@ -208,6 +211,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
         drawerLayout.closeDrawer(GravityCompat.START);
         removeAllFragments(fragmentManager);
+        fragment.setArguments(bundle);
         fragmentTransaction.replace(R.id.nav_host_fragment_content_main,fragment).addToBackStack(null).commit();
         return true;
 

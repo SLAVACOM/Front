@@ -8,16 +8,15 @@ import com.example.front.data.ServerItemResponse;
 import com.example.front.data.ServerListResponse;
 import com.example.front.data.MapObject;
 import com.example.front.data.News;
-import com.example.front.data.ResponsLibrary;
+import com.example.front.data.UserRequest;
 import com.example.front.retrofit.responses.ObjectResponse;
-import com.example.front.data.RequestTypeJSON;
+import com.example.front.data.UserRequestType;
 import com.example.front.data.User;
 import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -77,14 +76,14 @@ public interface Api {
 
 
     @GET("api/type")
-    Call<ServerListResponse<RequestTypeJSON>> getRequestTypes();
+    Call<ServerListResponse<UserRequestType>> getRequestTypes();
 
     @POST("/api/type")
     @Headers({"Accept: application/json"})
-    Call<ObjectResponse<RequestTypeJSON>> addRequestType(@Header("Authorization") String authHeader,@Query("name") String name);
+    Call<ObjectResponse<UserRequestType>> addRequestType(@Header("Authorization") String authHeader, @Query("name") String name);
 
     @DELETE("api/type/{type_id}")
-    Call<ResponseBody> deleteRequest(@Header("Authorization") String authHeader,@Path("type_id") int id);
+    Call<ResponseBody> deleteRequestType(@Header("Authorization") String authHeader, @Path("type_id") int id);
 
 
 
@@ -136,16 +135,16 @@ public interface Api {
     Call<ServerListResponse<News>> getNewsList();
 
     @DELETE("api/user/post/{user_post_id}")
-    Call<ResponseBody> deleteUserRespons(@Header("Authorization") String authHeader,@Path("user_post_id") int id);
+    Call<ResponseBody> deleteUserAppeal(@Header("Authorization") String authHeader, @Path("user_post_id") int id);
 
     @POST("api/user/post/{user_post_id}/accept")
-    Call<ResponseBody> userResponsStatusExecution(@Header("Authorization") String authHeader,@Path("user_post_id") int id, @Query("comment") String comment);
+    Call<ResponseBody> acceptAppealByAdmin(@Header("Authorization") String authHeader, @Path("user_post_id") int id, @Query("comment") String comment);
 
     @POST("api/user/post/{user_post_id}/confirm")
-    Call<ResponseBody> userResponsStatusExecuted(@Header("Authorization") String authHeader,@Path("user_post_id") int id);
+    Call<ResponseBody> acceptAppealByAuthor(@Header("Authorization") String authHeader, @Path("user_post_id") int id);
 
     @POST("api/user/post/{user_post_id}/{like}")
-    Call<ResponseBody> appealLikeAcation(@Header("Authorization") String authHeader, @Path("user_post_id") int id, @Path("like") String like);
+    Call<ResponseBody> likeAppeal(@Header("Authorization") String authHeader, @Path("user_post_id") int id, @Path("like") String like);
 
     @GET("api/user/post/")
     Call<ServerListResponse<Appeal>> getAppeals(@Header("Authorization") String authHeader, @Query("mode") String mode, @Query("page") String page);
@@ -263,13 +262,12 @@ public interface Api {
     @PUT("api/event/{event_id}")
     Call<ResponseBody> editEvent(@Header("Authorization") String heder, @Path("event_id") int event_id, @Body EventJSON body);
 
-    @GET("api/request/?role=128")
-    Call<ServerListResponse<ResponsLibrary>> getLibRespons(@Header("Authorization") String heder);
-    @GET("api/request/?role=1024")
-    Call<ServerListResponse<ResponsLibrary>> getAdminRespons(@Header("Authorization") String heder);
+    @GET("api/request/")
+    Call<ServerListResponse<UserRequest>> getUserRequests(@Header("Authorization") String header, @Query("role") int role);
 
-    @POST("api/request/?role=128")
-    Call<ResponseBody> addReqLib(@Header("Authorization") String heder, @Query("text")String body,@Query("type") int idtype);
+    @DELETE("api/request/{id}")
+    Call<ResponseBody> deleteUserRequest(@Header("Authorization") String header, @Path("id") String id);
+
 
 
 

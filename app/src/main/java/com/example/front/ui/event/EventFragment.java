@@ -1,5 +1,6 @@
 package com.example.front.ui.event;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -59,6 +60,7 @@ public class EventFragment extends Fragment {
             }
         });
         recyclerView.setAdapter(adapter);
+        recyclerView.setBackgroundColor(Color.WHITE);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 

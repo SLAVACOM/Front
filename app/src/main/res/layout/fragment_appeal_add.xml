@@ -15,7 +15,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="4dp"
         android:layout_marginBottom="-16dp"
-        android:src="@drawable/ic_recycler"
+        android:src="@drawable/white_with_border_block"
         app:layout_constraintBottom_toBottomOf="@+id/bt_add_appeal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

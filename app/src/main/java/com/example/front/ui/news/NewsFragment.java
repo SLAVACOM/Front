@@ -1,5 +1,6 @@
 package com.example.front.ui.news;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,6 +72,7 @@ public class NewsFragment extends Fragment {
         swipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
         recyclerView = view.findViewById(R.id.recycler_appeal_byrequest);
         recyclerView.setAdapter(adapter);
+        recyclerView.setBackgroundColor(Color.WHITE);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

@@ -67,4 +67,5 @@
     <string name="comment_title">Комментарий</string>
     <string name="confirm_btn_title">Потвердить</string>
     <string name="close_btn_title">Потвердить</string>
+    <string name="from_title">От:</string>
 </resources>

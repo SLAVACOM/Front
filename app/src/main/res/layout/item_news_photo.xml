@@ -6,9 +6,9 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="4dp"
     android:layout_marginBottom="4dp"
-    android:background="@drawable/ic_recycler"
+    android:background="@drawable/white_with_border_block"
+    app:srcCompat="@drawable/white_with_border_block"
     android:paddingBottom="16dp"
-    app:srcCompat="@drawable/ic_recycler"
     tools:visibility="visible">
 
 

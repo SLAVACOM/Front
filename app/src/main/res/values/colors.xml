@@ -7,7 +7,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="fill">#BAE6E5E5</color>
+    <color name="floatbtn_fill">#BAE6E5E5</color>
     <color name="dark_text">#FF39393A</color>
     <color name="input_text">#FF4A4A4A</color>
     <color name="chip_text">#9E9E9E</color>
@@ -16,6 +16,8 @@
     <color name="accept">#52B788</color>
     <color name="dislike">#8E8080</color>
     <color name="default_chip">#F3F3F4</color>
+    <color name="gray_rounded_block_fill">#F8F8F8</color>
+    <color name="gray_rounded_block_stroke">#AFAFAF</color>
 
     <color name="nav">#FF117e95</color>
     <color name="MapPolygonFill">#3400FFFF</color>

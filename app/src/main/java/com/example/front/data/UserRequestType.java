@@ -1,6 +1,6 @@
 package com.example.front.data;
 
-public class RequestTypeJSON {
+public class UserRequestType {
 
     private int id;
     private String name;

@@ -1,5 +1,6 @@
 package com.example.front.ui.hisory;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,6 +35,7 @@ public class HistoryFragment extends Fragment {
         adapter = new AdapterHistory();
         recyclerView = view.findViewById(R.id.recycler_history);
         recyclerView.setAdapter(adapter);
+        recyclerView.setBackgroundColor(Color.WHITE);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 

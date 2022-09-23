@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.front.R;
 import com.example.front.data.database.DataBASE;
-import com.example.front.data.RequestTypeJSON;
+import com.example.front.data.UserRequestType;
 
 
 public class AdapterRequestByID extends RecyclerView.Adapter {
@@ -18,7 +18,7 @@ public class AdapterRequestByID extends RecyclerView.Adapter {
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_my_appeal,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_user_request,parent,false);
         return new MyViewHolder(view);
     }
 
@@ -43,7 +43,7 @@ public class AdapterRequestByID extends RecyclerView.Adapter {
         }
 
         public void bindView(int position) {
-            RequestTypeJSON appeal = DataBASE.REQUEST_TYPEJSON_byID_LIST.get(position);
+            UserRequestType appeal = DataBASE.REQUEST_TYPEJSON_byID_LIST.get(position);
             content.setText("ID" + appeal.getId() + "\nОбращение: " + appeal.getName());
         }
     }

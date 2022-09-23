@@ -22,7 +22,7 @@ import com.example.front.data.Appeal;
 import com.example.front.data.ServerListResponse;
 import com.example.front.data.User;
 import com.example.front.data.database.DataBASE;
-import com.example.front.retrofit.RetrofitClient;
+import com.example.front.retrofit.Retrofit;
 import com.example.front.ui.news.NewsEditFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -37,6 +37,7 @@ public class AppealFragment extends Fragment  {
 
 
     public static final int MODE_MY = 1;
+    public static final String MODE = "appeal";
     AppealsAdapter adapter;
     RecyclerView recyclerView;
     SwipeRefreshLayout swipeRefreshLayout;
@@ -69,7 +70,11 @@ public class AppealFragment extends Fragment  {
                 public void onClick(View view) {
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.nav_host_fragment_content_main,new NewsEditFragment()).addToBackStack(null);
+                    NewsEditFragment editFragment = new NewsEditFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("mode", MODE);
+                    editFragment.setArguments(bundle);
+                    fragmentTransaction.replace(R.id.nav_host_fragment_content_main, editFragment).addToBackStack(null);
                     fragmentTransaction.commit();
                 }
             });
@@ -118,7 +123,7 @@ public class AppealFragment extends Fragment  {
         getAppeals(1);
     }
     private void getAppeals(int page) {
-        Call<ServerListResponse<Appeal>> getNewsList = RetrofitClient.getInstance().getApi().getAppeals(
+        Call<ServerListResponse<Appeal>> getNewsList = Retrofit.getInstance().getApi().getAppeals(
                 "Bearer " + LoginActivity.userToken(getActivity().getBaseContext()), mode == MODE_MY ? "me" : null, page + "");
         getNewsList.enqueue(new Callback<ServerListResponse<Appeal>>() {
             @Override

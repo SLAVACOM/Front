@@ -8,7 +8,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.front.R;
-import com.example.front.retrofit.RetrofitClient;
 import com.example.front.data.User;
 import com.example.front.retrofit.call.ValidateCallback;
 import com.example.front.retrofit.responses.ValidationResponse;

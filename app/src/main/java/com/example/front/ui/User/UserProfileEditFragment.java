@@ -17,7 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.front.R;
 import com.example.front.data.User;
 import com.example.front.data.database.DataBASE;
-import com.example.front.retrofit.RetrofitClient;
+import com.example.front.retrofit.Retrofit;
 import com.example.front.ui.components.AppEditText;
 import com.example.front.ui.signup.SignUpViewModelFactory;
 import com.example.front.ui.signup.UserFormResult;
@@ -114,7 +114,7 @@ public class UserProfileEditFragment extends Fragment implements View.OnClickLis
     @Override
     public void onClick(View view) {
         User value = viewModel.getUserData().getValue();
-        Call<ResponseBody> editProfile = RetrofitClient.getInstance().getApi().editProfile("Bearer " + DataBASE.token, value);
+        Call<ResponseBody> editProfile = Retrofit.getInstance().getApi().editProfile("Bearer " + DataBASE.token, value);
         viewModel.sendRequest(editProfile);
     }
 }

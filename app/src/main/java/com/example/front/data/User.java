@@ -130,6 +130,9 @@ public class User {
     public boolean isUser() {
         return (DataBASE.user.getRole() & CONST.USER_ROLE) > 0;
     }
+    public boolean isLibrarian() {
+        return (DataBASE.user.getRole() & CONST.LIBRARIAN_ROLE) > 0;
+    }
     public void setRole(int role) {
         this.role = role;
     }
@@ -225,4 +228,5 @@ public class User {
                 ", curator=" + curator +
                 '}';
     }
+
 }

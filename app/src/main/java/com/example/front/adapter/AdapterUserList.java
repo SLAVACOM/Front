@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.front.CONST.CONST;
 import com.example.front.R;
 import com.example.front.data.database.DataBASE;
-import com.example.front.retrofit.RetrofitClient;
+import com.example.front.retrofit.Retrofit;
 import com.example.front.data.User;
 import com.google.gson.JsonObject;
 
@@ -77,7 +77,7 @@ public class AdapterUserList extends RecyclerView.Adapter<AdapterUserList.MyView
                     } else {
                         blok=0;
                     }
-                    Call<JsonObject> blocket = RetrofitClient.getInstance().getApi().editProfile("Bearer "+ DataBASE.token, user.getId(),"put", blok);
+                    Call<JsonObject> blocket = Retrofit.getInstance().getApi().editProfile("Bearer "+ DataBASE.token, user.getId(),"put", blok);
                     blocket.enqueue(new Callback<JsonObject>() {
                         @Override
                         public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {

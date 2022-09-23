@@ -16,7 +16,7 @@ import com.example.front.adapter.AdapterHistory;
 import com.example.front.data.HistoryJSON;
 import com.example.front.data.ServerListResponse;
 import com.example.front.data.database.DataBASE;
-import com.example.front.retrofit.RetrofitClient;
+import com.example.front.retrofit.Retrofit;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -49,7 +49,7 @@ public class HistoryFragment extends Fragment {
     }
 
     public void getHistory(){
-        Call<ServerListResponse<HistoryJSON>> getHistory = RetrofitClient.getInstance().getApi().getEventHistory("Bearer " + DataBASE.token);
+        Call<ServerListResponse<HistoryJSON>> getHistory = Retrofit.getInstance().getApi().getEventHistory("Bearer " + DataBASE.token);
         getHistory.enqueue(new Callback<ServerListResponse<HistoryJSON>>() {
             @Override
             public void onResponse(Call<ServerListResponse<HistoryJSON>> call, Response<ServerListResponse<HistoryJSON>> response) {

@@ -6,24 +6,11 @@ import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Bundle;
 
-import com.example.front.CONST.CONST;
-import com.example.front.data.EventJSON;
-import com.example.front.data.database.DataBASE;
-import com.example.front.retrofit.RetrofitClient;
 import com.example.front.ui.components.GifView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.util.Log;
 import android.widget.Toast;
-
-import java.io.IOException;
-import java.io.InputStream;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class ScannerActivity extends AppCompatActivity {
 

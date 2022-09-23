@@ -16,7 +16,7 @@ import com.example.front.R;
 import com.example.front.data.Cords;
 import com.example.front.data.ServerListResponse;
 import com.example.front.data.MapObject;
-import com.example.front.retrofit.RetrofitClient;
+import com.example.front.retrofit.Retrofit;
 import com.yandex.mapkit.Animation;
 import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.geometry.LinearRing;
@@ -57,7 +57,7 @@ public class MapFragment extends Fragment {
                 new Animation(Animation.Type.SMOOTH, 0),
                 null);
 
-        Call<ServerListResponse<MapObject>> getObject = RetrofitClient.getInstance().getApi().getMapObject();
+        Call<ServerListResponse<MapObject>> getObject = Retrofit.getInstance().getApi().getMapObject();
         getObject.enqueue(new Callback<ServerListResponse<MapObject>>() {
             @Override
             public void onResponse(Call<ServerListResponse<MapObject>> call, Response<ServerListResponse<MapObject>> response) {

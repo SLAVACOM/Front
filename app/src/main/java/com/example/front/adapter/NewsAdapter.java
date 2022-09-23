@@ -11,7 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 
 import com.example.front.R;
 import com.example.front.data.News;
@@ -20,6 +19,7 @@ import com.example.front.data.database.DataBASE;
 import com.example.front.ui.components.ViewPagerCarouselView;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 
 public class NewsAdapter extends RecyclerView.Adapter {
@@ -54,13 +54,14 @@ public class NewsAdapter extends RecyclerView.Adapter {
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
-        TextView content, zagal;
+        TextView content, zagal, dateTV;
         ViewPagerCarouselView viewPager;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             viewPager = itemView.findViewById(R.id.viewPager);
             content = itemView.findViewById(R.id.news_content);
+            dateTV = itemView.findViewById(R.id.news_content_date);
             zagal = itemView.findViewById(R.id.news_title);
             viewPager.setVisibility(View.GONE);
             itemView.setOnLongClickListener(this);
@@ -69,7 +70,10 @@ public class NewsAdapter extends RecyclerView.Adapter {
 
         public void bindView(int position) {
             News news = DataBASE.NEWS_JSON_LIST.get(position);
-            zagal.setText("" + news.getTitle().replaceAll("<P>", ""));
+            String title = "" + news.getTitle().replaceAll("<P>", "");
+            title = title.trim().substring(0,1).toUpperCase() + title.trim().substring(1).toLowerCase(Locale.ROOT);
+            zagal.setText(title);
+            dateTV.setText(news.getDate());
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 content.setText(Html.fromHtml(news.getDescription(), Html.FROM_HTML_MODE_COMPACT));
             } else {

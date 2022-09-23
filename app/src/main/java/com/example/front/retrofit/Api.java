@@ -92,41 +92,48 @@ public interface Api {
 
     @POST("api/post")
     @Headers({"Accept: application/json"})
-    Call<ServerItemResponse<News>> addNews(@Header("Authorization") String authHeader, @Query("title") String title,@Query("description") String description);
+    Call<ServerItemResponse<Appeal>> addNews(@Header("Authorization") String authHeader, @Query("title") String title,@Query("description") String description);
+
+    @POST("api/user/post")
+    @Headers({"Accept: application/json"})
+    Call<ServerItemResponse<Appeal>> addAppeal(@Header("Authorization") String authHeader, @Query("title") String title,@Query("description") String description);
 
 
     @PUT("api/post/{post_id}")
     @Headers({"Accept: application/json"})
-    Call<ServerItemResponse<News>> editNews(@Header("Authorization") String authHeader, @Path("post_id") String postID,@Query("title") String title, @Query("description") String description);
+    Call<ServerItemResponse<Appeal>> editNews(@Header("Authorization") String authHeader, @Path("post_id") String postID,@Query("title") String title, @Query("description") String description);
+
+    @PUT("api/user/post/{post_id}")
+    @Headers({"Accept: application/json"})
+    Call<ServerItemResponse<Appeal>> editAppeal(@Header("Authorization") String authHeader, @Path("post_id") String postID,@Query("title") String title, @Query("description") String description);
 
     @Multipart
     @POST("api/post/{post_id}")
     @Headers({"Accept: application/json"})
-    Call<ServerItemResponse<News>> editNews(@Header("Authorization") String authHeader, @Path("post_id") String postID, @Query("_method") String put, @Query("title") String title, @Query("description") String description, @Part List<MultipartBody.Part> post_photos );
+    Call<ServerItemResponse<Appeal>> editNews(@Header("Authorization") String authHeader, @Path("post_id") String postID, @Query("_method") String put, @Query("title") String title, @Query("description") String description, @Part List<MultipartBody.Part> post_photos );
 
-    @POST("api/post/{post_id}")
+    @Multipart
+    @POST("api/user/post/{post_id}")
     @Headers({"Accept: application/json"})
-    Call<JSONObject> editNewsDeletePhoto(@Header("Authorization") String authHeader,@Path("post_id") int postID, @Query("_method") String put,@Query("delete_photos[0]") int photoID);
+    Call<ServerItemResponse<Appeal>> editAppeal(@Header("Authorization") String authHeader, @Path("post_id") String postID, @Query("_method") String put, @Query("title") String title, @Query("description") String description, @Part List<MultipartBody.Part> post_photos );
+
+    @PUT("api/post/{post_id}")
+    @Headers({"Accept: application/json"})
+    Call<JSONObject> deleteNewsPhoto(@Header("Authorization") String authHeader, @Path("post_id") String postID, @Query("delete_photos[0]") int photoID);
+
+    @PUT("api/user/post/{post_id}")
+    @Headers({"Accept: application/json"})
+    Call<JSONObject> deleteAppealPhoto(@Header("Authorization") String authHeader, @Path("post_id") String postID, @Query("delete_photos[0]") int photoID);
 
 
     @DELETE("api/post/{post_id}")
     Call<ResponseBody> deleteNews(@Header("Authorization") String authHeader,@Path("post_id") int id);
+    @DELETE("api/user/post/{post_id}")
+    Call<ResponseBody> deleteAppeal(@Header("Authorization") String authHeader,@Path("post_id") int id);
 
 
     @GET("api/post")
     Call<ServerListResponse<News>> getNewsList();
-
-
-    @FormUrlEncoded
-    @POST("api/user/post")
-    @Headers({"Accept: application/json"})
-    Call<ResponseBody> addUserRespons(@Header("Authorization") String authHeader,@Field("title") String title,@Field("description") String description);
-
-
-    @FormUrlEncoded
-    @POST("api/user/post/{{user_post_id}}")
-    @Headers({"Accept: application/json"})
-    Call<ResponseBody> editUserRespons(@Header("Authorization") String authHeader,@Field("_method") String method,@Field("title") String title, @Field("description") String description,@Field("post_photos[0]") File file,@Field("post_photos[1]") File file1,@Field("delete_photos[0]") int id);
 
     @DELETE("api/user/post/{user_post_id}")
     Call<ResponseBody> deleteUserRespons(@Header("Authorization") String authHeader,@Path("user_post_id") int id);

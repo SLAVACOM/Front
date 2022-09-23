@@ -20,7 +20,7 @@ import com.example.front.CONST.CONST;
 import com.example.front.data.database.DataBASE;
 import com.example.front.retrofit.responses.ObjectResponse;
 import com.example.front.data.User;
-import com.example.front.retrofit.RetrofitClient;
+import com.example.front.retrofit.Retrofit;
 import com.example.front.ui.signup.SignUpActivity;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -93,7 +93,7 @@ public class LoginActivity extends AppCompatActivity  {
     }
 
     private  void getToken() {
-        Call<JsonObject> call = RetrofitClient.getInstance().getApi().login(login.getText().toString(), password.getText().toString());
+        Call<JsonObject> call = Retrofit.getInstance().getApi().login(login.getText().toString(), password.getText().toString());
         call.enqueue(new LoginCallback<JsonObject>() {
             @Override
             public void onSuccess(Call<JsonObject> call, Response<JsonObject> response) {
@@ -112,7 +112,7 @@ public class LoginActivity extends AppCompatActivity  {
     }
 
     private  void resetPassword() {
-        Call<ResponseBody> call = RetrofitClient.getInstance().getApi().resetPassword(login.getText().toString());
+        Call<ResponseBody> call = Retrofit.getInstance().getApi().resetPassword(login.getText().toString());
         call.enqueue(new LoginCallback<ResponseBody>() {
             @Override
             public void onSuccess(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -129,7 +129,7 @@ public class LoginActivity extends AppCompatActivity  {
     public User getProfile(boolean resume) {
         String token = userToken(getBaseContext());
         if (token == null) return null;
-        Call<ObjectResponse<User>> getProfileData = RetrofitClient.getInstance().getApi().getProfile("Bearer " + token);
+        Call<ObjectResponse<User>> getProfileData = Retrofit.getInstance().getApi().getProfile("Bearer " + token);
         getProfileData.enqueue(new Callback<ObjectResponse<User>>() {
             @Override
             public void onResponse(Call<ObjectResponse<User>> call, Response<ObjectResponse<User>> response) {

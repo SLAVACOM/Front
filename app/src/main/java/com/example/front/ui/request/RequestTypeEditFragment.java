@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -16,15 +15,13 @@ import com.example.front.MainActivity;
 import com.example.front.R;
 import com.example.front.data.database.DataBASE;
 import com.example.front.data.RequestTypeJSON;
-import com.example.front.retrofit.RetrofitClient;
+import com.example.front.retrofit.Retrofit;
 import com.example.front.retrofit.call.ValidateCallback;
 import com.example.front.retrofit.responses.ObjectResponse;
 import com.example.front.retrofit.responses.ValidationResponse;
 import com.example.front.ui.components.AppEditText;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 
@@ -69,7 +66,7 @@ public class RequestTypeEditFragment extends Fragment implements View.OnClickLis
     }
 
     private void create() {
-        Call<ObjectResponse<RequestTypeJSON>> call = RetrofitClient.getInstance().getApi().addRequestType("Bearer " + MainActivity.userToken(getActivity()), et.getText().toString());
+        Call<ObjectResponse<RequestTypeJSON>> call = Retrofit.getInstance().getApi().addRequestType("Bearer " + MainActivity.userToken(getActivity()), et.getText().toString());
         call.enqueue(new ValidateCallback<ObjectResponse<RequestTypeJSON>>() {
             @Override
             public void on422(Call<ObjectResponse<RequestTypeJSON>> call, Response<ObjectResponse<RequestTypeJSON>> response, ValidationResponse errors) {

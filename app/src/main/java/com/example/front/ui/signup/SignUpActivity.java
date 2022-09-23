@@ -22,7 +22,7 @@ import android.widget.Toast;
 
 import com.example.front.databinding.ActivitySignUpBinding;
 import com.example.front.data.User;
-import com.example.front.retrofit.RetrofitClient;
+import com.example.front.retrofit.Retrofit;
 import com.example.front.ui.components.AppEditText;
 
 public class SignUpActivity extends AppCompatActivity {
@@ -116,13 +116,13 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 loadingProgressBar.setVisibility(View.VISIBLE);
-                viewModel.sendRequest(RetrofitClient.getInstance().getApi().registration(viewModel.getUserData().getValue()));
+                viewModel.sendRequest(Retrofit.getInstance().getApi().registration(viewModel.getUserData().getValue()));
             }
         });
         phoneEt.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 loadingProgressBar.setVisibility(View.VISIBLE);
-                viewModel.sendRequest(RetrofitClient.getInstance().getApi().registration(viewModel.getUserData().getValue()));
+                viewModel.sendRequest(Retrofit.getInstance().getApi().registration(viewModel.getUserData().getValue()));
             }
             return false;
         });

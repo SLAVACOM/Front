@@ -25,10 +25,11 @@ import com.example.front.R;
 import com.example.front.ScannerActivity;
 import com.example.front.data.EventJSON;
 import com.example.front.data.database.DataBASE;
-import com.example.front.retrofit.RetrofitClient;
+import com.example.front.retrofit.Retrofit;
 import com.example.front.retrofit.call.ValidateCallback;
 import com.example.front.retrofit.responses.ValidationResponse;
 import com.example.front.scanner.CaptureAct;
+import com.example.front.ui.components.AppEditText;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
@@ -47,7 +48,7 @@ import retrofit2.Response;
 
 public class AddEventFragment extends Fragment {
 
-    private EditText title, place, point;
+    private AppEditText title, place, point;
     private TextView date, frag_title;
     private Button add;
     private Button qrBtn, nfcBtn;
@@ -118,13 +119,13 @@ public class AddEventFragment extends Fragment {
 
                 Call<ResponseBody> addEvent;
                 if (event == null) {
-                    addEvent= RetrofitClient.getInstance().getApi().addEvent("Bearer " + DataBASE.token, title.getText().toString(), place.getText().toString(), date,point.getText().toString());
+                    addEvent= Retrofit.getInstance().getApi().addEvent("Bearer " + DataBASE.token, title.getText().toString(), place.getText().toString(), date,point.getText().toString());
                 } else {
                     event.setTitle(title.getText().toString());
                     event.setPlace(place.getText().toString());
                     event.setPoints(point.getText().toString().length() > 0 ? Integer.parseInt(point.getText().toString()) : 0);
                     event.setDate(date);
-                    addEvent= RetrofitClient.getInstance().getApi().editEvent("Bearer " + DataBASE.token, event.getId(), event);
+                    addEvent= Retrofit.getInstance().getApi().editEvent("Bearer " + DataBASE.token, event.getId(), event);
                 }
                 addEvent.enqueue(new ValidateCallback<ResponseBody>() {
                     @Override
@@ -234,7 +235,7 @@ public class AddEventFragment extends Fragment {
         return e;
     }
     public void addParticipant(Map<String,String> map) {
-        Call<ResponseBody> addPointsNFC = RetrofitClient.getInstance().getApi().addEventParticipant("Bearer " + DataBASE.token, event.getId(), map);
+        Call<ResponseBody> addPointsNFC = Retrofit.getInstance().getApi().addEventParticipant("Bearer " + DataBASE.token, event.getId(), map);
         addPointsNFC.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

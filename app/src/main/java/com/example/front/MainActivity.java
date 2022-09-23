@@ -21,7 +21,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.front.CONST.CONST;
 import com.example.front.data.database.DataBASE;
-import com.example.front.retrofit.RetrofitClient;
+import com.example.front.retrofit.Retrofit;
 import com.example.front.ui.Map.MapFragment;
 import com.example.front.ui.User.UserProfileFragment;
 import com.example.front.ui.User.UsersListFragment;
@@ -80,12 +80,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        updateMenuItems(navigationView);
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.nav_host_fragment_content_main,new NewsFragment()).addToBackStack(null).commit();
         toolbar.setTitle(R.string.news_fragment);
 
 
+    }
+
+    private void updateMenuItems(NavigationView navigationView) {
+        navigationView.getMenu().findItem(R.id.nav_my_appeal).setVisible(!DataBASE.user.isAdmin());
+        navigationView.getMenu().findItem(R.id.nav_request_types).setVisible(DataBASE.user.isAdmin());
+        navigationView.getMenu().findItem(R.id.nav_response_to_lib).setVisible(DataBASE.user.isLibrarian() || DataBASE.user.isAdmin());
+        navigationView.getMenu().findItem(R.id.nav_response_to_admin).setVisible(DataBASE.user.isAdmin());
+        navigationView.getMenu().findItem(R.id.nav_user_list).setVisible(DataBASE.user.isAdmin() || DataBASE.user.isCurator());
+        navigationView.getMenu().findItem(R.id.nav_history).setVisible(DataBASE.user.isUser());
     }
 
 
@@ -174,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 toolbar.setTitle(R.string.response_to_admin);
                 break;
             case R.id.nav_exit:
-                Call<ResponseBody> logout = RetrofitClient.getInstance().getApi().logout("Bearer "+ MainActivity.userToken(this));
+                Call<ResponseBody> logout = Retrofit.getInstance().getApi().logout("Bearer "+ MainActivity.userToken(this));
                 LoginActivity.saveUserToken(getBaseContext(), null);
                 logout.enqueue(new Callback<ResponseBody>() {
                     @Override

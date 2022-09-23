@@ -16,7 +16,7 @@ import com.example.front.CONST.CONST;
 import com.example.front.R;
 import com.example.front.data.database.DataBASE;
 import com.example.front.data.User;
-import com.example.front.retrofit.RetrofitClient;
+import com.example.front.retrofit.Retrofit;
 import com.example.front.retrofit.responses.ObjectResponse;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
@@ -78,7 +78,7 @@ public class UserProfileFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Call<ObjectResponse<User>> getProfileData = RetrofitClient.getInstance().getApi().getProfile("Bearer " + DataBASE.token);
+        Call<ObjectResponse<User>> getProfileData = Retrofit.getInstance().getApi().getProfile("Bearer " + DataBASE.token);
         getProfileData.enqueue(new Callback<ObjectResponse<User>>() {
             @Override
             public void onResponse(Call<ObjectResponse<User>> call, Response<ObjectResponse<User>> response) {

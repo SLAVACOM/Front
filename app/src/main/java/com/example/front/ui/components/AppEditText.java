@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -37,9 +38,9 @@ public class AppEditText extends FrameLayout {
             int hint = Integer.parseInt(attrs.getAttributeValue(xmlns, "hint").substring(1));
             l.setHint(getResources().getString(hint));
         }catch (Exception e){
-            l.setHint(attrs.getAttributeValue(xmlns, "hint"));
+            if (attrs != null) l.setHint(attrs.getAttributeValue(xmlns, "hint"));
         }
-        int inputType = attrs.getAttributeIntValue(xmlns, "inputType", 0);
+        int inputType = attrs == null ? 0 : attrs.getAttributeIntValue(xmlns, "inputType", 0);
         if (inputType != 0) et.setInputType(inputType);
         if ((inputType & InputType.TYPE_TEXT_VARIATION_PASSWORD) > 0) {
             l.setEndIconMode(TextInputLayout.END_ICON_PASSWORD_TOGGLE);
@@ -47,9 +48,9 @@ public class AppEditText extends FrameLayout {
     }
 
     private void initView() {
-        inflate(getContext(), R.layout.app_edit_text_layout, this);
-        et = findViewById(R.id.et);
-        l = findViewById(R.id.til);
+        View v = inflate(getContext(), R.layout.app_edit_text_layout, this);
+        et = v.findViewById(R.id.et);
+        l = v.findViewById(R.id.til);
         et.setTypeface(ResourcesCompat.getFont(getContext(),R.font.vela_sans_bold));
     }
     public String getText() {
@@ -59,13 +60,13 @@ public class AppEditText extends FrameLayout {
         et.setText(text);
     }
     public void setHint(String text) {
-        et.setHint(text);
+        l.setHint(text);
     }
     public void setError(String text) {
         l.setError(text);
     }
     public void setHint(int text) {
-        et.setHint(text);
+        l.setHint(text);
     }
 
     public void addTextChangedListener(TextWatcher w) {

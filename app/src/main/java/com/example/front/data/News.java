@@ -15,15 +15,15 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 public class News {
-    private int id;
-    private String title ="";
-    private String description="";
-    private int user_id;
-    private String created_at;
-    private String updated_at;
-    private ArrayList<Photo> photos = new ArrayList<Photo>();
-    private User author;
-    private String date ="";
+    protected int id;
+    protected String title ="";
+    protected String description="";
+    protected int user_id;
+    protected String created_at;
+    protected String updated_at;
+    protected ArrayList<Photo> photos = new ArrayList<Photo>();
+    protected User author;
+    protected String date ="";
     PhotosPagerAdapter adapter;
 
     public String getDate() {
@@ -44,6 +44,9 @@ public class News {
 
     public int getId() {
         return id;
+    }
+    public String getPathId() {
+        return id > 0 ? "" + id : "";
     }
 
     public void setId(int id) {

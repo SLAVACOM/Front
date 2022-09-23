@@ -19,10 +19,9 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:fontFamily="sans-serif"
-        android:gravity="center"
-        android:textAllCaps="true"
-        android:textSize="20sp"
+        android:fontFamily="@font/vela_sans_bold"
+        android:textColor="@color/black"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -30,17 +29,33 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/news_content_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="-4dp"
+        android:layout_marginEnd="16dp"
+        android:text="вчера"
+        android:fontFamily="@font/velasans_regular"
+        android:textSize="12sp"
+        app:layout_constraintHorizontal_bias="0.023"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/news_title" />
+
+
+    <TextView
         android:id="@+id/news_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:fontFamily="sans-serif"
-        android:textSize="16sp"
+        android:fontFamily="@font/velasans_regular"
+        android:textColor="@color/dark_text"
+        android:textSize="12sp"
         app:layout_constraintHorizontal_bias="0.023"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/news_title" />
+        app:layout_constraintTop_toBottomOf="@+id/news_content_date" />
 
     <com.example.front.ui.components.ViewPagerCarouselView
         android:id="@+id/viewPager"

@@ -18,7 +18,7 @@ import com.example.front.adapter.NewsAdapter;
 import com.example.front.data.ServerListResponse;
 import com.example.front.data.database.DataBASE;
 import com.example.front.data.News;
-import com.example.front.retrofit.RetrofitClient;
+import com.example.front.retrofit.Retrofit;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import retrofit2.Call;
@@ -31,14 +31,14 @@ public class NewsFragment extends Fragment {
     NewsAdapter adapter;
     RecyclerView recyclerView;
     SwipeRefreshLayout swipeRefreshLayout;
-    FloatingActionButton actionButton;
+    FloatingActionButton addBtn;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_news,container,false);
         adapter = new NewsAdapter(getContext());
-        actionButton = view.findViewById(R.id.fab_addNews);
-        actionButton.setOnClickListener(new View.OnClickListener() {
+        addBtn = view.findViewById(R.id.fab_addNews);
+        addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -47,6 +47,7 @@ public class NewsFragment extends Fragment {
                 fragmentTransaction.commit();
             }
         });
+        addBtn.setVisibility(DataBASE.user.isAdmin() ? View.VISIBLE : View.GONE);
         adapter.setClickListener(new NewsAdapter.ClickListener() {
             @Override
             public void onItemClick(int position, View view) {
@@ -55,6 +56,7 @@ public class NewsFragment extends Fragment {
 
             @Override
             public void onItemLongClick(int position, View view) {
+                if (!DataBASE.user.isCurator() && !DataBASE.user.isAdmin()) return;
                 NewsEditFragment editFragment = new NewsEditFragment();
                 Bundle bundle = new Bundle();
                 bundle.putInt("pos",position);
@@ -89,7 +91,7 @@ public class NewsFragment extends Fragment {
 
     }
     private void getNews(){
-        Call<ServerListResponse<News>> getNewsList = RetrofitClient.getInstance().getApi().getNewsList();
+        Call<ServerListResponse<News>> getNewsList = Retrofit.getInstance().getApi().getNewsList();
         getNewsList.enqueue(new Callback<ServerListResponse<News>>() {
             @Override
             public void onResponse(Call<ServerListResponse<News>> call, Response<ServerListResponse<News>> response) {

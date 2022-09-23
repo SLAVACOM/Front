@@ -19,7 +19,7 @@ import com.example.front.adapter.RequestsLibAdapter;
 import com.example.front.data.ServerListResponse;
 import com.example.front.data.ResponsLibrary;
 import com.example.front.data.database.DataBASE;
-import com.example.front.retrofit.RetrofitClient;
+import com.example.front.retrofit.Retrofit;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import retrofit2.Call;
@@ -76,7 +76,7 @@ public class LibraryFragment extends Fragment {
     }
 
     public void getREQUEST(){
-        Call<ServerListResponse<ResponsLibrary>> getREQUEST = RetrofitClient.getInstance().getApi().getLibRespons("Bearer "+DataBASE.token);
+        Call<ServerListResponse<ResponsLibrary>> getREQUEST = Retrofit.getInstance().getApi().getLibRespons("Bearer "+DataBASE.token);
         getREQUEST.enqueue(new Callback<ServerListResponse<ResponsLibrary>>() {
             @Override
             public void onResponse(Call<ServerListResponse<ResponsLibrary>> call, Response<ServerListResponse<ResponsLibrary>> response) {

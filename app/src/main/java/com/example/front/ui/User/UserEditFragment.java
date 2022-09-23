@@ -17,25 +17,19 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.front.R;
 import com.example.front.data.database.DataBASE;
-import com.example.front.retrofit.RetrofitClient;
+import com.example.front.retrofit.Retrofit;
 import com.example.front.ui.signup.UserFormResult;
 import com.example.front.ui.signup.UserFormViewModel;
 import com.example.front.ui.signup.SignUpViewModelFactory;
 import com.example.front.ui.signup.UserFormState;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class UserEditFragment extends Fragment implements View.OnClickListener {
@@ -148,7 +142,7 @@ public class UserEditFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        Call<ResponseBody> setUser = RetrofitClient.getInstance().getApi().editUser("Bearer " + DataBASE.token, Integer.valueOf(user.getId()), viewModel.getUserData().getValue());
+        Call<ResponseBody> setUser = Retrofit.getInstance().getApi().editUser("Bearer " + DataBASE.token, Integer.valueOf(user.getId()), viewModel.getUserData().getValue());
         viewModel.sendRequest(setUser);
     }
 }

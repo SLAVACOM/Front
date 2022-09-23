@@ -20,7 +20,7 @@ import com.example.front.adapter.AdapterEvents;
 import com.example.front.data.EventJSON;
 import com.example.front.data.ServerListResponse;
 import com.example.front.data.database.DataBASE;
-import com.example.front.retrofit.RetrofitClient;
+import com.example.front.retrofit.Retrofit;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import retrofit2.Call;
@@ -32,7 +32,7 @@ public class EventFragment extends Fragment {
 
     private AdapterEvents adapter;
     private RecyclerView recyclerView;
-    private FloatingActionButton add;
+    private FloatingActionButton addBtn;
 
     private SwipeRefreshLayout swipeRefreshLayout;
 
@@ -40,20 +40,21 @@ public class EventFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_event,container,false);
+        View view = inflater.inflate(R.layout.fragment_event, container, false);
         adapter = new AdapterEvents();
-        add = view.findViewById(R.id.fab_event_add);
+        addBtn = view.findViewById(R.id.fab_event_add);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
         recyclerView = view.findViewById(R.id.recycler_event);
-        adapter.setOnItemClickListener(new AdapterEvents.ClickListener(){
+        adapter.setOnItemClickListener(new AdapterEvents.ClickListener() {
             public void onItemClick(int position, View view) {
+                if (!DataBASE.user.isCurator() && !DataBASE.user.isAdmin()) return;
                 AddEventFragment fragment = new AddEventFragment();
                 Bundle bundle = new Bundle();
-                bundle.putInt("pos",position);
+                bundle.putInt("pos", position);
                 fragment.setArguments(bundle);
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.nav_host_fragment_content_main,fragment).addToBackStack(null);
+                fragmentTransaction.replace(R.id.nav_host_fragment_content_main, fragment).addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
@@ -61,15 +62,16 @@ public class EventFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        add.setOnClickListener(new View.OnClickListener() {
+        addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.nav_host_fragment_content_main,new AddEventFragment()).addToBackStack(null);
+                fragmentTransaction.replace(R.id.nav_host_fragment_content_main, new AddEventFragment()).addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
+        addBtn.setVisibility(DataBASE.user.isAdmin() ? View.VISIBLE : View.GONE);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -93,15 +95,15 @@ public class EventFragment extends Fragment {
     }
 
 
-    public void getEvent(){
-        Call<ServerListResponse<EventJSON>> getEventList = RetrofitClient.getInstance().getApi().getEventList();
+    public void getEvent() {
+        Call<ServerListResponse<EventJSON>> getEventList = Retrofit.getInstance().getApi().getEventList();
         getEventList.enqueue(new Callback<ServerListResponse<EventJSON>>() {
             @Override
             public void onResponse(Call<ServerListResponse<EventJSON>> call, Response<ServerListResponse<EventJSON>> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     DataBASE.EVENT_JSON_LIST.clear();
                     DataBASE.EVENT_JSON_LIST.addAll(response.body().getData());
-                    Log.d(CONST.SERVER_LOG,DataBASE.EVENT_JSON_LIST.toString());
+                    Log.d(CONST.SERVER_LOG, DataBASE.EVENT_JSON_LIST.toString());
                     adapter.notifyDataSetChanged();
                 }
                 swipeRefreshLayout.setRefreshing(false);

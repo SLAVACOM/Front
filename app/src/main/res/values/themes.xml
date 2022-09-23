@@ -35,7 +35,7 @@
 
     <style name="ThemeOverlay.App.AddPhoto" parent="">
         <item name="colorContainer">@color/fill</item>
-        <item name="colorOnContainer">@color/dark_title</item>
+        <item name="colorOnContainer">@color/dark_text</item>
     </style>
 
 </resources>

@@ -25,7 +25,7 @@ import com.example.front.R;
 import com.example.front.data.Appeal;
 import com.example.front.data.Photo;
 import com.example.front.data.database.DataBASE;
-import com.example.front.retrofit.RetrofitClient;
+import com.example.front.retrofit.Retrofit;
 import com.example.front.ui.components.AppEditText;
 import com.example.front.ui.components.ViewPagerCarouselView;
 
@@ -107,7 +107,7 @@ public class AppealsAdapter extends RecyclerView.Adapter {
             ((GradientDrawable) confirmBtn.getBackground()).setColor(ContextCompat.getColor(context,R.color.accept));
 
             int confirmVisible = View.INVISIBLE;
-            if ((DataBASE.user.isUser()) && appeal.getState() == CONST.APPEAL_PROCESSED) {//житель может пожтвердить, если статус -"выполнено"
+            if ((DataBASE.user.isUser()) && DataBASE.user.getId() == appeal.getUser_id() && appeal.getState() == CONST.APPEAL_PROCESSED) {//житель может пожтвердить, если статус -"выполнено"
                 confirmVisible = View.VISIBLE;
                 confirmBtn.setText(R.string.close_btn_title);
             }
@@ -155,8 +155,8 @@ public class AppealsAdapter extends RecyclerView.Adapter {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             Toast.makeText(context, comm.getText().toString(), Toast.LENGTH_SHORT).show();;
                             Call<ResponseBody> accept;
-                            if (DataBASE.user.isAdmin()) accept = RetrofitClient.getInstance().getApi().userResponsStatusExecution("Bearer "+DataBASE.token,appeal.getId(), comm.getText().toString());
-                            else accept = RetrofitClient.getInstance().getApi().userResponsStatusExecuted("Bearer "+DataBASE.token,appeal.getId());
+                            if (DataBASE.user.isAdmin()) accept = Retrofit.getInstance().getApi().userResponsStatusExecution("Bearer "+DataBASE.token,appeal.getId(), comm.getText().toString());
+                            else accept = Retrofit.getInstance().getApi().userResponsStatusExecuted("Bearer "+DataBASE.token,appeal.getId());
                             accept.enqueue(new Callback<ResponseBody>() {
                                 @Override
                                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -200,7 +200,7 @@ public class AppealsAdapter extends RecyclerView.Adapter {
                     builder.setPositiveButton("Да", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            Call<ResponseBody> accept = RetrofitClient.getInstance().getApi().deleteUserRespons("Bearer "+DataBASE.token,appeal.getId());
+                            Call<ResponseBody> accept = Retrofit.getInstance().getApi().deleteUserRespons("Bearer "+DataBASE.token,appeal.getId());
                             accept.enqueue(new Callback<ResponseBody>() {
                                 @Override
                                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -228,7 +228,7 @@ public class AppealsAdapter extends RecyclerView.Adapter {
             likeBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Call<ResponseBody> likeReq = RetrofitClient.getInstance().getApi().appealLikeAcation("Bearer "+DataBASE.token,appeal.getId(), appeal.getUser_like()!=1 ? "like" : "dislike");
+                    Call<ResponseBody> likeReq = Retrofit.getInstance().getApi().appealLikeAcation("Bearer "+DataBASE.token,appeal.getId(), appeal.getUser_like()!=1 ? "like" : "dislike");
                     likeReq.enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

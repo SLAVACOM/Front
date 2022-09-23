@@ -19,7 +19,7 @@ import com.example.front.adapter.Adapter_bus;
 import com.example.front.data.BusJSON;
 import com.example.front.data.ServerListResponse;
 import com.example.front.data.database.DataBASE;
-import com.example.front.retrofit.RetrofitClient;
+import com.example.front.retrofit.Retrofit;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import retrofit2.Call;
@@ -98,7 +98,7 @@ public class FragmentBus extends Fragment {
 
 
     private void getBus() {
-        Call<ServerListResponse<BusJSON>> getBus = RetrofitClient.getInstance().getApi().getBusList();
+        Call<ServerListResponse<BusJSON>> getBus = Retrofit.getInstance().getApi().getBusList();
         getBus.enqueue(new Callback<ServerListResponse<BusJSON>>() {
             @Override
             public void onResponse(Call<ServerListResponse<BusJSON>> call, Response<ServerListResponse<BusJSON>> response) {

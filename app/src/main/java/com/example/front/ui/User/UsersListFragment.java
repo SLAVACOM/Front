@@ -23,7 +23,7 @@ import com.example.front.adapter.AdapterUserList;
 import com.example.front.data.ServerListResponse;
 import com.example.front.data.User;
 import com.example.front.data.database.DataBASE;
-import com.example.front.retrofit.RetrofitClient;
+import com.example.front.retrofit.Retrofit;
 import com.example.front.ui.components.AppEditText;
 
 import retrofit2.Call;
@@ -125,7 +125,7 @@ public class UsersListFragment extends Fragment {
     }
 
     private void getUsers(){
-        Call<ServerListResponse<User>> getUsers = RetrofitClient.getInstance().getApi().getUsers("Bearer "+ DataBASE.token, search.getText().toString());
+        Call<ServerListResponse<User>> getUsers = Retrofit.getInstance().getApi().getUsers("Bearer "+ DataBASE.token, search.getText().toString());
         getUsers.enqueue(new Callback<ServerListResponse<User>>() {
             @Override
             public void onResponse(Call<ServerListResponse<User>> call, Response<ServerListResponse<User>> response) {

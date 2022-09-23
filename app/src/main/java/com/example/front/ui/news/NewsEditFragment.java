@@ -28,14 +28,16 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.front.CONST.CONST;
 import com.example.front.R;
 import com.example.front.TextEditActivity;
+import com.example.front.data.Appeal;
 import com.example.front.data.Photo;
 import com.example.front.data.ServerItemResponse;
 import com.example.front.data.News;
 import com.example.front.data.database.DataBASE;
 import com.example.front.retrofit.Api;
-import com.example.front.retrofit.RetrofitClient;
+import com.example.front.retrofit.Retrofit;
 import com.example.front.retrofit.call.ValidateCallback;
 import com.example.front.retrofit.responses.ValidationResponse;
+import com.example.front.ui.appeal.AppealFragment;
 import com.example.front.ui.components.AppEditText;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -63,11 +65,16 @@ public class NewsEditFragment extends Fragment {
     private FloatingActionButton deletePhotoBtn;
     private ViewPager viewPager;
     private News item;
+    private boolean appealMode;
+    private String bearer;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if (bearer == null) {
+            bearer = "Bearer " + DataBASE.token;
+        }
         Bundle arguments = getArguments();
         int pos = arguments == null ? -1 : arguments.getInt("pos", -1);
         if (pos != -1) {
@@ -75,7 +82,7 @@ public class NewsEditFragment extends Fragment {
         } else {
             item = new News();
         }
-
+        appealMode = arguments != null && AppealFragment.MODE.equals(arguments.getString("mode"));
         View view = inflater.inflate(R.layout.fragment_news_edit, container, false);
         title = view.findViewById(R.id.etv_news_edit_title);
         description = view.findViewById(R.id.etv_news_edit_content);
@@ -83,7 +90,7 @@ public class NewsEditFragment extends Fragment {
         saveBtn = view.findViewById(R.id.buttonEdit);
         ((GradientDrawable) saveBtn.getBackground()).setColor(ContextCompat.getColor(getContext(), R.color.accept));
         viewPager = view.findViewById(R.id.viewPager);
-        updatePhotos();
+        updateUiPhotos();
         addimage = view.findViewById(R.id.bt_newsedit_addimage);
         ((GradientDrawable) addimage.getBackground()).setColor(ContextCompat.getColor(getContext(), R.color.accept));
         deletePhotoBtn = view.findViewById(R.id.deletePhoto);
@@ -122,10 +129,12 @@ public class NewsEditFragment extends Fragment {
                 if (photoID == 0) {
                     item.getPhotos().remove(viewPager.getCurrentItem());
                     item.getAdapter().notifyDataSetChanged();
-                    updatePhotos();
+                    updateUiPhotos();
                     return;
                 }
-                Call<JSONObject> deletePhoto = RetrofitClient.getInstance().getApi().editNewsDeletePhoto("Bearer " + DataBASE.token, item.getId(), "PUT", photoID);
+                Call<JSONObject> deletePhoto = appealMode
+                        ? Retrofit.getApi().deleteAppealPhoto(bearer, item.getPathId(), photoID)
+                        : Retrofit.getApi().deleteNewsPhoto(bearer, item.getPathId(), photoID);
                 deletePhoto.enqueue(new Callback<JSONObject>() {
                     @Override
                     public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
@@ -155,7 +164,9 @@ public class NewsEditFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 view.setEnabled(false);
-                Call<ResponseBody> delete = RetrofitClient.getInstance().getApi().deleteNews("Bearer " + DataBASE.token, item.getId());
+                Call<ResponseBody> delete = appealMode
+                        ? Retrofit.getApi().deleteAppeal(bearer, item.getId())
+                        : Retrofit.getApi().deleteNews(bearer, item.getId());
                 delete.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -176,14 +187,11 @@ public class NewsEditFragment extends Fragment {
             }
         });
 
-
         saveBtn.setOnClickListener(view1 -> saveNews());
-
-
         return view;
     }
 
-    private void updatePhotos() {
+    private void updateUiPhotos() {
         if (item.getPhotos().size() > 0) {
             item.initAdapter(getContext());
             viewPager.setAdapter(item.getAdapter());
@@ -208,9 +216,9 @@ public class NewsEditFragment extends Fragment {
                     List<MultipartBody.Part> photos = new ArrayList<>();
                     photos.add(MultipartBody.Part.createFormData(name, file.getName(), filebody));
                     item.getPhotos().add(new Photo(file.getAbsolutePath()));
-                    item.getAdapter().notifyDataSetChanged();
+                    if (item.getAdapter() != null) item.getAdapter().notifyDataSetChanged();
                     if (item.getId() == 0) {
-                        updatePhotos();
+                        updateUiPhotos();
                     } else {
                         saveNews(photos, false);
                     }
@@ -237,33 +245,34 @@ public class NewsEditFragment extends Fragment {
         saveNews(null, true);
     }
     public void saveNews(List<MultipartBody.Part> photos, boolean close) {
-        Call<ServerItemResponse<News>> saveNewsPost;
-        final String id = item.getId() > 0 ? item.getId()+"" : "";
-        Api r = RetrofitClient.getInstance().getApi();
-        String header = "Bearer " + DataBASE.token;
+        Call<ServerItemResponse<Appeal>> saveNewsPost;
+        final String id = item.getPathId();
+        Api r = Retrofit.getApi();
         boolean addPhoto = false;
         if (photos == null || id.isEmpty()) {
             if (id.isEmpty()) {
-                saveNewsPost = r.addNews(header, title.getText(), item.getDescription());
+                saveNewsPost = appealMode ? r.addAppeal(bearer, title.getText(), item.getDescription()) : r.addNews(bearer, title.getText(), item.getDescription());
                 if (!item.getPhotos().isEmpty()) {
                     photos = item.getPhotosMultipart();
                 }
             } else {
-                saveNewsPost = r.editNews(header, id, title.getText(), item.getDescription());
+                saveNewsPost = appealMode ? r.editAppeal(bearer, id, title.getText(), item.getDescription()) : r.editNews(bearer, id, title.getText(), item.getDescription());
             }
         } else {
             addPhoto = photos.size() > 0;
-            saveNewsPost = r.editNews(header, id, "PUT", title.getText(), item.getDescription(), photos);
+            saveNewsPost = appealMode
+                    ? r.editAppeal(bearer, id, "PUT", title.getText(), item.getDescription(), photos)
+                    : r.editNews(bearer, id, "PUT", title.getText(), item.getDescription(), photos);
         }
         List<MultipartBody.Part> finalPhotos = photos;
         boolean finalAddPhoto = addPhoto;
-        saveNewsPost.enqueue(new ValidateCallback<ServerItemResponse<News>>() {
+        saveNewsPost.enqueue(new ValidateCallback<ServerItemResponse<Appeal>>() {
             @Override
-            public void onSuccess(Call<ServerItemResponse<News>> call, Response<ServerItemResponse<News>> response) {
+            public void onSuccess(Call<ServerItemResponse<Appeal>> call, Response<ServerItemResponse<Appeal>> response) {
                 Log.d(CONST.SERVER_LOG, response.body().toString());
                 if (finalAddPhoto) Toast.makeText(getContext(), "Фото загружено", Toast.LENGTH_SHORT).show();
                 viewPager.setVisibility(View.GONE);
-                item = response.body().getData();
+                item = appealMode ? response.body().getData() : (News) response.body().getData();
                 NewsEditFragment.this.getView().invalidate();
                 if (item.getPhotos().size() == 0 && finalPhotos.isEmpty()) {
                     viewPager.setVisibility(View.GONE);
@@ -282,7 +291,7 @@ public class NewsEditFragment extends Fragment {
             }
 
             @Override
-            public void on422(Call<ServerItemResponse<News>> call, Response<ServerItemResponse<News>> response, ValidationResponse errors) {
+            public void on422(Call<ServerItemResponse<Appeal>> call, Response<ServerItemResponse<Appeal>> response, ValidationResponse errors) {
                 String error = errors.getError("title");
                 if (error != null) title.setError(error);
                 error = errors.getError("description");

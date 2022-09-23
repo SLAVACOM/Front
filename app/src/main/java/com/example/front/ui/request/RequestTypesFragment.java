@@ -24,7 +24,7 @@ import com.example.front.data.ServerListResponse;
 import com.example.front.data.RequestTypeJSON;
 import com.example.front.data.database.DataBASE;
 import com.example.front.helpers.SwipeHelper;
-import com.example.front.retrofit.RetrofitClient;
+import com.example.front.retrofit.Retrofit;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -101,7 +101,7 @@ public class RequestTypesFragment extends Fragment {
     }
 
     public void getItems(){
-        Call<ServerListResponse<RequestTypeJSON>> call = RetrofitClient.getInstance().getApi().getRequestTypes();
+        Call<ServerListResponse<RequestTypeJSON>> call = Retrofit.getInstance().getApi().getRequestTypes();
         call.enqueue(new Callback<ServerListResponse<RequestTypeJSON>>() {
             @Override
             public void onResponse(Call<ServerListResponse<RequestTypeJSON>> call, Response<ServerListResponse<RequestTypeJSON>> response) {
@@ -122,7 +122,7 @@ public class RequestTypesFragment extends Fragment {
         });
     }
     private void delete(RequestTypeJSON typeItem) {
-        Call<ResponseBody> deleteResp = RetrofitClient.getInstance().getApi().deleteRequest("Bearer " + MainActivity.userToken(getActivity()), typeItem.getId());
+        Call<ResponseBody> deleteResp = Retrofit.getInstance().getApi().deleteRequest("Bearer " + MainActivity.userToken(getActivity()), typeItem.getId());
         deleteResp.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

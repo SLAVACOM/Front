@@ -30,6 +30,7 @@ public class AppButton extends androidx.appcompat.widget.AppCompatButton {
         setBackgroundResource(R.drawable.blue_btn_small);
         setTextColor(Color.WHITE);
         setPadding(0,0,0,0);
+        setAllCaps(false);
 
     }
 }

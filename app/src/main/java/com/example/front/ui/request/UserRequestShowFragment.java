@@ -106,15 +106,23 @@ public class UserRequestShowFragment extends Fragment {
             email.setText(item.getUser().getEmail());
             phone.setText("+7" + item.getUser().getPhone());
             address.setText(item.getUser().getAddress());
-            view.findViewById(R.id.phone_lbl).setVisibility(View.VISIBLE);
-            view.findViewById(R.id.email_lbl).setVisibility(View.VISIBLE);
-            view.findViewById(R.id.adr_label).setVisibility(View.VISIBLE);
             text.setVisibility(View.VISIBLE);
             date.setVisibility(View.VISIBLE);
-            address.setVisibility(View.VISIBLE);
-            phone.setVisibility(View.VISIBLE);
-            email.setVisibility(View.VISIBLE);
+            if (!DataBASE.user.isUser()){
+                view.findViewById(R.id.phone_lbl).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.email_lbl).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.adr_label).setVisibility(View.VISIBLE);
+                address.setVisibility(View.VISIBLE);
+                phone.setVisibility(View.VISIBLE);
+                email.setVisibility(View.VISIBLE);
+            }
+            if (item.getUser().getId() == DataBASE.user.getId()) {
+                authorTv.setVisibility(View.GONE);
+            }
         }
+
+        ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) chat.getLayoutParams();
+        lp.topMargin = view.getHeight();
         return view;
     }
 
@@ -139,7 +147,10 @@ public class UserRequestShowFragment extends Fragment {
     public void sendMessage() {
         Message message = new Message();
         String text = msgET.getText().toString();
-        if (text.length() < 1) text = "";
+        if (text.length() < 1) {
+            Toast.makeText(getContext(), "Cообщение не может быть пустым", Toast.LENGTH_SHORT).show();
+            return;
+        }
         message.setText(text);
         Call<ServerListResponse<Message>> call = Retrofit.getApi().sendUserRequestMessage("Bearer " + DataBASE.token, item.getId() + "", message);
         call.enqueue(new ValidateCallback<ServerListResponse<Message>>() {

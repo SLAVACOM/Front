@@ -7,16 +7,15 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.front.R;
-import com.example.front.data.database.DataBASE;
 import com.example.front.data.EventJSON;
-import com.example.front.scanner.CaptureAct;
-import com.journeyapps.barcodescanner.ScanOptions;
+import com.example.front.data.database.DataBASE;
 
 public class AdapterEvents extends RecyclerView.Adapter {
-    public static ClickListener clickListener;
+    public static onEventClickListener clickListener;
 
 
     @NonNull
@@ -37,30 +36,28 @@ public class AdapterEvents extends RecyclerView.Adapter {
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,View.OnLongClickListener{
-        TextView time, content, zagal;
-        Button button;
+        TextView dateTv, placeTv, titleTv, pointsTv;
+        ConstraintLayout addPeopleBtn;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            button = itemView.findViewById(R.id.bt_scanner);
-            time = itemView.findViewById(R.id.tv_event_time);
-            content = itemView.findViewById(R.id.tv_event_content);
-            zagal = itemView.findViewById(R.id.tv_event_title);
-            itemView.setOnLongClickListener(this);
-            itemView.setOnClickListener(this);
+            addPeopleBtn = itemView.findViewById(R.id.bt_scanner);
+            addPeopleBtn.setVisibility(DataBASE.user.isAdmin() || DataBASE.user.isCurator() ? View.VISIBLE : View.GONE);
+            dateTv = itemView.findViewById(R.id.tv_event_time);
+            placeTv = itemView.findViewById(R.id.tv_event_content);
+            titleTv = itemView.findViewById(R.id.tv_event_title);
+            pointsTv = itemView.findViewById(R.id.tv_event_points);
+            if (DataBASE.user.isAdmin()) {
+                itemView.setOnLongClickListener(this);
+                itemView.setOnClickListener(this);
+            }
         }
         public void bindView(int position){
             EventJSON event = DataBASE.EVENT_JSON_LIST.get(position);
-            time.setText(""+event.getDate());
-            content.setText(""+event.getPlace()+"\n\n"+event.getPoints()+" баллов благодарности");
-            zagal.setText(""+event.getTitle());
-
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                }
-            });
-
+            dateTv.setText(""+event.getDate());
+            placeTv.setText(""+event.getPlace());
+            pointsTv.setText(""+event.getPoints());
+            titleTv.setText(""+event.getTitle());
+            addPeopleBtn.setOnClickListener(view -> clickListener.onAddPeople(position));
         }
 
         @Override
@@ -75,12 +72,13 @@ public class AdapterEvents extends RecyclerView.Adapter {
         }
 
     }
-    public void setOnItemClickListener(ClickListener clickListener){
+    public void setOnItemClickListener(onEventClickListener clickListener){
         AdapterEvents.clickListener = clickListener;
     }
 
-    public abstract static class ClickListener{
+    public abstract static class onEventClickListener {
         public abstract void onItemClick(int position, View view);
-        void onItemLongClick(int position,View view) {};
+        public void onItemLongClick(int position,View view) {};
+        public void onAddPeople(int position) {};
     }
 }

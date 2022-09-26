@@ -6,13 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,17 +31,13 @@ import com.example.front.ui.components.AppEditText;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AddEventFragment extends Fragment {
@@ -54,6 +48,8 @@ public class AddEventFragment extends Fragment {
     private Button qrBtn, nfcBtn;
     private Calendar dateAndTime = Calendar.getInstance();
     EventJSON event;
+    private int pos;
+
     public void checkEvent() {
         if (event == null || (DataBASE.user.getRole() & CONST.CURATOR_ROLE) == 0 && DataBASE.user.getRole() < CONST.ADMIN_ROLE) {
             qrBtn.setVisibility(View.INVISIBLE);
@@ -62,14 +58,14 @@ public class AddEventFragment extends Fragment {
         }
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
         try {
-            Date c= sdf.parse(event.getDate());
+            Date c = sdf.parse(event.getDate());
             dateAndTime.setTime(c);
         } catch (ParseException e) {
             e.printStackTrace();
         }
         title.setText(event.getTitle());
         place.setText(event.getPlace());
-        point.setText(""+event.getPoints());
+        point.setText("" + event.getPoints());
         frag_title.setText(R.string.edit_event_fragment_title);
         add.setText(R.string.save_title);
     }
@@ -79,7 +75,8 @@ public class AddEventFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_event, container, false);
         Bundle arguments = getArguments();
-        event = arguments != null ? DataBASE.EVENT_JSON_LIST.get(arguments.getInt("pos")) : null;
+        pos = arguments.getInt("pos");
+        event = arguments != null ? DataBASE.EVENT_JSON_LIST.get(pos) : null;
         date = view.findViewById(R.id.textView9);
         title = view.findViewById(R.id.etv_title_event);
         place = view.findViewById(R.id.etv_title_event2);
@@ -92,25 +89,8 @@ public class AddEventFragment extends Fragment {
         date.setOnClickListener((view1 -> {
             setDate(view1);
         }));
-        nfcBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), ScannerActivity.class);
-                intent.putExtra("post_id", event.getId());
-                startActivityForResult(intent, 1);
-            }
-        });
-        qrBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ScanOptions options = new ScanOptions();
-                options.setPrompt("Отсканируйте QR код профиля");
-                options.setBeepEnabled(true);
-                options.setOrientationLocked(true);
-                options.setCaptureActivity(CaptureAct.class);
-                activityResultLauncher.launch(options);
-            }
-        });
+        nfcBtn.setOnClickListener(view12 -> startNfc(pos));
+        qrBtn.setOnClickListener((v) -> startQr(pos));
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -119,13 +99,13 @@ public class AddEventFragment extends Fragment {
 
                 Call<ResponseBody> addEvent;
                 if (event == null) {
-                    addEvent= Retrofit.getInstance().getApi().addEvent("Bearer " + DataBASE.token, title.getText().toString(), place.getText().toString(), date,point.getText().toString());
+                    addEvent = Retrofit.getInstance().getApi().addEvent("Bearer " + DataBASE.token, title.getText().toString(), place.getText().toString(), date, point.getText().toString());
                 } else {
                     event.setTitle(title.getText().toString());
                     event.setPlace(place.getText().toString());
                     event.setPoints(point.getText().toString().length() > 0 ? Integer.parseInt(point.getText().toString()) : 0);
                     event.setDate(date);
-                    addEvent= Retrofit.getInstance().getApi().editEvent("Bearer " + DataBASE.token, event.getId(), event);
+                    addEvent = Retrofit.getInstance().getApi().editEvent("Bearer " + DataBASE.token, event.getId(), event);
                 }
                 addEvent.enqueue(new ValidateCallback<ResponseBody>() {
                     @Override
@@ -137,13 +117,13 @@ public class AddEventFragment extends Fragment {
                     @Override
                     public void on422(Call<ResponseBody> call, Response<ResponseBody> response, ValidationResponse errors) {
                         String e = errors.getError("title");
-                        if (e!= null) title.setError(e);
+                        if (e != null) title.setError(e);
                         e = errors.getError("place");
-                        if (e!= null) place.setError(e);
+                        if (e != null) place.setError(e);
                         e = errors.getError("points");
-                        if (e!= null) point.setError(e);
+                        if (e != null) point.setError(e);
                         e = errors.getError("date");
-                        if (e!= null) AddEventFragment.this.date.setError(e);
+                        if (e != null) AddEventFragment.this.date.setError(e);
 
                     }
 
@@ -158,7 +138,7 @@ public class AddEventFragment extends Fragment {
         return view;
     }
 
-    public void setDate(View v) {
+    private void setDate(View v) {
         new DatePickerDialog(getContext(), d,
                 dateAndTime.get(Calendar.YEAR),
                 dateAndTime.get(Calendar.MONTH),
@@ -166,7 +146,7 @@ public class AddEventFragment extends Fragment {
                 .show();
     }
 
-    public void setTime() {
+    private void setTime() {
         new TimePickerDialog(getContext(), t,
                 dateAndTime.get(Calendar.HOUR_OF_DAY),
                 dateAndTime.get(Calendar.MINUTE), true)
@@ -182,14 +162,14 @@ public class AddEventFragment extends Fragment {
                         | DateUtils.FORMAT_SHOW_TIME));
     }
 
-    TimePickerDialog.OnTimeSetListener t = (view, hourOfDay, minute) -> {
+    private TimePickerDialog.OnTimeSetListener t = (view, hourOfDay, minute) -> {
         dateAndTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
         dateAndTime.set(Calendar.MINUTE, minute);
         setInitialDateTime();
     };
 
     // установка обработчика выбора даты
-    DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
+    private DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker datePicker, int y, int m, int d) {
             dateAndTime.set(Calendar.YEAR, y);
@@ -208,55 +188,52 @@ public class AddEventFragment extends Fragment {
         }
         if (resultCode == 1) {
             if (card == null || card.isEmpty()) error();
-            else addParticipant(card);
+            else event.addParticipant(getActivity(), card);
+            System.out.println(card);
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
-    ActivityResultLauncher<ScanOptions> activityResultLauncher = registerForActivityResult(new ScanContract(), result -> {
+
+    public ActivityResultLauncher<ScanOptions> activityResultLauncher = registerForActivityResult(new ScanContract(), result -> {
         if (result.getContents() == null) return;
-        try{
-            addParticipant(Integer.parseInt(result.getContents()));
+        try {
+            System.out.println(result.getContents());
+            event.addParticipant(getActivity(), Integer.parseInt(result.getContents()));
         } catch (Throwable t) {
             t.printStackTrace();
             error();
         }
     });
-    public Map<String,String> addParticipant(String participant_card_id){
-        Map<String,String> e = new HashMap<>();
-        e.put("participant_card_id", participant_card_id);
-        addParticipant(e);
-        return e;
-    }
-    public Map<String,String> addParticipant(Integer participant_id){
-        Map<String,String> e = new HashMap<>();
-        e.put("participant_id", participant_id == null ?  "0" : participant_id+"");
-        addParticipant(e);
-        return e;
-    }
-    public void addParticipant(Map<String,String> map) {
-        Call<ResponseBody> addPointsNFC = Retrofit.getInstance().getApi().addEventParticipant("Bearer " + DataBASE.token, event.getId(), map);
-        addPointsNFC.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (!response.isSuccessful()){
-                    try {
-                        Log.d(CONST.SERVER_LOG, "ADD Participant " + response.errorBody().string());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Toast.makeText(getActivity(), "Пользователь или метка не найдены", Toast.LENGTH_SHORT).show();
-                }
-            }
 
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                t.printStackTrace();
-                error();
-            }
-        });
+
+    public void startQr(int position) {
+        startQr(position, () -> {});
     }
+    public void startQr(int position,Runnable run) {
+        event = DataBASE.EVENT_JSON_LIST.get(position);
+        ScanOptions options = new ScanOptions();
+        options.setPrompt("Отсканируйте QR код профиля");
+        options.setBeepEnabled(true);
+        options.setOrientationLocked(true);
+        options.setCaptureActivity(CaptureAct.class);
+        activityResultLauncher.launch(options);
+        run.run();
+    }
+
+    public void startNfc(int position) {
+        startNfc(position, () -> {});
+    }
+    public void startNfc(int position, Runnable run) {
+        event = DataBASE.EVENT_JSON_LIST.get(position);
+        Intent intent = new Intent(getContext(), ScannerActivity.class);
+        intent.putExtra("post_id", DataBASE.EVENT_JSON_LIST.get(position).getId());
+        startActivityForResult(intent, 1);
+        run.run();
+    }
+
+
     public void error() {
-        Toast.makeText(getActivity(), "Метка не поддерживается", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "Пользователь или метка не найдены", Toast.LENGTH_SHORT).show();
     }
 }

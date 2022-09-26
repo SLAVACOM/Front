@@ -49,7 +49,7 @@ public class RequestTypesFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view= inflater.inflate(R.layout.fragment_my_appeal, container, false);
         getItems();
-        addTypeBtn =view.findViewById(R.id.flBt_my_appeal);
+        addTypeBtn =view.findViewById(R.id.add_type);
         recyclerView = view.findViewById(R.id.recycler_appeal_byrequest);
         adapter = new RequestsTypeAdapter(getActivity());
         SwipeHelper swh = new SwipeHelper(getActivity(), recyclerView) {

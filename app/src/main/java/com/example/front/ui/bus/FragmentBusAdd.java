@@ -17,6 +17,7 @@ import com.example.front.data.database.DataBASE;
 import com.example.front.retrofit.Retrofit;
 import com.example.front.retrofit.call.ValidateCallback;
 import com.example.front.retrofit.responses.ValidationResponse;
+import com.example.front.ui.components.AppEditText;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
@@ -26,7 +27,7 @@ import retrofit2.Response;
 public class FragmentBusAdd extends Fragment {
 
     private Button button;
-    private EditText title,place, time;
+    private AppEditText title,place, time;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

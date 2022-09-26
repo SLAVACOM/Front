@@ -13,6 +13,8 @@
     <color name="chip_text">#9E9E9E</color>
     <color name="like">#FF8585</color>
     <color name="remove">#FF8585</color>
+    <color name="link">#FFC700</color>
+    <color name="place">#3193B2</color>
     <color name="accept">#52B788</color>
     <color name="dislike">#8E8080</color>
     <color name="default_chip">#F3F3F4</color>
@@ -21,6 +23,7 @@
 
     <color name="nav">#FF117e95</color>
     <color name="MapPolygonFill">#3400FFFF</color>
+    <color name="yellow">#FFD362</color>
 
 
 </resources>

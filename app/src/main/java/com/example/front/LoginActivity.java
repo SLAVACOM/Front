@@ -50,8 +50,8 @@ public class LoginActivity extends AppCompatActivity  {
         login = findViewById(R.id.etv_login_login);
         signup = findViewById(R.id.signup);
         reset = findViewById(R.id.reset);
-        login.setText("a@mail.ru");
-        password.setText("admin2");
+//        login.setText("a@mail.ru");
+//        password.setText("admin2");
         button = findViewById(R.id.bt_login);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,14 +130,15 @@ public class LoginActivity extends AppCompatActivity  {
         String token = userToken(getBaseContext());
         if (token == null) return null;
         Call<ObjectResponse<User>> getProfileData = Retrofit.getInstance().getApi().getProfile("Bearer " + token);
+        button.setEnabled(false);
         getProfileData.enqueue(new Callback<ObjectResponse<User>>() {
             @Override
             public void onResponse(Call<ObjectResponse<User>> call, Response<ObjectResponse<User>> response) {
                 if (response.isSuccessful()) {
                     DataBASE.user = response.body().getData();
                     Log.d(CONST.SERVER_LOG, "USERS " + DataBASE.user);
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 }
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 button.setEnabled(true);
             }
 
@@ -149,7 +150,6 @@ public class LoginActivity extends AppCompatActivity  {
                 t.printStackTrace();
             }
         });
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
         return  DataBASE.user;
     }
     public static String userToken(Context context) {

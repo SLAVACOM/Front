@@ -74,6 +74,7 @@ public class MessagesAdapter extends RecyclerView.Adapter {
         public void bindView(int position) {
             Message message = list.get(position);
             from.setText(message.getUser().getFull_name());
+            if (message.getUser().getId() == DataBASE.user.getId()) from.setVisibility(View.GONE);
 //            dateTV.setText(news.getDate());
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 text.setText(Html.fromHtml(message.getText(), Html.FROM_HTML_MODE_COMPACT));

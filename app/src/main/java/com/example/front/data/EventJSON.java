@@ -1,8 +1,22 @@
 package com.example.front.data;
 
 
+import android.content.Context;
+import android.util.Log;
+import android.widget.Toast;
+
+import com.example.front.CONST.CONST;
+import com.example.front.data.database.DataBASE;
+import com.example.front.retrofit.Retrofit;
+
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class EventJSON {
 
@@ -91,5 +105,40 @@ public class EventJSON {
 
     public void setPoints(int points) {
         this.points = points;
+    }
+
+    public Map<String,String> addParticipant(Context context, String participant_card_id){
+        Map<String,String> e = new HashMap<>();
+        e.put("participant_card_id", participant_card_id);
+        addParticipant(context, e);
+        return e;
+    }
+    public Map<String,String> addParticipant(Context context, Integer participant_id){
+        Map<String,String> e = new HashMap<>();
+        e.put("participant_id", participant_id == null ?  "0" : participant_id+"");
+        addParticipant(context, e);
+        return e;
+    }
+    public void addParticipant(Context context, Map<String,String> map) {
+        Call<ResponseBody> addPointsNFC = Retrofit.getInstance().getApi().addEventParticipant("Bearer " + DataBASE.token, getId(), map);
+        addPointsNFC.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (!response.isSuccessful()){
+                    try {
+                        Log.d(CONST.SERVER_LOG, "ADD Participant " + response.errorBody().string());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Toast.makeText(context, "Пользователь или метка не найдены", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                t.printStackTrace();
+                Toast.makeText(context, "Метка не поддерживается", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

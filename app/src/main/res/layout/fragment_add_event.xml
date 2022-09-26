@@ -29,9 +29,10 @@
                 android:id="@+id/textView7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:layout_marginTop="8sp"
                 android:text="Добавление мероприятия"
-                android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -41,9 +42,9 @@
                 android:id="@+id/etv_title_event"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:hint="Заголовок" />
 
             <com.example.front.ui.components.AppEditText
@@ -51,27 +52,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:hint="Место проведения" />
 
             <com.example.front.ui.components.AppEditText
                 android:id="@+id/etv_points_event4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="32dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:hint="Баллы"
                 android:inputType="number" />
 
             <TextView
                 android:id="@+id/textView9"
                 android:layout_width="match_parent"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
-                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginTop="24dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:text="Дата не выбрана!"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="@+id/etv_points_event4"
@@ -82,9 +84,9 @@
                 android:id="@+id/bt_add"
                 android:layout_width="match_parent"
                 android:layout_height="32dp"
-                android:layout_marginStart="32dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="32dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:text="Создать"
                 android:textAllCaps="false"
                 app:layout_constraintEnd_toEndOf="@+id/textView9"
@@ -104,20 +106,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="QR"/>
         <Button
             android:id="@+id/scanner2"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:backgroundTint="@color/link"
             android:layout_marginBottom="56dp"
-            android:background="@drawable/ic_baseline_qr_code_scanner_24" />
+            android:background="@drawable/ic_baseline_qr_code_24" />
 
         <Button
             android:id="@+id/scanner"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="248dp"
-            android:background="@drawable/nfc_icon" />
+            android:background="@drawable/nfc_icon"
+            android:backgroundTint="@color/place"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_height="wrap_content"
+            android:text="NFC"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

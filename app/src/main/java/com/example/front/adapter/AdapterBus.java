@@ -13,7 +13,7 @@ import com.example.front.data.database.DataBASE;
 import com.example.front.data.BusJSON;
 
 
-public class Adapter_bus extends RecyclerView.Adapter {
+public class AdapterBus extends RecyclerView.Adapter {
     public static ClickListener clickListener;
 
 
@@ -70,7 +70,7 @@ public class Adapter_bus extends RecyclerView.Adapter {
 
     }
     public void setOnItemClickListener(ClickListener clickListener) {
-        Adapter_bus.clickListener = clickListener;
+        AdapterBus.clickListener = clickListener;
     }
 
     public interface ClickListener {

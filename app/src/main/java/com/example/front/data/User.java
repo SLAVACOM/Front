@@ -129,7 +129,7 @@ public class User {
         return i > 0;
     }
     public boolean isUser() {
-        return (CONST.USER_ROLE) > 0;
+        return (getRole() & CONST.USER_ROLE) > 0;
     }
     public boolean isLibrarian() {
         return (getRole() & CONST.LIBRARIAN_ROLE) > 0;

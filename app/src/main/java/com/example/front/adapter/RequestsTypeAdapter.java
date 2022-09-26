@@ -47,7 +47,7 @@ public class RequestsTypeAdapter extends RecyclerView.Adapter {
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             content = itemView.findViewById(R.id.tv_request_content);
-            itemView.setOnLongClickListener(this);
+//            itemView.setOnLongClickListener(this);
         }
 
         public void bindView(int position){

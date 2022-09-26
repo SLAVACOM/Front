@@ -15,7 +15,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.front.CONST.CONST;
 import com.example.front.R;
-import com.example.front.adapter.Adapter_bus;
+import com.example.front.adapter.AdapterBus;
 import com.example.front.data.BusJSON;
 import com.example.front.data.ServerListResponse;
 import com.example.front.data.database.DataBASE;
@@ -28,7 +28,7 @@ import retrofit2.Response;
 
 
 public class FragmentBus extends Fragment {
-    private Adapter_bus adapterBus;
+    private AdapterBus adapterBus;
     private RecyclerView recyclerView;
     private FloatingActionButton addbutton;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -73,8 +73,8 @@ public class FragmentBus extends Fragment {
             addbutton.setVisibility(View.GONE);
         }
 
-        adapterBus = new Adapter_bus();
-        adapterBus.setOnItemClickListener(new Adapter_bus.ClickListener() {
+        adapterBus = new AdapterBus();
+        adapterBus.setOnItemClickListener(new AdapterBus.ClickListener() {
             @Override
             public void onItemClick(int position, View v) {
                 BusEditFragment editFragment = new BusEditFragment();

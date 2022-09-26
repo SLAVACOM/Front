@@ -270,9 +270,9 @@ public interface Api {
     Call<ResponseBody> deleteUserRequest(@Header("Authorization") String header, @Path("id") String id);
 
 
-    @GET("api/request/{id}/messages?per_page=-1")
+    @GET("api/request/{id}/messages?per_page=1000000")
     Call<ServerListResponse<Message>> getUserRequestMessages(@Header("Authorization") String header, @Path("id") String id);
-    @POST("api/request/{id}/messages?per_page=-1")
+    @POST("api/request/{id}/messages?per_page=1000000")
     @Headers({"Accept: application/json"})
     Call<ServerListResponse<Message>> sendUserRequestMessage(@Header("Authorization") String header, @Path("id") String id, @Body Message message);
 }

@@ -1,19 +1,18 @@
 package com.example.front.data;
 
+import com.example.front.data.database.DataBASE;
+
 import java.io.Serializable;
 
-public class UserRequest implements Comparable<UserRequest>, Serializable {
+public class Message implements Comparable<Message>, Serializable {
     private int id;
     private int role;
-    private int type_id;
     private int user_id;
-    private String text;
-    private String created_at;
-    private String updated_at;
-    private String deleted_at;
-    private UserRequestType type;
-    private User user;
-    private String date;
+    private String text = "";
+    private String created_at="";
+    private String updated_at="";
+    private User user = null;
+    private String date = "";
 
 
     public int getId() {
@@ -30,14 +29,6 @@ public class UserRequest implements Comparable<UserRequest>, Serializable {
 
     public void setRole(int role) {
         this.role = role;
-    }
-
-    public int getType_id() {
-        return type_id;
-    }
-
-    public void setType_id(int type_id) {
-        this.type_id = type_id;
     }
 
     public int getUser_id() {
@@ -72,21 +63,6 @@ public class UserRequest implements Comparable<UserRequest>, Serializable {
         this.updated_at = updated_at;
     }
 
-    public String getDeleted_at() {
-        return deleted_at;
-    }
-
-    public void setDeleted_at(String deleted_at) {
-        this.deleted_at = deleted_at;
-    }
-
-    public UserRequestType getType() {
-        return type;
-    }
-
-    public void setType(UserRequestType type) {
-        this.type = type;
-    }
 
     public User getUser() {
         return user;
@@ -103,9 +79,27 @@ public class UserRequest implements Comparable<UserRequest>, Serializable {
     public void setDate(String date) {
         this.date = date;
     }
+    public boolean fromOtherUser() {
+        boolean notLibr = !user.isLibrarian();
+        boolean notAdmin = !user.isAdmin();
+        boolean otherUser = user.getId() != DataBASE.user.getId();
+        boolean b = otherUser && DataBASE.user.isUser() || otherUser &&  notAdmin && notLibr;
+        return b;
+    }
 
     @Override
-    public int compareTo(UserRequest userRequest) {
+    public int compareTo(Message userRequest) {
         return Integer.compare(this.id, userRequest.id);
+    }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "id=" + id +
+                ", role=" + role +
+                ", user_id=" + user_id +
+                ", text='" + text + '\'' +
+                ", date='" + date + '\'' +
+                '}';
     }
 }

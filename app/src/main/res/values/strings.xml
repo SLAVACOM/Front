@@ -68,4 +68,5 @@
     <string name="confirm_btn_title">Потвердить</string>
     <string name="close_btn_title">Потвердить</string>
     <string name="from_title">От:</string>
+    <string name="message_title">Сообщение</string>
 </resources>

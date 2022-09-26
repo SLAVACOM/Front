@@ -1,5 +1,7 @@
 package com.example.front.data.database;
 
+import androidx.collection.CircularArray;
+
 import com.example.front.data.Appeal;
 import com.example.front.data.BusJSON;
 import com.example.front.data.EventJSON;
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DataBASE {
+
     private DataBASE(){}
     public static final List<Appeal> APPEALS_LIST= new ArrayList<>();
 

@@ -18,7 +18,7 @@ public class AdapterRequestByID extends RecyclerView.Adapter {
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_user_request,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_user_request_card,parent,false);
         return new MyViewHolder(view);
     }
 

@@ -30,7 +30,7 @@ public class UserRequestsAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_user_request,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_user_request_card,parent,false);
         return new MyViewHolder(view);
     }
 
@@ -58,8 +58,8 @@ public class UserRequestsAdapter extends RecyclerView.Adapter {
 
         public void bindView(int position){
             UserRequest ur = items.get(position);
-            authorTv.setText(ur.getUser().getFull_name() + ur.getId());
-            typeTv.setText(ur.getType().getName()+ur.getType().getName()+ur.getType().getName()+ur.getType().getName());
+            authorTv.setText(ur.getUser().getFull_name() + " (Запрос №" + ur.getId() + ")");
+            typeTv.setText(ur.getType() != null ? ur.getType().getName() : "");
 
         }
 

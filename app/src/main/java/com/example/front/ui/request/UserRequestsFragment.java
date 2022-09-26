@@ -29,7 +29,6 @@ import com.example.front.retrofit.Retrofit;
 import com.example.front.retrofit.call.ValidateCallback;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -44,7 +43,8 @@ public class UserRequestsFragment extends Fragment {
     RecyclerView recyclerView;
     SwipeRefreshLayout swipeRefreshLayout;
     private int role = CONST.LIBRARIAN_ROLE;
-    private String bearer;;
+    private String bearer;
+    ;
     private boolean transformstarted;
     private long ANIMATION_DURATION;
 
@@ -52,8 +52,8 @@ public class UserRequestsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        bearer  = "Bearer " + DataBASE.token;
-        View view = inflater.inflate(R.layout.fragment_library, container, false);
+        bearer = "Bearer " + DataBASE.token;
+        View view = inflater.inflate(R.layout.fragment_user_requests_items, container, false);
         if (getArguments() != null) role = getArguments().getInt("role");
         loadItems();
         addBtn = view.findViewById(R.id.add_request_btn);
@@ -63,16 +63,6 @@ public class UserRequestsFragment extends Fragment {
         adapter.setOnItemClickListener(new UserRequestsAdapter.ClickListener() {
             @Override
             public void onItemLongClick(int position, View v) {
-                Bundle bundle = new Bundle();
-                bundle.putInt("pos", position);
-                Fragment fragment = new UserRequestShowFragment();
-//                fragment.setArguments(bundle);
-//                getActivity().getSupportFragmentManager()
-//                        .beginTransaction()
-//                        .replace(R.id.nav_host_fragment_content_main, fragment)
-//                        .addToBackStack(null)
-//                        .commit();
-
                 transformToSingleItem(position);
             }
 
@@ -118,12 +108,27 @@ public class UserRequestsFragment extends Fragment {
         return view;
     }
 
+    private void showItem(int adapterPosition) {
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.nav_host_fragment_content_main, UserRequestShowFragment.newInstance(getItemsList().get(0)))
+                .addToBackStack(null)
+                .commit();
+    }
+
     private void transformToSingleItem(int adapterPosition) {
+        transformToSingleItem(adapterPosition, () -> {
+            showItem(adapterPosition);
+        });
+    }
+
+    private void transformToSingleItem(int adapterPosition, Runnable run) {
         if (transformstarted) return;
         transformstarted = true;
-        ValueAnimator animator  = new ValueAnimator();
+        ValueAnimator animator = new ValueAnimator();
         animator.setFloatValues(0F, 1F);
-        CurrentToTopHelper updater = new CurrentToTopHelper(adapterPosition,  getContext().getResources().getDisplayMetrics().widthPixels);
+        int width = getContext().getResources().getDisplayMetrics().widthPixels;
+        CurrentToTopHelper updater = new CurrentToTopHelper(adapterPosition, width);
         updater.attachToRecycler(recyclerView);
         animator.addUpdateListener(valueAnimator -> {
             updater.update((Float) valueAnimator.getAnimatedValue());
@@ -132,20 +137,22 @@ public class UserRequestsFragment extends Fragment {
         animator.setDuration(ANIMATION_DURATION);
         animator.start();
         Handler handler = new Handler();
-        handler.postDelayed(()->{
+        handler.postDelayed(() -> {
             animator.removeAllUpdateListeners();
-            removeAndNotifyOtherItems(adapterPosition);
-            transformstarted=false;
+            removeAndNotifyOtherItems(adapterPosition, run);
+            transformstarted = false;
         }, ANIMATION_DURATION);
     }
 
-    private void removeAndNotifyOtherItems(int adapterPosition) {
-        for (int i = 0; i < getItemsList().size(); i++) {
+    private void removeAndNotifyOtherItems(int adapterPosition, Runnable run) {
+        int size = getItemsList().size();
+        for (int i = 0; i < size; i++) {
             if (adapterPosition != i) {
-                getItemsList().remove(i<adapterPosition ? 0 : 1);
-                adapter.notifyItemRemoved(i<adapterPosition ? 0 : 1);
+                getItemsList().remove(i < adapterPosition ? 0 : 1);
+                adapter.notifyItemRemoved(i < adapterPosition ? 0 : 1);
             }
         }
+        (new Handler()).postDelayed(run, 500);
     }
 
     private void deleteItem(UserRequest userRequest) {
@@ -168,7 +175,7 @@ public class UserRequestsFragment extends Fragment {
 
     public void loadItems() {
         Call<ServerListResponse<UserRequest>> call = Retrofit.getApi().getUserRequests(bearer, role);
-        System.out.println(call.request().url().toString()+bearer);
+        if (DataBASE.token.length() < 10) return;
         call.enqueue(new Callback<ServerListResponse<UserRequest>>() {
             @Override
             public void onResponse(Call<ServerListResponse<UserRequest>> call, Response<ServerListResponse<UserRequest>> response) {
@@ -176,6 +183,9 @@ public class UserRequestsFragment extends Fragment {
                     getItemsList().clear();
                     getItemsList().addAll(response.body().getData());
                     adapter.notifyDataSetChanged();
+                    (new Handler()).postDelayed(() -> {
+                        CurrentToTopHelper.resetState(recyclerView, getItemsList().size());
+                    }, 500);
                     Log.d(CONST.SERVER_LOG, getItemsList().toString());
                 } else onError();
                 swipeRefreshLayout.setRefreshing(false);

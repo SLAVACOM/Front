@@ -9,24 +9,28 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.front.R;
-import com.example.front.data.News;
-import com.example.front.data.Photo;
+import com.example.front.data.Message;
 import com.example.front.data.database.DataBASE;
-import com.example.front.ui.components.ViewPagerCarouselView;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 
-public class NewsAdapter extends RecyclerView.Adapter {
+public class MessagesAdapter extends RecyclerView.Adapter {
     public Context context;
+    private ArrayList<Message> list;
 
-    public NewsAdapter(Context context) {
+
+    public MessagesAdapter(Context context, ArrayList<Message> list) {
         this.context = context;
+        this.list = list;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return list.get(position).fromOtherUser() ? 1 : 0;
     }
 
     public Context getContext() {
@@ -38,7 +42,9 @@ public class NewsAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_news, parent, false);
+        View view;
+        if (viewType == 0) view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_message_right, parent, false);
+        else view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_message_left, parent, false);
         return new MyViewHolder(view);
     }
 
@@ -50,39 +56,29 @@ public class NewsAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return DataBASE.NEWS_JSON_LIST.size();
+        return list.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
-        TextView content, zagal, dateTV;
-        ViewPagerCarouselView viewPager;
+        TextView from, text, dateTV;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            viewPager = itemView.findViewById(R.id.viewPager);
-            content = itemView.findViewById(R.id.news_content);
-            dateTV = itemView.findViewById(R.id.news_content_date);
-            zagal = itemView.findViewById(R.id.news_title);
-            viewPager.setVisibility(View.GONE);
-            itemView.setOnLongClickListener(this);
-            itemView.setOnClickListener(this);
+            from = itemView.findViewById(R.id.lblMsgFrom);
+//            dateTV = itemView.findViewById(R.id.news_content_date);
+            text = itemView.findViewById(R.id.txtMsg);
+//            itemView.setOnLongClickListener(this);
+//            itemView.setOnClickListener(this);
         }
 
         public void bindView(int position) {
-            News news = DataBASE.NEWS_JSON_LIST.get(position);
-            String title = "" + news.getTitle().replaceAll("<P>", "");
-            title = title.trim().substring(0,1).toUpperCase() + title.trim().substring(1).toLowerCase(Locale.ROOT);
-            zagal.setText(title);
-            dateTV.setText(news.getDate());
+            Message message = list.get(position);
+            from.setText(message.getUser().getFull_name());
+//            dateTV.setText(news.getDate());
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                content.setText(Html.fromHtml(news.getDescription(), Html.FROM_HTML_MODE_COMPACT));
+                text.setText(Html.fromHtml(message.getText(), Html.FROM_HTML_MODE_COMPACT));
             } else {
-                content.setText(Html.fromHtml(news.getDescription()));
-            }
-            ArrayList<Photo> photos = DataBASE.NEWS_JSON_LIST.get(position).getPhotos();
-            if (photos.size()> 0) {
-                viewPager.setData(((AppCompatActivity)context).getSupportFragmentManager(), photos, 5000);
-                viewPager.setVisibility(View.VISIBLE);
+                text.setText(Html.fromHtml(message.getText()));
             }
         }
 
@@ -100,7 +96,7 @@ public class NewsAdapter extends RecyclerView.Adapter {
     }
 
     public void setClickListener(ClickListener clickListener) {
-        NewsAdapter.clickListener = clickListener;
+        MessagesAdapter.clickListener = clickListener;
     }
 
 

@@ -20,7 +20,8 @@ import retrofit2.Response;
 public abstract class ValidateCallback <T> implements Callback<T> {
     abstract public void onSuccess(Call<T> call, Response<T> response);
     public void handleError(Call<T> call, Throwable t) {}
-    public void on500(Call<T> call, Response<T> response) {}
+    public void on500(Call<T> call, Response<T> response) {
+        Toast.makeText(getContext(), "Ошибка сервера, попробуйте обновить приложение", Toast.LENGTH_SHORT).show();}
     public void on422(Call<T> call, Response<T> response, ValidationResponse errors) {
         Toast.makeText(getContext(), "Проверьте данные", Toast.LENGTH_LONG).show();
 
@@ -30,11 +31,10 @@ public abstract class ValidateCallback <T> implements Callback<T> {
     @Override
     public void onResponse(Call<T> call, Response<T> response) {
         if (response.code() >= 500||response.code() == 404) {
-            Toast.makeText(getContext(), "Ошибка сервера, попробуйте обновить приложение", Toast.LENGTH_LONG).show();
             on500(call,response);
             return;
         } else if (response.code() == 403 || response.code() == 401 ) {
-            Toast.makeText(getContext(), "Доступ запрещен. Попробуйте войти снова!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Доступ запрещен. Попробуйте войти снова!", Toast.LENGTH_SHORT).show();
             on401(call, response);
             return;
         } else if (response.code() == 422) {
@@ -57,7 +57,7 @@ public abstract class ValidateCallback <T> implements Callback<T> {
                 Log.d(CONST.SERVER_LOG, "ERROR: " + vr.toString());
                 on422(call, response, vr);
             } catch (Exception e) {
-                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 on422(call, response, null);
             }
             return;

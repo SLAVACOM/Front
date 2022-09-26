@@ -4,6 +4,7 @@ import com.example.front.data.Appeal;
 import com.example.front.data.BusJSON;
 import com.example.front.data.EventJSON;
 import com.example.front.data.HistoryJSON;
+import com.example.front.data.Message;
 import com.example.front.data.ServerItemResponse;
 import com.example.front.data.ServerListResponse;
 import com.example.front.data.MapObject;
@@ -269,7 +270,9 @@ public interface Api {
     Call<ResponseBody> deleteUserRequest(@Header("Authorization") String header, @Path("id") String id);
 
 
-
-
-
+    @GET("api/request/{id}/messages?per_page=-1")
+    Call<ServerListResponse<Message>> getUserRequestMessages(@Header("Authorization") String header, @Path("id") String id);
+    @POST("api/request/{id}/messages?per_page=-1")
+    @Headers({"Accept: application/json"})
+    Call<ServerListResponse<Message>> sendUserRequestMessage(@Header("Authorization") String header, @Path("id") String id, @Body Message message);
 }

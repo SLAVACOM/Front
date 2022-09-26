@@ -125,13 +125,14 @@ public class User {
     }
 
     public boolean isAdmin() {
-        return (DataBASE.user.getRole() & CONST.ADMIN_ROLE) > 0;
+        int i = getRole() & CONST.ADMIN_ROLE;
+        return i > 0;
     }
     public boolean isUser() {
-        return (DataBASE.user.getRole() & CONST.USER_ROLE) > 0;
+        return (CONST.USER_ROLE) > 0;
     }
     public boolean isLibrarian() {
-        return (DataBASE.user.getRole() & CONST.LIBRARIAN_ROLE) > 0;
+        return (getRole() & CONST.LIBRARIAN_ROLE) > 0;
     }
     public void setRole(int role) {
         this.role = role;

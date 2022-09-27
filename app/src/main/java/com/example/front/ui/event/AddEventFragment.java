@@ -50,10 +50,9 @@ public class AddEventFragment extends Fragment {
     EventJSON event;
     private int pos;
 
-    public void checkEvent() {
+    public void checkEvent(View view) {
         if (event == null || (DataBASE.user.getRole() & CONST.CURATOR_ROLE) == 0 && DataBASE.user.getRole() < CONST.ADMIN_ROLE) {
-            qrBtn.setVisibility(View.INVISIBLE);
-            nfcBtn.setVisibility(View.INVISIBLE);
+            view.findViewById(R.id.scannersList).setVisibility(View.INVISIBLE);
             return;
         }
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
@@ -75,8 +74,7 @@ public class AddEventFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_event, container, false);
         Bundle arguments = getArguments();
-        pos = arguments.getInt("pos");
-        event = arguments != null ? DataBASE.EVENT_JSON_LIST.get(pos) : null;
+        event = arguments != null ? DataBASE.EVENT_JSON_LIST.get(pos = arguments.getInt("pos")) : null;
         date = view.findViewById(R.id.textView9);
         title = view.findViewById(R.id.etv_title_event);
         place = view.findViewById(R.id.etv_title_event2);
@@ -85,7 +83,7 @@ public class AddEventFragment extends Fragment {
         nfcBtn = view.findViewById(R.id.scanner);
         frag_title = view.findViewById(R.id.textView7);
         add = view.findViewById(R.id.bt_add);
-        checkEvent();
+        checkEvent(view);
         date.setOnClickListener((view1 -> {
             setDate(view1);
         }));

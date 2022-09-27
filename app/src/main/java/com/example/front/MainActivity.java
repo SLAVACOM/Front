@@ -45,7 +45,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
     Toolbar toolbar;
+    static MainActivity $instance;
 
+    public static void toast(String toast) {
+        if ($instance != null) Toast.makeText($instance, toast, Toast.LENGTH_SHORT).show();
+    }
     @Override
     protected void onStart() {
         super.onStart();
@@ -61,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if ($instance == null) $instance = this;
         if (!CONST.API_SET) {
             MapKitFactory.setApiKey((String) BuildConfig.YandexAPIKey);
             MapKitFactory.initialize(this);

@@ -102,6 +102,7 @@ public class News {
     }
 
     public void initAdapter(Context context){
+        if (context == null) return;
         adapter = new PhotosPagerAdapter(context, getPhotos());
     }
 

@@ -24,5 +24,5 @@ public class CONST {
     public static  final  int APPEAL_CONFIRMED = 32;
 
 
-    public static final String SERVER_URl ="http://sugai.ru";
+    public static final String SERVER_URl ="http://192.168.1.195:8000";
 }

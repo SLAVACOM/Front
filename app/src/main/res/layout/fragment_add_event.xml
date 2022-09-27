@@ -97,7 +97,7 @@
     </ScrollView>
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/scannersList"
         android:layout_width="165dp"
         android:layout_height="44dp"
         android:gravity="center_horizontal"

@@ -1,6 +1,8 @@
 package com.example.front.ui.User;
 
+import android.app.Activity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +21,7 @@ import com.example.front.data.User;
 import com.example.front.retrofit.Retrofit;
 import com.example.front.retrofit.responses.ObjectResponse;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import retrofit2.Call;
@@ -29,7 +32,6 @@ public class UserProfileFragment extends Fragment {
     private TextView name;
     private FloatingActionButton editBt;
     private ImageView qrCode;
-    private String url = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=";
 
 
     @Override
@@ -37,9 +39,15 @@ public class UserProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user, container, false);
 
-        url = url + DataBASE.user.getId();
+        String url = CONST.SERVER_URl + "/storage/" + DataBASE.user.getQr();
         qrCode = view.findViewById(R.id.iv_prof_QrCode);
-        Picasso.get().load(url).into(qrCode);
+        Picasso.get().load(url)
+                .placeholder(R.drawable.ic_person)
+                .into(qrCode);
+        DisplayMetrics dm = new DisplayMetrics();
+        ((Activity)getContext()).getWindowManager().getDefaultDisplay().getMetrics(dm);
+        qrCode.setMinimumWidth(dm.widthPixels*3/4);
+        qrCode.setMinimumHeight(dm.widthPixels*3/4);
 
         name = view.findViewById(R.id.tv_prof_name);
 

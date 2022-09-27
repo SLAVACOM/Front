@@ -22,6 +22,7 @@ public class User {
     private String phone;
     private int points;
     private String full_name;
+    private String qr;
     private boolean curator;
     private boolean accept = true;
     private String address;
@@ -210,11 +211,20 @@ public class User {
         this.password_confirmation = password_confirmation;
     }
 
+    public String getQr() {
+        return qr;
+    }
+
+    public void setQr(String qr) {
+        this.qr = qr;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", qr='" + qr + '\'' +
                 ", second_name='" + second_name + '\'' +
                 ", last_name='" + last_name + '\'' +
                 ", email='" + email + '\'' +

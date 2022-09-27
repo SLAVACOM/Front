@@ -26,6 +26,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.front.CONST.CONST;
+import com.example.front.MainActivity;
 import com.example.front.R;
 import com.example.front.TextEditActivity;
 import com.example.front.data.Appeal;
@@ -270,7 +271,8 @@ public class NewsEditFragment extends Fragment {
             @Override
             public void onSuccess(Call<ServerItemResponse<Appeal>> call, Response<ServerItemResponse<Appeal>> response) {
                 Log.d(CONST.SERVER_LOG, response.body().toString());
-                if (finalAddPhoto) Toast.makeText(getContext(), "Фото загружено", Toast.LENGTH_SHORT).show();
+                if (finalAddPhoto) MainActivity.toast("Фото загружено");
+                if (getContext() == null) return;
                 viewPager.setVisibility(View.GONE);
                 item = appealMode ? response.body().getData() : (News) response.body().getData();
                 NewsEditFragment.this.getView().invalidate();

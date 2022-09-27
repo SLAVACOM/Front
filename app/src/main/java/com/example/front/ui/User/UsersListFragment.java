@@ -129,17 +129,11 @@ public class UsersListFragment extends Fragment {
         getUsers.enqueue(new Callback<ServerListResponse<User>>() {
             @Override
             public void onResponse(Call<ServerListResponse<User>> call, Response<ServerListResponse<User>> response) {
-                if(response.code()==200){
-                    try {
-                        DataBASE.USERS_LIST.clear();
-                        DataBASE.USERS_LIST.addAll(response.body().getData());
-                        Log.d(CONST.SERVER_LOG,DataBASE.USERS_LIST.toString());
-                        adapterUserList.notifyDataSetChanged();
-                    } catch (Exception e){
-                        e.printStackTrace();
-                    }
-
-                }
+                System.out.println(response.code());
+                DataBASE.USERS_LIST.clear();
+                DataBASE.USERS_LIST.addAll(response.body().getData());
+                Log.d(CONST.SERVER_LOG,DataBASE.USERS_LIST.toString());
+                adapterUserList.notifyDataSetChanged();
             }
 
             @Override

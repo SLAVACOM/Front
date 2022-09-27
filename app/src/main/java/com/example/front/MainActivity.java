@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void updateMenuItems(NavigationView navigationView) {
-        navigationView.getMenu().findItem(R.id.nav_my_appeal).setVisible(!DataBASE.user.isAdmin());
+        navigationView.getMenu().findItem(R.id.nav_my_appeal).setVisible(!DataBASE.user.isAdmin()&& !DataBASE.user.isLibrarian());
         navigationView.getMenu().findItem(R.id.nav_request_types).setVisible(DataBASE.user.isAdmin());
 //        navigationView.getMenu().findItem(R.id.nav_response_to_lib).setVisible(DataBASE.user.isLibrarian() || DataBASE.user.isAdmin());
         navigationView.getMenu().findItem(R.id.nav_response_to_admin).setVisible(DataBASE.user.isAdmin()||DataBASE.user.isUser());

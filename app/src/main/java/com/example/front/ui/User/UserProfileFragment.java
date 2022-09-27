@@ -29,15 +29,15 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class UserProfileFragment extends Fragment {
-    private TextView name;
     private FloatingActionButton editBt;
     private ImageView qrCode;
+    private View view;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_user, container, false);
+        view = inflater.inflate(R.layout.fragment_user, container, false);
 
         String url = CONST.SERVER_URl + "/storage/" + DataBASE.user.getQr();
         qrCode = view.findViewById(R.id.iv_prof_QrCode);
@@ -45,11 +45,11 @@ public class UserProfileFragment extends Fragment {
                 .placeholder(R.drawable.ic_person)
                 .into(qrCode);
         DisplayMetrics dm = new DisplayMetrics();
-        ((Activity)getContext()).getWindowManager().getDefaultDisplay().getMetrics(dm);
-        qrCode.setMinimumWidth(dm.widthPixels*3/4);
-        qrCode.setMinimumHeight(dm.widthPixels*3/4);
+        ((Activity) getContext()).getWindowManager().getDefaultDisplay().getMetrics(dm);
+        qrCode.setMinimumWidth(dm.widthPixels * 3 / 4);
+        qrCode.setMinimumHeight(dm.widthPixels * 3 / 4);
 
-        name = view.findViewById(R.id.tv_prof_name);
+        view.findViewById(R.id.name);
 
         editBt = view.findViewById(R.id.floatBt_editProf);
 
@@ -67,20 +67,16 @@ public class UserProfileFragment extends Fragment {
     }
 
     public void printUser(User user) {
-        name.setText("");
-        name.append("Полное имя: " + user.getFull_name());
-        name.append("\nНомер телефона: " + user.getPhone());
-        name.append("\nПочта: " + user.getEmail());
-        name.append("\nАдрес: " + (!user.getAddress().isEmpty() ? user.getAddress() : "не указан"));
-        name.append("\nБаланс: " + user.getPoints());
+        ((TextView) view.findViewById(R.id.surname)).setText(user.getSecond_name());
+        ((TextView) view.findViewById(R.id.name)).setText(user.getName());
+        ((TextView) view.findViewById(R.id.lastname)).setText(user.getLast_name());
+        ((TextView) view.findViewById(R.id.phone)).setText(user.getPhone());
+        ((TextView) view.findViewById(R.id.email)).setText(user.getEmail());
+        ((TextView) view.findViewById(R.id.address)).setText((!user.getAddress().isEmpty() ? user.getAddress() : "не указан"));
+        ((TextView) view.findViewById(R.id.profile_points_tv)).setText(user.getPoints()+"");
+        ((TextView) view.findViewById(R.id.card_id)).setText(("не указана"));
         if (user.getCard_id() != null && !user.getCard_id().isEmpty())
-            name.append("\nНомер карты: " + user.getCard_id());
-        if (user.getRole() >= CONST.ADMIN_ROLE) {
-            name.append("\nРоль администратора: да");
-        }
-        if ((user.getRole() & CONST.CURATOR_ROLE) > 1) {
-            name.append("\nВы куратор.");
-        }
+            ((TextView) view.findViewById(R.id.card_id)).setText(user.getCard_id());
     }
 
     @Override

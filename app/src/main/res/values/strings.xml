@@ -70,4 +70,5 @@
     <string name="from_title">От:</string>
     <string name="message_title">Сообщение</string>
     <string name="balance_title">Баланс</string>
+    <string name="comment_tittle">Комментарий администрации:</string>
 </resources>

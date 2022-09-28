@@ -276,7 +276,7 @@ public class NewsEditFragment extends Fragment {
                 viewPager.setVisibility(View.GONE);
                 item = appealMode ? response.body().getData() : (News) response.body().getData();
                 NewsEditFragment.this.getView().invalidate();
-                if (item.getPhotos().size() == 0 && finalPhotos.isEmpty()) {
+                if (item.getPhotos().size() == 0 && (finalPhotos == null || finalPhotos.isEmpty())) {
                     viewPager.setVisibility(View.GONE);
                 } else {
                     viewPager.setVisibility(View.VISIBLE);

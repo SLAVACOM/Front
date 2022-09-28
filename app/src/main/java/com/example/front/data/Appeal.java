@@ -42,6 +42,9 @@ public class Appeal extends News{
     public int getLikes() {
         return likes;
     }
+    public String getLikesLabel() {
+        return "\uD83D\uDC9A " + likes;
+    }
 
     public void setLikes(int likes) {
         this.likes = likes;

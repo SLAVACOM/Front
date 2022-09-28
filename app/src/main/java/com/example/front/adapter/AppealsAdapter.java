@@ -71,7 +71,7 @@ public class AppealsAdapter extends RecyclerView.Adapter {
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         Button likeBtn, confirmBtn, deleteBtn;
-        TextView name,content,theme;
+        TextView name,content,theme,comm, commLabel;
         ViewPagerCarouselView viewPager;
         Appeal appeal;
         public MyViewHolder(@NonNull View itemView) {
@@ -82,6 +82,8 @@ public class AppealsAdapter extends RecyclerView.Adapter {
             theme = itemView.findViewById(R.id.tv_appeal_theme);
             name = itemView.findViewById(R.id.tv_appeal_name);
             content = itemView.findViewById(R.id.tv_appeal_content);
+            commLabel = itemView.findViewById(R.id.comm_label);
+            comm = itemView.findViewById(R.id.comm_text);
             viewPager = itemView.findViewById(R.id.viewPager);
             viewPager.setVisibility(View.GONE);
         }
@@ -96,7 +98,7 @@ public class AppealsAdapter extends RecyclerView.Adapter {
                 content.setText(Html.fromHtml(appeal.getDescription()));
             }
             name.setText("Опубликовано: " + appeal.getDate());
-            likeBtn.setText(String.valueOf(appeal.getLikes()));
+            likeBtn.setText(appeal.getLikesLabel());
             if (appeal.getUser_like()==1) {
                 likeBtn.setBackgroundResource(R.drawable.chip);
                 ((GradientDrawable) likeBtn.getBackground()).setColor(ContextCompat.getColor(context,R.color.like));
@@ -125,6 +127,11 @@ public class AppealsAdapter extends RecyclerView.Adapter {
             }
             deleteBtn.setVisibility(deleteVisible);
 
+            if (appeal.getState() >= 8 && appeal.getComment() != null && !appeal.getComment().isEmpty()) {
+                comm.setText(appeal.getComment());
+                comm.setVisibility(View.VISIBLE);
+                commLabel.setVisibility(View.VISIBLE);
+            }
 
 
             ArrayList<Photo> photos = appeal.getPhotos();
@@ -246,7 +253,7 @@ public class AppealsAdapter extends RecyclerView.Adapter {
                                     appeal.setLikes(appeal.getLikes()-1);
                                     likeBtn.setTextColor(ContextCompat.getColor(context,R.color.chip_text));
                                 }
-                                likeBtn.setText(String.valueOf(appeal.getLikes()));
+                                likeBtn.setText(appeal.getLikesLabel());
                                 likeBtn.invalidate();
                             } else onError();
                         }

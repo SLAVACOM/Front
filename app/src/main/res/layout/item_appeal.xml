@@ -7,6 +7,7 @@
     android:layout_marginTop="4dp"
     android:layout_marginBottom="4dp"
     android:background="@drawable/white_with_border_block"
+    android:paddingBottom="16dp"
     app:srcCompat="@drawable/white_with_border_block"
     tools:visibility="visible">
 
@@ -45,9 +46,7 @@
         android:layout_marginTop="50dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:fontFamily="sans-serif"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:fontFamily="sans-serif" app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/viewPager" />
@@ -81,8 +80,8 @@
         android:layout_marginBottom="6dp"
         android:background="@drawable/chip"
         android:backgroundTintMode="add"
-        android:stateListAnimator="@null"
         android:shadowColor="#00FFFFFF"
+        android:stateListAnimator="@null"
         android:text="0"
         android:textAllCaps="false"
         android:textColor="@color/chip_text"
@@ -133,5 +132,32 @@
         app:layout_constraintBottom_toTopOf="@+id/tv_appeal_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/viewPager" />
+
+    <TextView
+        android:id="@+id/comm_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="sans-serif"
+        android:paddingEnd="5dp"
+        android:text="@string/comment_tittle"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_appeal_name" />
+
+    <TextView
+        android:id="@+id/comm_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/velasans_extralight"
+        android:text="TextView TextView "
+        android:textColor="#39393A"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/comm_label"
+        app:layout_constraintTop_toBottomOf="@+id/comm_label" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

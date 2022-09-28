@@ -1,14 +1,20 @@
 package com.example.front.ui.Map;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.front.CONST.CONST;
@@ -16,6 +22,7 @@ import com.example.front.R;
 import com.example.front.data.Cords;
 import com.example.front.data.ServerListResponse;
 import com.example.front.data.MapObject;
+import com.example.front.data.database.DataBASE;
 import com.example.front.retrofit.Retrofit;
 import com.yandex.mapkit.Animation;
 import com.yandex.mapkit.MapKitFactory;
@@ -32,6 +39,7 @@ import com.yandex.runtime.image.ImageProvider;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -112,12 +120,28 @@ public class MapFragment extends Fragment {
         polygon.setStrokeColor(intcolor);
         polygon.setStrokeWidth(0.5F);
         polygon.addTapListener((mapObject1, point) -> {
+            LayoutInflater inflater = ((AppCompatActivity) getContext()).getLayoutInflater();
+            LinearLayout dialoglayout = (LinearLayout) inflater.inflate(R.layout.dialog_comment, null);
             MapObject mo = (MapObject) mapObject1.getUserData();
-            Toast toast = Toast.makeText(
-                    getActivity().getBaseContext(),
-                    mo.getName() + (mo.getPoints() > 0 ? " (для посещения нужно " + mo.getPoints() + " баллов)" : ""),
-                    Toast.LENGTH_SHORT);
-            toast.show();
+            Toast toast = Toast.makeText(getActivity().getBaseContext(), mo.getName(), Toast.LENGTH_SHORT);
+            if (mo.getPoints() == 0) {
+                toast.show();
+                return false;
+            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle(mo.getName());
+            builder.setView(dialoglayout);
+            TextView tv =  new TextView(getContext());
+            tv.setGravity(View.TEXT_ALIGNMENT_CENTER);
+            tv.setText(mo.getPoints() > 0 ? "Тут вы можете потратить заработанными баллы.\n Для посещения нужно " + mo.getPoints() + " баллов" : "");
+            dialoglayout.addView(tv);
+            builder.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.cancel();
+                }
+            });
+            builder.show();
             return true;
         });
     }

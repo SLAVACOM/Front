@@ -25,6 +25,7 @@ import com.example.front.R;
 import com.example.front.data.Appeal;
 import com.example.front.data.Photo;
 import com.example.front.data.database.DataBASE;
+import com.example.front.helpers.LastItemListener;
 import com.example.front.retrofit.Retrofit;
 import com.example.front.ui.components.AppEditText;
 import com.example.front.ui.components.ViewPagerCarouselView;
@@ -47,7 +48,8 @@ public class AppealsAdapter extends RecyclerView.Adapter {
     }
 
 
-    private static ClickListener clickListener;
+    private ClickListener clickListener;
+    private LastItemListener lastItemListener;
 
 
     @NonNull
@@ -90,7 +92,8 @@ public class AppealsAdapter extends RecyclerView.Adapter {
 
         @SuppressLint("ResourceAsColor")
         public void bindView(int position){
-            appeal = DataBASE.APPEALS_LIST.get(position);
+            if (position == DataBASE.APPEALS_LIST.size() - 1 && lastItemListener != null) lastItemListener.onLastItemOpened(position);
+                appeal = DataBASE.APPEALS_LIST.get(position);
             theme.setText("Автор: "+appeal.getAuthor().getFull_name());
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 content.setText(Html.fromHtml(appeal.getDescription(), Html.FROM_HTML_MODE_COMPACT));
@@ -103,6 +106,10 @@ public class AppealsAdapter extends RecyclerView.Adapter {
                 likeBtn.setBackgroundResource(R.drawable.chip);
                 ((GradientDrawable) likeBtn.getBackground()).setColor(ContextCompat.getColor(context,R.color.like));
                 likeBtn.setTextColor(ContextCompat.getColor(context,R.color.white));
+            } else {
+                likeBtn.setBackgroundResource(R.drawable.chip);
+                ((GradientDrawable) likeBtn.getBackground()).setColor(ContextCompat.getColor(context,R.color.default_chip));
+                likeBtn.setTextColor(ContextCompat.getColor(context,R.color.chip_text));
             }
             deleteBtn.setBackgroundResource(R.drawable.chip);
             ((GradientDrawable) deleteBtn.getBackground()).setColor(ContextCompat.getColor(context,R.color.like));
@@ -131,6 +138,10 @@ public class AppealsAdapter extends RecyclerView.Adapter {
                 comm.setText(appeal.getComment());
                 comm.setVisibility(View.VISIBLE);
                 commLabel.setVisibility(View.VISIBLE);
+            } else {
+                comm.setText("");
+                comm.setVisibility(View.GONE);
+                commLabel.setVisibility(View.GONE);
             }
 
 
@@ -269,7 +280,7 @@ public class AppealsAdapter extends RecyclerView.Adapter {
 
         @Override
         public void onClick(View view) {
-            AppealsAdapter.clickListener.onItemClick(getAdapterPosition(), view);
+            AppealsAdapter.this.clickListener.onItemClick(getAdapterPosition(), view);
         }
         public void  onError(){
             Toast.makeText(context, "Ошибка сервера", Toast.LENGTH_SHORT).show();
@@ -278,13 +289,18 @@ public class AppealsAdapter extends RecyclerView.Adapter {
 
 
     public void setClickListener(AppealsAdapter.ClickListener clickListener){
-        AppealsAdapter.clickListener = clickListener;
+        this.clickListener = clickListener;
+    }
+
+    public void setLastItemListener(LastItemListener lastItemListener) {
+        this.lastItemListener = lastItemListener;
     }
 
     public interface ClickListener{
         void onItemClick(int position,View view);
         void onItemLongClick(int position,View view);
     }
+
 
 
 }

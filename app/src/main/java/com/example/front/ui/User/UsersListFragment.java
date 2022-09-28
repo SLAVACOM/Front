@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -47,12 +48,12 @@ public class UsersListFragment extends Fragment {
         swipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        adapterUserList = new AdapterUserList();
+        adapterUserList = new AdapterUserList((AppCompatActivity) getActivity());
         recyclerView.setAdapter(adapterUserList);
         adapterUserList.setOnItemClickListener(new AdapterUserList.ClickListener() {
             @Override
             public void onItemClick(int position, View v) {
-
+                onItemLongClick(position, v);
             }
 
             @Override
@@ -78,14 +79,9 @@ public class UsersListFragment extends Fragment {
         });
         TextWatcher w = new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
             @Override
             public void afterTextChanged(Editable editable) {

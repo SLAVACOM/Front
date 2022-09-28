@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.front.R;
 import com.example.front.data.UserRequest;
+import com.example.front.helpers.LastItemListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.List;
 public class UserRequestsAdapter extends RecyclerView.Adapter {
 
     public static ClickListener clickListener;
+    public LastItemListener lastItemListener;
     public Context context;
     public List<UserRequest> items = new ArrayList<>();
 
@@ -57,6 +59,7 @@ public class UserRequestsAdapter extends RecyclerView.Adapter {
         }
 
         public void bindView(int position){
+            if (position == items.size() - 1 && lastItemListener!= null) lastItemListener.onLastItemOpened(position);
             UserRequest ur = items.get(position);
             authorTv.setText(ur.getUser().getFull_name() + " (Запрос №" + ur.getId() + ")");
             typeTv.setText(ur.getType() != null ? ur.getType().getName() : "");
@@ -80,6 +83,10 @@ public class UserRequestsAdapter extends RecyclerView.Adapter {
 
     public void setOnItemClickListener(ClickListener clickListener) {
         UserRequestsAdapter.clickListener = clickListener;
+    }
+
+    public void setLastItemListener(LastItemListener lastItemListener) {
+        this.lastItemListener = lastItemListener;
     }
 
     public abstract static class ClickListener {

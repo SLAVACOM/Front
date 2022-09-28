@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import com.example.front.CONST.CONST;
 import com.example.front.R;
 import com.example.front.ScannerActivity;
+import com.example.front.adapter.AdapterEvents;
 import com.example.front.data.EventJSON;
 import com.example.front.data.database.DataBASE;
 import com.example.front.retrofit.Retrofit;
@@ -46,6 +47,7 @@ public class AddEventFragment extends Fragment {
     private TextView date, frag_title;
     private Button add;
     private Button qrBtn, nfcBtn;
+    protected AdapterEvents adapter;
     private Calendar dateAndTime = Calendar.getInstance();
     EventJSON event;
     private int pos;
@@ -233,5 +235,23 @@ public class AddEventFragment extends Fragment {
 
     public void error() {
         Toast.makeText(getActivity(), "Пользователь или метка не найдены", Toast.LENGTH_SHORT).show();
+    }
+
+    public void deleteItem(EventJSON event) {
+        Call<ResponseBody> call = Retrofit.getApi().deleteEvent("Bearer " + DataBASE.token, event.getId());
+        call.enqueue(new ValidateCallback<ResponseBody>() {
+            @Override
+            public void onSuccess(Call<ResponseBody> call, Response<ResponseBody> response) {
+                DataBASE.EVENT_JSON_LIST.remove(event);
+                if (adapter != null) adapter.notifyDataSetChanged();
+                if (this.getContext() == null) return;
+                Toast.makeText(this.getContext(), "Мероприятие удалено", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public Context getContext() {
+                return AddEventFragment.this.getContext();
+            }
+        });
     }
 }

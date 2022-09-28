@@ -16,6 +16,7 @@ import com.example.front.R;
 import com.example.front.data.News;
 import com.example.front.data.Photo;
 import com.example.front.data.database.DataBASE;
+import com.example.front.helpers.LastItemListener;
 import com.example.front.ui.components.ViewPagerCarouselView;
 
 import java.util.ArrayList;
@@ -33,7 +34,8 @@ public class NewsAdapter extends RecyclerView.Adapter {
         return context;
     }
 
-    private static ClickListener clickListener;
+    private ClickListener clickListener;
+    private LastItemListener lastItemListener;
 
     @NonNull
     @Override
@@ -69,6 +71,7 @@ public class NewsAdapter extends RecyclerView.Adapter {
         }
 
         public void bindView(int position) {
+            if (position == DataBASE.NEWS_JSON_LIST.size() - 1 && lastItemListener != null) lastItemListener.onLastItemOpened(position);
             News news = DataBASE.NEWS_JSON_LIST.get(position);
             String title = "" + news.getTitle().replaceAll("<P>", "");
             title = title.trim().substring(0,1).toUpperCase() + title.trim().substring(1).toLowerCase(Locale.ROOT);
@@ -100,9 +103,12 @@ public class NewsAdapter extends RecyclerView.Adapter {
     }
 
     public void setClickListener(ClickListener clickListener) {
-        NewsAdapter.clickListener = clickListener;
+        this.clickListener = clickListener;
     }
 
+    public void setLastItemListener(LastItemListener lastItemListener) {
+        this.lastItemListener = lastItemListener;
+    }
 
     public interface ClickListener {
         void onItemClick(int position, View view);

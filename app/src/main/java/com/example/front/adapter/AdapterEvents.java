@@ -13,9 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.front.R;
 import com.example.front.data.EventJSON;
 import com.example.front.data.database.DataBASE;
+import com.example.front.helpers.LastItemListener;
 
 public class AdapterEvents extends RecyclerView.Adapter {
-    public static onEventClickListener clickListener;
+    public onEventClickListener clickListener;
+    public LastItemListener lastItemListener;
 
 
     @NonNull
@@ -52,6 +54,7 @@ public class AdapterEvents extends RecyclerView.Adapter {
             }
         }
         public void bindView(int position){
+            if (position == DataBASE.EVENT_JSON_LIST.size() - 1 && lastItemListener != null) lastItemListener.onLastItemOpened(position);
             EventJSON event = DataBASE.EVENT_JSON_LIST.get(position);
             dateTv.setText(""+event.getDate());
             placeTv.setText(""+event.getPlace());
@@ -73,7 +76,11 @@ public class AdapterEvents extends RecyclerView.Adapter {
 
     }
     public void setOnItemClickListener(onEventClickListener clickListener){
-        AdapterEvents.clickListener = clickListener;
+        this.clickListener = clickListener;
+    }
+
+    public void setLastItemListener(LastItemListener lastItemListener) {
+        this.lastItemListener = lastItemListener;
     }
 
     public abstract static class onEventClickListener {

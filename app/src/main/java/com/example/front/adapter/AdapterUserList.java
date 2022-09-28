@@ -1,13 +1,19 @@
 package com.example.front.adapter;
 
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.front.CONST.CONST;
@@ -24,6 +30,11 @@ import retrofit2.Response;
 public class AdapterUserList extends RecyclerView.Adapter<AdapterUserList.MyViewHolder> {
 
     public static ClickListener clickListener;
+
+    AppCompatActivity a;
+    public AdapterUserList(AppCompatActivity activity) {
+        a = activity;
+    }
 
     @NonNull
     @Override
@@ -45,7 +56,7 @@ public class AdapterUserList extends RecyclerView.Adapter<AdapterUserList.MyView
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,View.OnLongClickListener{
         TextView id, points,fullname,email,phone,adress,status;
-        Button button;
+        ImageView button;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             id = itemView.findViewById(R.id.tv_user_id);
@@ -56,17 +67,30 @@ public class AdapterUserList extends RecyclerView.Adapter<AdapterUserList.MyView
             adress = itemView.findViewById(R.id.textView14);
             button =  itemView.findViewById(R.id.bt_userlist_block);
             itemView.setOnLongClickListener(this);
+            itemView.setOnClickListener(this);
         }
 
         public void bindView(int position){
             User user = DataBASE.USERS_LIST.get(position);
             id.setText("ID пользователя: "+user.getId());
             points.setText(user.getPoints()+" баллов");
+            points.setTextColor(a.getColor(R.color.default_chip));
+            if (user.getPoints() > 0) {
+                points.setTextColor(a.getColor(R.color.accept));
+            }
             email.setText("Почта: "+user.getEmail());
             fullname.setText("ФИО: "+user.getFull_name());
             phone.setText("Телефон: "+user.getPhone());
             adress.setText("Адрес: "+user.getAddress());
-            if (user.isCurator()) button.setVisibility(View.INVISIBLE);
+            if (user.isAdmin()) button.setVisibility(View.INVISIBLE);
+            if (user.getBlocked()==0) {
+                button.setImageDrawable(a.getDrawable(R.drawable.ic_lock_open_24));
+                button.setColorFilter(ContextCompat.getColor(a, R.color.accept), android.graphics.PorterDuff.Mode.MULTIPLY);
+            } else {
+                button.setImageDrawable(a.getDrawable(R.drawable.ic_lock_24));
+                button.setColorFilter(ContextCompat.getColor(a, R.color.like), android.graphics.PorterDuff.Mode.MULTIPLY);
+
+            }
             button.setOnClickListener(new View.OnClickListener() {
 
                 @Override
@@ -83,9 +107,7 @@ public class AdapterUserList extends RecyclerView.Adapter<AdapterUserList.MyView
                         public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                             if (response.code()==200){
                                 DataBASE.USERS_LIST.get(position).setBlocked(blok);
-                                if (user.getBlocked()==0)
-                                    button.setText("Заблокировать");
-                                else button.setText("Разблоировать");
+                                notifyDataSetChanged();
                             }
 //                            Toast.makeText(status.getContext(), response.code(), Toast.LENGTH_SHORT).show();
                             Log.d(CONST.SERVER_LOG, response.code() + response.message().toString());
@@ -101,9 +123,6 @@ public class AdapterUserList extends RecyclerView.Adapter<AdapterUserList.MyView
                 }
 
             });
-            if (user.getBlocked()==0)
-                button.setText("Заблокировать");
-            else button.setText("Разблоировать");
         }
 
         @Override

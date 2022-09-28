@@ -23,6 +23,7 @@ import com.example.front.data.Appeal;
 import com.example.front.data.ServerListResponse;
 import com.example.front.data.User;
 import com.example.front.data.database.DataBASE;
+import com.example.front.helpers.LastItemListener;
 import com.example.front.retrofit.Retrofit;
 import com.example.front.ui.news.NewsEditFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -44,7 +45,7 @@ public class AppealFragment extends Fragment  {
     SwipeRefreshLayout swipeRefreshLayout;
     FloatingActionButton actionButton;
     int mode = 0;
-    int page = 1;
+    int page = 0;
 
     public AppealFragment() {
     }
@@ -86,21 +87,16 @@ public class AppealFragment extends Fragment  {
         adapter.setClickListener(new AppealsAdapter.ClickListener() {
             @Override
             public void onItemClick(int position, View view) {
-
             }
 
             @Override
             public void onItemLongClick(int position, View view) {
-                Toast.makeText(getActivity(), "no edit fragment", Toast.LENGTH_SHORT).show();
-//                RequestTypeEditFragment editFragment = new RequestTypeEditFragment();
-//                Bundle bundle = new Bundle();
-//                bundle.putInt("pos",position);
-//                editFragment.setArguments(bundle);
-//                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                fragmentTransaction.replace(R.id.nav_host_fragment_content_main,editFragment).addToBackStack(null);
-//                fragmentTransaction.commit();
-
+            }
+        });
+        adapter.setLastItemListener(new LastItemListener() {
+            @Override
+            public void onLastItemOpened(int position) {
+                getAppeals(page + 1);
             }
         });
         swipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
@@ -130,13 +126,13 @@ public class AppealFragment extends Fragment  {
         getNewsList.enqueue(new Callback<ServerListResponse<Appeal>>() {
             @Override
             public void onResponse(Call<ServerListResponse<Appeal>> call, Response<ServerListResponse<Appeal>> response) {
-                if (response.code() == 200) {
+                if (response.isSuccessful() && AppealFragment.this.page == page - 1) {
+                    AppealFragment.this.page = page;
                     if (page == 1) DataBASE.APPEALS_LIST.clear();
                     List<Appeal> data = response.body().getData();
                     DataBASE.APPEALS_LIST.addAll(data);
                     adapter.notifyDataSetChanged();
                     Log.d(CONST.SERVER_LOG, data.toString());
-                    AppealFragment.this.page = page;
                 }
                 swipeRefreshLayout.setRefreshing(false);
             }

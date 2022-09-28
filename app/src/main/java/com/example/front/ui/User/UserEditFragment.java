@@ -23,6 +23,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.front.R;
 import com.example.front.data.database.DataBASE;
 import com.example.front.retrofit.Retrofit;
+import com.example.front.ui.components.AppEditText;
 import com.example.front.ui.signup.UserFormResult;
 import com.example.front.ui.signup.UserFormViewModel;
 import com.example.front.ui.signup.SignUpViewModelFactory;
@@ -34,7 +35,7 @@ import retrofit2.Call;
 
 public class UserEditFragment extends Fragment implements View.OnClickListener {
 
-    private EditText name, second_name, last_name, email, phone, points, adress, cardnum;
+    private AppEditText name, second_name, last_name, email, phone, points, adress, cardnum;
     private Button saveBtn;
     private CheckBox checkBox;
     private UserFormViewModel viewModel;

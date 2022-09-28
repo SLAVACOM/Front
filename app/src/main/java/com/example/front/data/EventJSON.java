@@ -18,7 +18,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class EventJSON {
+public class EventJSON implements Comparable<EventJSON> {
 
     private int id;
     private String title;
@@ -140,5 +140,10 @@ public class EventJSON {
                 Toast.makeText(context, "Метка не поддерживается", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public int compareTo(EventJSON eventJSON) {
+        return Integer.compare(id, eventJSON.getId());
     }
 }

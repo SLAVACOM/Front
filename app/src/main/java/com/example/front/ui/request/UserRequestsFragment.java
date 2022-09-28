@@ -43,8 +43,8 @@ public class UserRequestsFragment extends Fragment {
     RecyclerView recyclerView;
     SwipeRefreshLayout swipeRefreshLayout;
     private int role = CONST.LIBRARIAN_ROLE;
-    private String bearer;
-    ;
+    private int page = 0;
+    private String bearer;;
     private boolean transformstarted;
     private long ANIMATION_DURATION;
 
@@ -103,7 +103,9 @@ public class UserRequestsFragment extends Fragment {
                 Toast.makeText(getActivity(), "AdminREQFragment no action", Toast.LENGTH_SHORT).show();
             }
         });
-
+        adapter.setLastItemListener((p) -> {
+            loadItems(page+1);
+        });
 
         return view;
     }
@@ -174,13 +176,17 @@ public class UserRequestsFragment extends Fragment {
     }
 
     public void loadItems() {
-        Call<ServerListResponse<UserRequest>> call = Retrofit.getApi().getUserRequests(bearer, role);
+        loadItems(1);
+    }
+    public void loadItems(int page) {
+        Call<ServerListResponse<UserRequest>> call = Retrofit.getApi().getUserRequests(bearer, role, page);
         if (DataBASE.token.length() < 10) return;
         call.enqueue(new Callback<ServerListResponse<UserRequest>>() {
             @Override
             public void onResponse(Call<ServerListResponse<UserRequest>> call, Response<ServerListResponse<UserRequest>> response) {
                 if (response.isSuccessful()) {
-                    getItemsList().clear();
+                    UserRequestsFragment.this.page = page;
+                    if (page == 1) getItemsList().clear();
                     getItemsList().addAll(response.body().getData());
                     adapter.notifyDataSetChanged();
                     (new Handler()).postDelayed(() -> {
@@ -205,7 +211,8 @@ public class UserRequestsFragment extends Fragment {
     }
 
     public void onError() {
-        Toast.makeText(getContext(), "Ошибка сервера", Toast.LENGTH_SHORT).show();
+        Context context = getContext();
+        if (context != null) Toast.makeText(context, "Ошибка сервера", Toast.LENGTH_SHORT).show();
     }
 
 }

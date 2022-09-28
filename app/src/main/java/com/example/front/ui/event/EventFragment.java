@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -23,9 +24,13 @@ import com.example.front.adapter.AdapterEvents;
 import com.example.front.data.EventJSON;
 import com.example.front.data.ServerListResponse;
 import com.example.front.data.database.DataBASE;
+import com.example.front.helpers.LastItemListener;
+import com.example.front.helpers.SwipeHelper;
 import com.example.front.retrofit.Retrofit;
 import com.example.front.ui.components.AppButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,12 +39,12 @@ import retrofit2.Response;
 
 public class EventFragment extends AddEventFragment {
 
-    private AdapterEvents adapter;
     private RecyclerView recyclerView;
     private FloatingActionButton addBtn;
     AlertDialog dialog;
 
     private SwipeRefreshLayout swipeRefreshLayout;
+    private int page = 0;
 
 
     @Override
@@ -89,6 +94,32 @@ public class EventFragment extends AddEventFragment {
                 loadEvents();
             }
         });
+        adapter.setLastItemListener(new LastItemListener() {
+            @Override
+            public void onLastItemOpened(int position) {
+                loadEvents(page + 1);
+            }
+        });
+        if (DataBASE.user.isAdmin()) {
+            ItemTouchHelper ih = new ItemTouchHelper(new SwipeHelper(getContext(), recyclerView) {
+                @Override
+                public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
+                    underlayButtons.add(new SwipeHelper.UnderlayButton(
+                            "Удалить",
+                            0,
+                            Color.parseColor("#FF8585"),
+                            new SwipeHelper.UnderlayButtonClickListener() {
+                                @Override
+                                public void onClick(int pos) {
+                                    EventFragment.this.deleteItem(DataBASE.EVENT_JSON_LIST.get(pos));
+                                    adapter.notifyDataSetChanged();
+                                }
+                            }
+                    ));
+                }
+            });
+            ih.attachToRecyclerView(recyclerView);
+        }
         return view;
     }
 
@@ -126,12 +157,16 @@ public class EventFragment extends AddEventFragment {
 
 
     public void loadEvents() {
-        Call<ServerListResponse<EventJSON>> getEventList = Retrofit.getInstance().getApi().getEventList();
+        loadEvents(1);
+    }
+    public void loadEvents(int page) {
+        Call<ServerListResponse<EventJSON>> getEventList = Retrofit.getInstance().getApi().getEventList(page);
         getEventList.enqueue(new Callback<ServerListResponse<EventJSON>>() {
             @Override
             public void onResponse(Call<ServerListResponse<EventJSON>> call, Response<ServerListResponse<EventJSON>> response) {
-                if (response.isSuccessful()) {
-                    DataBASE.EVENT_JSON_LIST.clear();
+                if (response.isSuccessful() && EventFragment.this.page == page - 1) {
+                    EventFragment.this.page = page;
+                    if (page == 1) DataBASE.EVENT_JSON_LIST.clear();
                     DataBASE.EVENT_JSON_LIST.addAll(response.body().getData());
                     Log.d(CONST.SERVER_LOG, DataBASE.EVENT_JSON_LIST.toString());
                     adapter.notifyDataSetChanged();

@@ -33,6 +33,8 @@ public class NewsFragment extends Fragment {
     RecyclerView recyclerView;
     SwipeRefreshLayout swipeRefreshLayout;
     FloatingActionButton addBtn;
+    private int page = 0;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -82,6 +84,9 @@ public class NewsFragment extends Fragment {
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
+        adapter.setLastItemListener((p) -> {
+            getNews(page+1);
+        });
         return view;
     }
 
@@ -93,13 +98,16 @@ public class NewsFragment extends Fragment {
 
     }
     private void getNews(){
-        Call<ServerListResponse<News>> getNewsList = Retrofit.getInstance().getApi().getNewsList();
+        getNews(1);
+    }
+    private void getNews(int page){
+        Call<ServerListResponse<News>> getNewsList = Retrofit.getInstance().getApi().getNewsList(page);
         getNewsList.enqueue(new Callback<ServerListResponse<News>>() {
             @Override
             public void onResponse(Call<ServerListResponse<News>> call, Response<ServerListResponse<News>> response) {
-                if(response.code()==200){
-                    DataBASE.NEWS_JSON_LIST.clear();
-                    adapter.notifyDataSetChanged();
+                if(response.isSuccessful()){
+                    NewsFragment.this.page = page;
+                    if (page == 1) DataBASE.NEWS_JSON_LIST.clear();
                     DataBASE.NEWS_JSON_LIST.addAll(response.body().getData());
                     adapter.notifyDataSetChanged();
                 } else {
@@ -110,7 +118,7 @@ public class NewsFragment extends Fragment {
             @Override
             public void onFailure(Call<ServerListResponse<News>> call, Throwable t) {
                 t.printStackTrace();
-
+                Toast.makeText(getActivity(),"Ошибка запроса", Toast.LENGTH_LONG).show();
             }
         });
     }

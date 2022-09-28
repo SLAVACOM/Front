@@ -133,7 +133,7 @@ public interface Api {
 
 
     @GET("api/post")
-    Call<ServerListResponse<News>> getNewsList();
+    Call<ServerListResponse<News>> getNewsList(@Query("page") int page);
 
     @DELETE("api/user/post/{user_post_id}")
     Call<ResponseBody> deleteUserAppeal(@Header("Authorization") String authHeader, @Path("user_post_id") int id);
@@ -249,7 +249,7 @@ public interface Api {
 
 
     @GET("api/event")
-    Call<ServerListResponse<EventJSON>> getEventList();
+    Call<ServerListResponse<EventJSON>> getEventList(@Query("page") int id);
 
     @POST("api/event")
     @Headers({"Accept: application/json"})
@@ -263,8 +263,12 @@ public interface Api {
     @PUT("api/event/{event_id}")
     Call<ResponseBody> editEvent(@Header("Authorization") String heder, @Path("event_id") int event_id, @Body EventJSON body);
 
+    @Headers({"Accept: application/json"})
+    @DELETE("api/event/{event_id}")
+    Call<ResponseBody> deleteEvent(@Header("Authorization") String heder, @Path("event_id") int event_id);
+
     @GET("api/request/")
-    Call<ServerListResponse<UserRequest>> getUserRequests(@Header("Authorization") String header, @Query("role") int role);
+    Call<ServerListResponse<UserRequest>> getUserRequests(@Header("Authorization") String header, @Query("role") int role, @Query("page") int p);
 
     @DELETE("api/request/{id}")
     Call<ResponseBody> deleteUserRequest(@Header("Authorization") String header, @Path("id") String id);

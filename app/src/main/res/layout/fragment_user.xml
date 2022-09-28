@@ -89,6 +89,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
         <TableLayout
+            android:id="@+id/table"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/title_data"
@@ -99,13 +100,13 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/textView17"
+                    android:id="@+id/surlbl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/dark_text"
                     android:fontFamily="@font/velasans_extralight"
                     android:paddingEnd="30dp"
-                    android:text="Фамилия" />
+                    android:text="Фамилия"
+                    android:textColor="@color/dark_text" />
 
                 <TextView
                     android:id="@+id/surname"
@@ -114,19 +115,20 @@
                     android:fontFamily="@font/velasans_extralight"
                     android:text="TextView" />
             </TableRow>
+
             <TableRow
-                android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp">
 
                 <TextView
                     android:id="@+id/textView18"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/dark_text"
                     android:fontFamily="@font/velasans_extralight"
                     android:paddingEnd="30dp"
-                    android:text="Имя" />
+                    android:text="Имя"
+                    android:textColor="@color/dark_text" />
 
                 <TextView
                     android:id="@+id/name"
@@ -135,19 +137,20 @@
                     android:fontFamily="@font/velasans_extralight"
                     android:text="TextView" />
             </TableRow>
+
             <TableRow
-                android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp">
 
                 <TextView
                     android:id="@+id/textView19"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/dark_text"
                     android:fontFamily="@font/velasans_extralight"
                     android:paddingEnd="30dp"
-                    android:text="Отчество" />
+                    android:text="Отчество"
+                    android:textColor="@color/dark_text" />
 
                 <TextView
                     android:id="@+id/lastname"
@@ -156,19 +159,20 @@
                     android:fontFamily="@font/velasans_extralight"
                     android:text="TextView" />
             </TableRow>
+
             <TableRow
-                android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp">
 
                 <TextView
                     android:id="@+id/textView20"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/dark_text"
                     android:fontFamily="@font/velasans_extralight"
                     android:paddingEnd="30dp"
-                    android:text="@string/prompt_email" />
+                    android:text="@string/prompt_email"
+                    android:textColor="@color/dark_text" />
 
                 <TextView
                     android:id="@+id/email"
@@ -177,19 +181,20 @@
                     android:fontFamily="@font/velasans_extralight"
                     android:text="TextView" />
             </TableRow>
+
             <TableRow
-                android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp">
 
                 <TextView
                     android:id="@+id/textView21"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/dark_text"
                     android:fontFamily="@font/velasans_extralight"
                     android:paddingEnd="30dp"
-                    android:text="@string/phone" />
+                    android:text="@string/phone"
+                    android:textColor="@color/dark_text" />
 
                 <TextView
                     android:id="@+id/phone"
@@ -198,10 +203,11 @@
                     android:fontFamily="@font/velasans_extralight"
                     android:text="TextView" />
             </TableRow>
+
             <TableRow
-                android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp">
 
                 <TextView
                     android:id="@+id/textView22"
@@ -210,28 +216,29 @@
                     android:textColor="@color/dark_text"
                     android:fontFamily="@font/velasans_extralight"
                     android:paddingEnd="30dp"
-                    android:text="@string/prompt_email" />
+                    android:text="@string/address" />
 
                 <TextView
                     android:id="@+id/address"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/velasans_extralight"
                     android:text="TextView" />
             </TableRow>
+
             <TableRow
-                android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp">
 
                 <TextView
                     android:id="@+id/textView23"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/dark_text"
                     android:fontFamily="@font/velasans_extralight"
                     android:paddingEnd="30dp"
-                    android:text="Карта жителя" />
+                    android:text="Карта жителя"
+                    android:textColor="@color/dark_text" />
 
                 <TextView
                     android:id="@+id/card_id"

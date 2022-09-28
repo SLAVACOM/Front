@@ -133,7 +133,7 @@ public class MapFragment extends Fragment {
             builder.setView(dialoglayout);
             TextView tv =  new TextView(getContext());
             tv.setGravity(View.TEXT_ALIGNMENT_CENTER);
-            tv.setText(mo.getPoints() > 0 ? "Тут вы можете потратить заработанными баллы.\n Для посещения нужно " + mo.getPoints() + " баллов" : "");
+            tv.setText(mo.getPoints() > 0 ? "Тут вы можете потратить заработанные баллы.\n Для посещения нужно " + mo.getPoints() + " баллов" : "");
             dialoglayout.addView(tv);
             builder.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
                 @Override

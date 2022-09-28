@@ -53,13 +53,11 @@ public class AddEventFragment extends Fragment {
     private int pos;
 
     public void checkEvent(View view) {
-        if (event == null
-                || (DataBASE.user.getRole() & CONST.CURATOR_ROLE) == 0 && DataBASE.user.getRole() < CONST.ADMIN_ROLE
-                || !Event.canAddParticipant(event)
-        ) {
+        if (event == null || (DataBASE.user.getRole() & CONST.CURATOR_ROLE) == 0 && DataBASE.user.getRole() < CONST.ADMIN_ROLE) {
             view.findViewById(R.id.scannersList).setVisibility(View.INVISIBLE);
             return;
         }
+        if (!Event.canAddParticipant(event)) view.findViewById(R.id.scannersList).setVisibility(View.INVISIBLE);
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
         try {
             Date c = sdf.parse(event.getDate());

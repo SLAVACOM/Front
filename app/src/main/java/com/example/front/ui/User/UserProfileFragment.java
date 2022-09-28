@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -31,6 +32,7 @@ import retrofit2.Response;
 public class UserProfileFragment extends Fragment {
     private FloatingActionButton editBt;
     private ImageView qrCode;
+    TableLayout tl;
     private View view;
 
 
@@ -48,8 +50,7 @@ public class UserProfileFragment extends Fragment {
         ((Activity) getContext()).getWindowManager().getDefaultDisplay().getMetrics(dm);
         qrCode.setMinimumWidth(dm.widthPixels * 3 / 4);
         qrCode.setMinimumHeight(dm.widthPixels * 3 / 4);
-
-        view.findViewById(R.id.name);
+        tl = view.findViewById(R.id.table);
 
         editBt = view.findViewById(R.id.floatBt_editProf);
 
@@ -67,16 +68,34 @@ public class UserProfileFragment extends Fragment {
     }
 
     public void printUser(User user) {
-        ((TextView) view.findViewById(R.id.surname)).setText(user.getSecond_name());
-        ((TextView) view.findViewById(R.id.name)).setText(user.getName());
-        ((TextView) view.findViewById(R.id.lastname)).setText(user.getLast_name());
-        ((TextView) view.findViewById(R.id.phone)).setText(user.getPhone());
-        ((TextView) view.findViewById(R.id.email)).setText(user.getEmail());
-        ((TextView) view.findViewById(R.id.address)).setText((!user.getAddress().isEmpty() ? user.getAddress() : "не указан"));
-        ((TextView) view.findViewById(R.id.profile_points_tv)).setText(user.getPoints()+"");
-        ((TextView) view.findViewById(R.id.card_id)).setText(("не выдана"));
+
+        TextView label = (TextView) view.findViewById(R.id.surlbl);
+        TextView viewById = (TextView) view.findViewById(R.id.surname);
+        viewById.setText(user.getSecond_name());
+        TextView viewById1 = (TextView) view.findViewById(R.id.name);
+        viewById1.setText(user.getName());
+        TextView viewById2 = (TextView) view.findViewById(R.id.lastname);
+        viewById2.setText(user.getLast_name());
+        TextView viewById3 = (TextView) view.findViewById(R.id.phone);
+        viewById3.setText(user.getPhone());
+        TextView viewById4 = (TextView) view.findViewById(R.id.email);
+        viewById4.setText(user.getEmail());
+        TextView viewById5 = (TextView) view.findViewById(R.id.address);
+        viewById5.setText((!user.getAddress().isEmpty() ? user.getAddress() : "не указан"));
+        TextView viewById6 = (TextView) view.findViewById(R.id.profile_points_tv);
+        viewById6.setText(user.getPoints()+"");
+        TextView viewById7 = (TextView) view.findViewById(R.id.card_id);
+        viewById7.setText(("не выдана"));
         if (user.getCard_id() != null && !user.getCard_id().isEmpty())
             ((TextView) view.findViewById(R.id.card_id)).setText(user.getCard_id());
+        viewById.setMaxWidth(tl.getWidth() - label.getWidth());
+        viewById1.setMaxWidth(tl.getWidth() - label.getWidth());
+        viewById2.setMaxWidth(tl.getWidth() - label.getWidth());
+        viewById3.setMaxWidth(tl.getWidth() - label.getWidth());
+        viewById4.setMaxWidth(tl.getWidth() - label.getWidth());
+        viewById5.setMaxWidth(tl.getWidth() - label.getWidth());
+        viewById6.setMaxWidth(tl.getWidth() - label.getWidth());
+        viewById7.setMaxWidth(tl.getWidth() - label.getWidth());
     }
 
     @Override

@@ -22,7 +22,7 @@ import com.example.front.CONST.CONST;
 import com.example.front.R;
 import com.example.front.ScannerActivity;
 import com.example.front.adapter.AdapterEvents;
-import com.example.front.data.EventJSON;
+import com.example.front.data.Event;
 import com.example.front.data.database.DataBASE;
 import com.example.front.retrofit.Retrofit;
 import com.example.front.retrofit.call.ValidateCallback;
@@ -49,11 +49,14 @@ public class AddEventFragment extends Fragment {
     private Button qrBtn, nfcBtn;
     protected AdapterEvents adapter;
     private Calendar dateAndTime = Calendar.getInstance();
-    EventJSON event;
+    Event event;
     private int pos;
 
     public void checkEvent(View view) {
-        if (event == null || (DataBASE.user.getRole() & CONST.CURATOR_ROLE) == 0 && DataBASE.user.getRole() < CONST.ADMIN_ROLE) {
+        if (event == null
+                || (DataBASE.user.getRole() & CONST.CURATOR_ROLE) == 0 && DataBASE.user.getRole() < CONST.ADMIN_ROLE
+                || !Event.canAddParticipant(event)
+        ) {
             view.findViewById(R.id.scannersList).setVisibility(View.INVISIBLE);
             return;
         }
@@ -237,7 +240,7 @@ public class AddEventFragment extends Fragment {
         Toast.makeText(getActivity(), "Пользователь или метка не найдены", Toast.LENGTH_SHORT).show();
     }
 
-    public void deleteItem(EventJSON event) {
+    public void deleteItem(Event event) {
         Call<ResponseBody> call = Retrofit.getApi().deleteEvent("Bearer " + DataBASE.token, event.getId());
         call.enqueue(new ValidateCallback<ResponseBody>() {
             @Override

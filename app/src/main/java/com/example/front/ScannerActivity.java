@@ -28,7 +28,7 @@ public class ScannerActivity extends AppCompatActivity {
         gifView = findViewById(R.id.gif);
         gifView.setResource(R.drawable.nfc);
         gifView.invalidate();
-        event_id = getIntent().getExtras().getInt("post_id");
+        event_id = getIntent().getIntExtra("post_id", 0);
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         if (nfcAdapter == null) {
             Toast.makeText(this, "Функция не подерживается", Toast.LENGTH_SHORT).show();

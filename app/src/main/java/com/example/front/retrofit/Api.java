@@ -2,8 +2,8 @@ package com.example.front.retrofit;
 
 import com.example.front.data.Appeal;
 import com.example.front.data.BusJSON;
-import com.example.front.data.EventJSON;
-import com.example.front.data.HistoryJSON;
+import com.example.front.data.Event;
+import com.example.front.data.History;
 import com.example.front.data.Message;
 import com.example.front.data.ServerItemResponse;
 import com.example.front.data.ServerListResponse;
@@ -70,7 +70,7 @@ public interface Api {
     Call<JsonObject> editProfile(@Header("Authorization") String authHeader,@Path("user_id") int id,@Query("_method") String method ,@Query("blocked") int block);
 
     @GET("api/user/event")
-    Call<ServerListResponse<HistoryJSON>> getEventHistory(@Header("Authorization") String authHeader);
+    Call<ServerListResponse<History>> getEventHistory(@Header("Authorization") String authHeader);
 
 
 
@@ -249,7 +249,7 @@ public interface Api {
 
 
     @GET("api/event")
-    Call<ServerListResponse<EventJSON>> getEventList(@Query("page") int id);
+    Call<ServerListResponse<Event>> getEventList(@Query("page") int id);
 
     @POST("api/event")
     @Headers({"Accept: application/json"})
@@ -261,7 +261,7 @@ public interface Api {
 
     @Headers({"Accept: application/json"})
     @PUT("api/event/{event_id}")
-    Call<ResponseBody> editEvent(@Header("Authorization") String heder, @Path("event_id") int event_id, @Body EventJSON body);
+    Call<ResponseBody> editEvent(@Header("Authorization") String heder, @Path("event_id") int event_id, @Body Event body);
 
     @Headers({"Accept: application/json"})
     @DELETE("api/event/{event_id}")

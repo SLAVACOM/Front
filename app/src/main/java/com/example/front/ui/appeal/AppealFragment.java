@@ -26,6 +26,7 @@ import com.example.front.data.database.DataBASE;
 import com.example.front.helpers.LastItemListener;
 import com.example.front.retrofit.Retrofit;
 import com.example.front.ui.news.NewsEditFragment;
+import com.example.front.ui.news.NewsFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -46,6 +47,7 @@ public class AppealFragment extends Fragment  {
     FloatingActionButton actionButton;
     int mode = 0;
     int page = 0;
+    private int last_page = -1;
 
     public AppealFragment() {
     }
@@ -103,9 +105,7 @@ public class AppealFragment extends Fragment  {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                swipeRefreshLayout.setRefreshing(true);
                 getAppeals();
-                swipeRefreshLayout.setRefreshing(false);
             }
         });
         return view;
@@ -121,13 +121,16 @@ public class AppealFragment extends Fragment  {
         getAppeals(1);
     }
     private void getAppeals(int page) {
+        if (last_page > 0 && last_page < page) return;
         Call<ServerListResponse<Appeal>> getNewsList = Retrofit.getInstance().getApi().getAppeals(
                 "Bearer " + LoginActivity.userToken(getActivity().getBaseContext()), mode == MODE_MY ? "me" : null, page + "");
+        if(swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
         getNewsList.enqueue(new Callback<ServerListResponse<Appeal>>() {
             @Override
             public void onResponse(Call<ServerListResponse<Appeal>> call, Response<ServerListResponse<Appeal>> response) {
                 if (response.isSuccessful() && AppealFragment.this.page == page - 1) {
                     AppealFragment.this.page = page;
+                    AppealFragment.this.last_page = response.body().getLast_page();
                     if (page == 1) DataBASE.APPEALS_LIST.clear();
                     List<Appeal> data = response.body().getData();
                     DataBASE.APPEALS_LIST.addAll(data);

@@ -27,6 +27,7 @@ import com.example.front.helpers.CurrentToTopHelper;
 import com.example.front.helpers.SwipeHelper;
 import com.example.front.retrofit.Retrofit;
 import com.example.front.retrofit.call.ValidateCallback;
+import com.example.front.ui.news.NewsFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -44,6 +45,7 @@ public class UserRequestsFragment extends Fragment {
     SwipeRefreshLayout swipeRefreshLayout;
     private int role = CONST.LIBRARIAN_ROLE;
     private int page = 0;
+    private int last_page = 0;
     private String bearer;;
     private boolean transformstarted;
     private long ANIMATION_DURATION;
@@ -179,13 +181,16 @@ public class UserRequestsFragment extends Fragment {
         loadItems(1);
     }
     public void loadItems(int page) {
+        if (last_page > 0 && last_page < page) return;
         Call<ServerListResponse<UserRequest>> call = Retrofit.getApi().getUserRequests(bearer, role, page);
         if (DataBASE.token.length() < 10) return;
+        if(swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
         call.enqueue(new Callback<ServerListResponse<UserRequest>>() {
             @Override
             public void onResponse(Call<ServerListResponse<UserRequest>> call, Response<ServerListResponse<UserRequest>> response) {
                 if (response.isSuccessful()) {
                     UserRequestsFragment.this.page = page;
+                    UserRequestsFragment.this.last_page = response.body().getLast_page();
                     if (page == 1) getItemsList().clear();
                     getItemsList().addAll(response.body().getData());
                     adapter.notifyDataSetChanged();

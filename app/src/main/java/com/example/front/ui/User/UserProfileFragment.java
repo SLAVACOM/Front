@@ -74,7 +74,7 @@ public class UserProfileFragment extends Fragment {
         ((TextView) view.findViewById(R.id.email)).setText(user.getEmail());
         ((TextView) view.findViewById(R.id.address)).setText((!user.getAddress().isEmpty() ? user.getAddress() : "не указан"));
         ((TextView) view.findViewById(R.id.profile_points_tv)).setText(user.getPoints()+"");
-        ((TextView) view.findViewById(R.id.card_id)).setText(("не указана"));
+        ((TextView) view.findViewById(R.id.card_id)).setText(("не выдана"));
         if (user.getCard_id() != null && !user.getCard_id().isEmpty())
             ((TextView) view.findViewById(R.id.card_id)).setText(user.getCard_id());
     }

@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.front.CONST.CONST;
 import com.example.front.R;
 import com.example.front.data.database.DataBASE;
+import com.example.front.helpers.LastItemListener;
 import com.example.front.retrofit.Retrofit;
 import com.example.front.data.User;
 import com.google.gson.JsonObject;
@@ -30,6 +31,7 @@ import retrofit2.Response;
 public class AdapterUserList extends RecyclerView.Adapter<AdapterUserList.MyViewHolder> {
 
     public static ClickListener clickListener;
+    public LastItemListener lastItemListener;
 
     AppCompatActivity a;
     public AdapterUserList(AppCompatActivity activity) {
@@ -71,6 +73,7 @@ public class AdapterUserList extends RecyclerView.Adapter<AdapterUserList.MyView
         }
 
         public void bindView(int position){
+            if (position ==  DataBASE.USERS_LIST.size()-1 && lastItemListener != null) lastItemListener.onLastItemOpened(position);
             User user = DataBASE.USERS_LIST.get(position);
             id.setText("ID пользователя: "+user.getId());
             points.setText(user.getPoints()+" баллов");
@@ -140,6 +143,10 @@ public class AdapterUserList extends RecyclerView.Adapter<AdapterUserList.MyView
     }
     public void setOnItemClickListener(ClickListener clickListener) {
         AdapterUserList.clickListener = clickListener;
+    }
+
+    public void setLastItemListener(LastItemListener lastItemListener) {
+        this.lastItemListener = lastItemListener;
     }
 
     public interface ClickListener {

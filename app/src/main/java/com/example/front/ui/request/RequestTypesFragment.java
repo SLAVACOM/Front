@@ -77,7 +77,6 @@ public class RequestTypesFragment extends Fragment {
             @Override
             public void onRefresh() {
                 getItems();
-                swipeRefreshLayout.setRefreshing(false);
             }
         });
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -103,6 +102,7 @@ public class RequestTypesFragment extends Fragment {
 
     public void getItems(){
         Call<ServerListResponse<UserRequestType>> call = Retrofit.getInstance().getApi().getRequestTypes();
+        if(swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
         call.enqueue(new Callback<ServerListResponse<UserRequestType>>() {
             @Override
             public void onResponse(Call<ServerListResponse<UserRequestType>> call, Response<ServerListResponse<UserRequestType>> response) {
@@ -114,11 +114,13 @@ public class RequestTypesFragment extends Fragment {
                 DataBASE.REQUEST_TYPEJSON_LIST.addAll(response.body().getData());
                 Log.d(CONST.SERVER_LOG, DataBASE.REQUEST_TYPEJSON_LIST.toString());
                 adapter.notifyDataSetChanged();
+                swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Call<ServerListResponse<UserRequestType>> call, Throwable t) {
                 t.printStackTrace();
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
     }

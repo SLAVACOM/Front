@@ -3,7 +3,6 @@ package com.example.front.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,7 +10,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.front.R;
-import com.example.front.data.EventJSON;
+import com.example.front.data.Event;
 import com.example.front.data.database.DataBASE;
 import com.example.front.helpers.LastItemListener;
 
@@ -43,7 +42,6 @@ public class AdapterEvents extends RecyclerView.Adapter {
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             addPeopleBtn = itemView.findViewById(R.id.bt_scanner);
-            addPeopleBtn.setVisibility(DataBASE.user.isAdmin() || DataBASE.user.isCurator() ? View.VISIBLE : View.GONE);
             dateTv = itemView.findViewById(R.id.tv_event_time);
             placeTv = itemView.findViewById(R.id.tv_event_content);
             titleTv = itemView.findViewById(R.id.tv_event_title);
@@ -55,12 +53,13 @@ public class AdapterEvents extends RecyclerView.Adapter {
         }
         public void bindView(int position){
             if (position == DataBASE.EVENT_JSON_LIST.size() - 1 && lastItemListener != null) lastItemListener.onLastItemOpened(position);
-            EventJSON event = DataBASE.EVENT_JSON_LIST.get(position);
+            Event event = DataBASE.EVENT_JSON_LIST.get(position);
             dateTv.setText(""+event.getDate());
             placeTv.setText(""+event.getPlace());
             pointsTv.setText(""+event.getPoints());
             titleTv.setText(""+event.getTitle());
             addPeopleBtn.setOnClickListener(view -> clickListener.onAddPeople(position));
+            addPeopleBtn.setVisibility(Event.canAddParticipant(event )&& (DataBASE.user.isAdmin() || DataBASE.user.isCurator()) ? View.VISIBLE : View.GONE);
         }
 
         @Override

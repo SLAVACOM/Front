@@ -1,12 +1,15 @@
 package com.example.front.ui.User;
 
 
-import static com.example.front.data.database.DataBASE.user;
 
+import static android.view.MotionEvent.ACTION_DOWN;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -21,6 +24,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.front.R;
+import com.example.front.ScannerActivity;
+import com.example.front.data.User;
 import com.example.front.data.database.DataBASE;
 import com.example.front.retrofit.Retrofit;
 import com.example.front.ui.components.AppEditText;
@@ -39,6 +44,8 @@ public class UserEditFragment extends Fragment implements View.OnClickListener {
     private Button saveBtn;
     private CheckBox checkBox;
     private UserFormViewModel viewModel;
+    private User user;
+
 
     public void init(View view) {
         viewModel = new ViewModelProvider(this, new SignUpViewModelFactory())
@@ -120,17 +127,34 @@ public class UserEditFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user_edit, container, false);
         init(view);
-        user = DataBASE.USERS_LIST.get(getArguments().getInt("pos"));
+        this.user = DataBASE.USERS_LIST.get(getArguments().getInt("pos"));
         checkBox.setChecked(user.isCurator());
         name.setText(user.getName());
+        name.getEt().setEnabled(DataBASE.user.isAdmin());
         second_name.setText(user.getSecond_name());
+        second_name.getEt().setEnabled(DataBASE.user.isAdmin());
         last_name.setText(user.getLast_name());
+        last_name.getEt().setEnabled(DataBASE.user.isAdmin());
         email.setText(user.getEmail());
+        email.getEt().setEnabled(DataBASE.user.isAdmin());
         phone.setText(String.valueOf(user.getPhone()));
+        phone.getEt().setEnabled(DataBASE.user.isAdmin());
         points.setText(String.valueOf(user.getPoints()));
+        points.getEt().setEnabled(false);
+        points.setVisibility(View.GONE);
         adress.setText(user.getAddress());
+        name.getEt().setEnabled(DataBASE.user.isAdmin());
         String card_id = user.getCard_id();
         cardnum.setText(card_id == null ? "" :card_id);
+        cardnum.getEt().setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if(motionEvent.getAction() != MotionEvent.ACTION_UP) return false;
+                Intent intent = new Intent(getContext(), ScannerActivity.class);
+                startActivityForResult(intent, 1);
+                return false;
+            }
+        });
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -145,5 +169,20 @@ public class UserEditFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         Call<ResponseBody> setUser = Retrofit.getInstance().getApi().editUser("Bearer " + DataBASE.token, Integer.valueOf(user.getId()), viewModel.getUserData().getValue());
         viewModel.sendRequest(setUser);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        String card = null;
+        if (data != null) {
+            card = data.getStringExtra("card_id");
+        }
+        if (resultCode == 1) {
+            cardnum.setText(card);
+            viewModel.loginDataChanged(null,null,null,null,null,null,card,null, null, null, null);
+            System.out.println(card);
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 }

@@ -38,6 +38,8 @@ public class UsersListFragment extends Fragment {
     AppEditText search;
     SwipeRefreshLayout swipeRefreshLayout;
     Handler handler;
+    int page = 0;
+    int last_page = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,6 +51,9 @@ public class UsersListFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         adapterUserList = new AdapterUserList((AppCompatActivity) getActivity());
+        adapterUserList.setLastItemListener((p)->{
+            getUsers(page+1);
+        });
         recyclerView.setAdapter(adapterUserList);
         adapterUserList.setOnItemClickListener(new AdapterUserList.ClickListener() {
             @Override
@@ -74,7 +79,6 @@ public class UsersListFragment extends Fragment {
             @Override
             public void onRefresh() {
                 getUsers();
-                swipeRefreshLayout.setRefreshing(false);
             }
         });
         TextWatcher w = new TextWatcher() {
@@ -103,7 +107,7 @@ public class UsersListFragment extends Fragment {
                 if(event.getAction() == MotionEvent.ACTION_UP) {
                     if(event.getRawX() >= (search.getRight() - search.getEt().getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
                         if (handler!=null) handler.removeCallbacksAndMessages(null);
-                       getUsers();
+                        getUsers();
                         return true;
                     }
                 }
@@ -120,21 +124,30 @@ public class UsersListFragment extends Fragment {
         getUsers();
     }
 
-    private void getUsers(){
-        Call<ServerListResponse<User>> getUsers = Retrofit.getInstance().getApi().getUsers("Bearer "+ DataBASE.token, search.getText().toString());
+    private void getUsers() {
+        getUsers(1);
+    }
+    private void getUsers(int page){
+        if (last_page > 0 && last_page < page) return;
+        Call<ServerListResponse<User>> getUsers = Retrofit.getInstance().getApi().getUsers("Bearer "+ DataBASE.token, search.getText());
+        if(swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
         getUsers.enqueue(new Callback<ServerListResponse<User>>() {
             @Override
             public void onResponse(Call<ServerListResponse<User>> call, Response<ServerListResponse<User>> response) {
                 System.out.println(response.code());
-                DataBASE.USERS_LIST.clear();
+                if (page == 1) DataBASE.USERS_LIST.clear();
+                UsersListFragment.this.page = page;
+                UsersListFragment.this.last_page = response.body().getLast_page();
                 DataBASE.USERS_LIST.addAll(response.body().getData());
                 Log.d(CONST.SERVER_LOG,DataBASE.USERS_LIST.toString());
                 adapterUserList.notifyDataSetChanged();
+                swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Call<ServerListResponse<User>> call, Throwable t) {
                 t.printStackTrace();
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
     }

@@ -1,11 +1,13 @@
 package com.example.front.data;
 
-public class HistoryJSON {
+public class History {
 
     private MapObject map_object;
+    private Event event;
     private int id;
     private int user_id;
     private int map_object_id;
+    private int village_event_id;
     private int points;
     private String created_at;
     private String updated_at;
@@ -76,5 +78,21 @@ public class HistoryJSON {
 
     public void setUpdated_at(String updated_at) {
         this.updated_at = updated_at;
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
+    public int getVillage_event_id() {
+        return village_event_id;
+    }
+
+    public void setVillage_event_id(int village_event_id) {
+        this.village_event_id = village_event_id;
     }
 }

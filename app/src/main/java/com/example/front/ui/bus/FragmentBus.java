@@ -43,8 +43,6 @@ public class FragmentBus extends Fragment {
             @Override
             public void onRefresh() {
                 getBus();
-                swipeRefreshLayout.setRefreshing(false);
-
             }
         });
         addbutton = view.findViewById(R.id.floatingActionButton_addBus);
@@ -99,6 +97,7 @@ public class FragmentBus extends Fragment {
 
     private void getBus() {
         Call<ServerListResponse<BusJSON>> getBus = Retrofit.getInstance().getApi().getBusList();
+        if(swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
         getBus.enqueue(new Callback<ServerListResponse<BusJSON>>() {
             @Override
             public void onResponse(Call<ServerListResponse<BusJSON>> call, Response<ServerListResponse<BusJSON>> response) {
@@ -114,11 +113,13 @@ public class FragmentBus extends Fragment {
                     }
 
                 }
+                swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Call<ServerListResponse<BusJSON>> call, Throwable t) {
                 t.printStackTrace();
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
     }

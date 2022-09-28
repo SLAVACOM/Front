@@ -98,7 +98,7 @@
 
     <LinearLayout
         android:id="@+id/scannersList"
-        android:layout_width="165dp"
+        android:layout_width="wrap_content"
         android:layout_height="44dp"
         android:gravity="center_horizontal"
         android:orientation="horizontal"
@@ -109,14 +109,15 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="QR"/>
+            android:text="QR код" />
+
         <Button
             android:id="@+id/scanner2"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:backgroundTint="@color/link"
             android:layout_marginBottom="56dp"
-            android:background="@drawable/ic_baseline_qr_code_24" />
+            android:background="@drawable/ic_baseline_qr_code_24"
+            android:backgroundTint="@color/link" />
 
         <Button
             android:id="@+id/scanner"
@@ -125,13 +126,13 @@
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="248dp"
             android:background="@drawable/nfc_icon"
-            android:backgroundTint="@color/place"/>
+            android:backgroundTint="@color/place" />
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_marginLeft="2dp"
             android:layout_height="wrap_content"
-            android:text="NFC"/>
+            android:layout_marginLeft="2dp"
+            android:text="NFC метка" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

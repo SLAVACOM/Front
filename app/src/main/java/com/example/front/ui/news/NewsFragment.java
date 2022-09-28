@@ -34,11 +34,12 @@ public class NewsFragment extends Fragment {
     SwipeRefreshLayout swipeRefreshLayout;
     FloatingActionButton addBtn;
     private int page = 0;
+    private int last_page = -1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_news,container,false);
+        View view = inflater.inflate(R.layout.fragment_news, container, false);
         adapter = new NewsAdapter(getContext());
         addBtn = view.findViewById(R.id.fab_addNews);
         addBtn.setOnClickListener(new View.OnClickListener() {
@@ -62,11 +63,11 @@ public class NewsFragment extends Fragment {
                 if (!DataBASE.user.isCurator() && !DataBASE.user.isAdmin()) return;
                 NewsEditFragment editFragment = new NewsEditFragment();
                 Bundle bundle = new Bundle();
-                bundle.putInt("pos",position);
+                bundle.putInt("pos", position);
                 editFragment.setArguments(bundle);
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.nav_host_fragment_content_main,editFragment).addToBackStack(null);
+                fragmentTransaction.replace(R.id.nav_host_fragment_content_main, editFragment).addToBackStack(null);
                 fragmentTransaction.commit();
 
             }
@@ -81,11 +82,10 @@ public class NewsFragment extends Fragment {
             @Override
             public void onRefresh() {
                 getNews();
-                swipeRefreshLayout.setRefreshing(false);
             }
         });
         adapter.setLastItemListener((p) -> {
-            getNews(page+1);
+            getNews(page + 1);
         });
         return view;
     }
@@ -97,28 +97,35 @@ public class NewsFragment extends Fragment {
 
 
     }
-    private void getNews(){
+
+    private void getNews() {
         getNews(1);
     }
-    private void getNews(int page){
+
+    private void getNews(int page) {
+        if (last_page > 0 && last_page < page) return;
         Call<ServerListResponse<News>> getNewsList = Retrofit.getInstance().getApi().getNewsList(page);
+        if (swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
         getNewsList.enqueue(new Callback<ServerListResponse<News>>() {
             @Override
             public void onResponse(Call<ServerListResponse<News>> call, Response<ServerListResponse<News>> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     NewsFragment.this.page = page;
+                    NewsFragment.this.last_page = response.body().getLast_page();
                     if (page == 1) DataBASE.NEWS_JSON_LIST.clear();
                     DataBASE.NEWS_JSON_LIST.addAll(response.body().getData());
                     adapter.notifyDataSetChanged();
                 } else {
-                    Toast.makeText(getActivity(),"Сервер не доступен", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Сервер не доступен", Toast.LENGTH_LONG).show();
                 }
+                swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Call<ServerListResponse<News>> call, Throwable t) {
                 t.printStackTrace();
-                Toast.makeText(getActivity(),"Ошибка запроса", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Ошибка запроса", Toast.LENGTH_LONG).show();
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
     }

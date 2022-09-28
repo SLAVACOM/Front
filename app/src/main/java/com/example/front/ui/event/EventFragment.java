@@ -21,7 +21,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.front.CONST.CONST;
 import com.example.front.R;
 import com.example.front.adapter.AdapterEvents;
-import com.example.front.data.EventJSON;
+import com.example.front.data.Event;
 import com.example.front.data.ServerListResponse;
 import com.example.front.data.database.DataBASE;
 import com.example.front.helpers.LastItemListener;
@@ -45,6 +45,7 @@ public class EventFragment extends AddEventFragment {
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private int page = 0;
+    private int last_page = -1;
 
 
     @Override
@@ -160,12 +161,15 @@ public class EventFragment extends AddEventFragment {
         loadEvents(1);
     }
     public void loadEvents(int page) {
-        Call<ServerListResponse<EventJSON>> getEventList = Retrofit.getInstance().getApi().getEventList(page);
-        getEventList.enqueue(new Callback<ServerListResponse<EventJSON>>() {
+        if (last_page >0 && last_page< page) return;
+        Call<ServerListResponse<Event>> getEventList = Retrofit.getInstance().getApi().getEventList(page);
+        if(swipeRefreshLayout != null) swipeRefreshLayout.setRefreshing(true);
+        getEventList.enqueue(new Callback<ServerListResponse<Event>>() {
             @Override
-            public void onResponse(Call<ServerListResponse<EventJSON>> call, Response<ServerListResponse<EventJSON>> response) {
+            public void onResponse(Call<ServerListResponse<Event>> call, Response<ServerListResponse<Event>> response) {
                 if (response.isSuccessful() && EventFragment.this.page == page - 1) {
                     EventFragment.this.page = page;
+                    EventFragment.this.last_page = response.body().getLast_page();
                     if (page == 1) DataBASE.EVENT_JSON_LIST.clear();
                     DataBASE.EVENT_JSON_LIST.addAll(response.body().getData());
                     Log.d(CONST.SERVER_LOG, DataBASE.EVENT_JSON_LIST.toString());
@@ -175,7 +179,7 @@ public class EventFragment extends AddEventFragment {
             }
 
             @Override
-            public void onFailure(Call<ServerListResponse<EventJSON>> call, Throwable t) {
+            public void onFailure(Call<ServerListResponse<Event>> call, Throwable t) {
                 t.printStackTrace();
                 swipeRefreshLayout.setRefreshing(false);
             }

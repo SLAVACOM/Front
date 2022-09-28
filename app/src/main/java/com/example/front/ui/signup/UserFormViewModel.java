@@ -135,7 +135,7 @@ public class UserFormViewModel extends ViewModel {
         return password != null && (password.isEmpty() || password.trim().length() >= 6);
     }// A placeholder password validation check
     private boolean isNameValid(String name) {
-        return name != null && name.trim().length() > 2;
+        return name ==null|| name.trim().length() > 2;
     }
     private boolean isLastValid(String name) {
         return name == null || name.isEmpty() ||  name.trim().length() > 2;

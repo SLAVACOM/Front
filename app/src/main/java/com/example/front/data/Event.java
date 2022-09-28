@@ -10,6 +10,9 @@ import com.example.front.data.database.DataBASE;
 import com.example.front.retrofit.Retrofit;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,7 +21,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class EventJSON implements Comparable<EventJSON> {
+public class Event implements Comparable<Event> {
 
     private int id;
     private String title;
@@ -42,6 +45,7 @@ public class EventJSON implements Comparable<EventJSON> {
                 ", data=" + data +
                 '}';
     }
+
     public News getData() {
         return data;
     }
@@ -82,6 +86,25 @@ public class EventJSON implements Comparable<EventJSON> {
         this.date = date;
     }
 
+    public static boolean canAddParticipant(Event e) {
+        if (!e.getDate().isEmpty()) {
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+                try {
+                    Date c = sdf.parse(e.getDate());
+                    long now = (new Date()).getTime();
+                    long eventTime = c.getTime();
+                    return eventTime < (now) && eventTime + 7200000 > now;
+                } catch (ParseException ex) {
+                    ex.printStackTrace();
+                }
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
+        }
+        return false;
+    }
+
 
     public String getCreated_at() {
         return created_at;
@@ -107,24 +130,26 @@ public class EventJSON implements Comparable<EventJSON> {
         this.points = points;
     }
 
-    public Map<String,String> addParticipant(Context context, String participant_card_id){
-        Map<String,String> e = new HashMap<>();
+    public Map<String, String> addParticipant(Context context, String participant_card_id) {
+        Map<String, String> e = new HashMap<>();
         e.put("participant_card_id", participant_card_id);
         addParticipant(context, e);
         return e;
     }
-    public Map<String,String> addParticipant(Context context, Integer participant_id){
-        Map<String,String> e = new HashMap<>();
-        e.put("participant_id", participant_id == null ?  "0" : participant_id+"");
+
+    public Map<String, String> addParticipant(Context context, Integer participant_id) {
+        Map<String, String> e = new HashMap<>();
+        e.put("participant_id", participant_id == null ? "0" : participant_id + "");
         addParticipant(context, e);
         return e;
     }
-    public void addParticipant(Context context, Map<String,String> map) {
+
+    public void addParticipant(Context context, Map<String, String> map) {
         Call<ResponseBody> addPointsNFC = Retrofit.getInstance().getApi().addEventParticipant("Bearer " + DataBASE.token, getId(), map);
         addPointsNFC.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (!response.isSuccessful()){
+                if (!response.isSuccessful()) {
                     try {
                         Log.d(CONST.SERVER_LOG, "ADD Participant " + response.errorBody().string());
                     } catch (IOException e) {
@@ -143,7 +168,7 @@ public class EventJSON implements Comparable<EventJSON> {
     }
 
     @Override
-    public int compareTo(EventJSON eventJSON) {
-        return Integer.compare(id, eventJSON.getId());
+    public int compareTo(Event event) {
+        return Integer.compare(id, event.getId());
     }
 }

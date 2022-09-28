@@ -9,8 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.front.R;
+import com.example.front.data.Event;
+import com.example.front.data.MapObject;
 import com.example.front.data.database.DataBASE;
-import com.example.front.data.HistoryJSON;
+import com.example.front.data.History;
 
 public class AdapterHistory extends RecyclerView.Adapter<AdapterHistory.MyViewHolder> {
 
@@ -43,10 +45,19 @@ public class AdapterHistory extends RecyclerView.Adapter<AdapterHistory.MyViewHo
         }
 
         public void bindView(int position){
-            HistoryJSON historyJSON = DataBASE.HISTORY_JSON_LIST.get(position);
-            time.setText(historyJSON.getCreated_at());
-            points.setText(historyJSON.getPoints()+" баллов благодарности");
-            mapId.setText("Место: "+historyJSON.getMap_object().getName());
+            History item = DataBASE.HISTORY_JSON_LIST.get(position);
+            time.setText(item.getCreated_at());
+            int p = item.getPoints();
+            MapObject map_object = item.getMap_object();
+            this.points.setText((map_object != null ? -1*p : "+" + p) +" баллов благодарности");
+            if (map_object != null) {
+                mapId.setText("Место: "+ map_object.getName());
+                this.points.setTextColor(this.points.getContext().getColor(R.color.like));
+            } else {
+                Event e = item.getEvent();
+                mapId.setText("Мероприятие: " + (e!=null ? e.getTitle() : "" + item.getVillage_event_id()));
+                this.points.setTextColor(this.points.getContext().getColor(R.color.accept));
+            }
 
         }
 

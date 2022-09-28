@@ -48,8 +48,10 @@ public class UserProfileFragment extends Fragment {
                 .into(qrCode);
         DisplayMetrics dm = new DisplayMetrics();
         ((Activity) getContext()).getWindowManager().getDefaultDisplay().getMetrics(dm);
-        qrCode.setMinimumWidth(dm.widthPixels * 3 / 4);
-        qrCode.setMinimumHeight(dm.widthPixels * 3 / 4);
+//        qrCode.setMinimumWidth(dm.widthPixels * 3 / 4);
+//        qrCode.setMaxWidth(dm.widthPixels * 3 / 4);
+//        qrCode.setMinimumHeight(dm.widthPixels * 3 / 4);
+//        qrCode.setMaxHeight(dm.widthPixels * 3 / 4);
         tl = view.findViewById(R.id.table);
 
         editBt = view.findViewById(R.id.floatBt_editProf);

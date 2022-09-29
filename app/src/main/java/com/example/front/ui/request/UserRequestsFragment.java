@@ -145,6 +145,7 @@ public class UserRequestsFragment extends Fragment {
         animator.setDuration(ANIMATION_DURATION);
         animator.start();
         Handler handler = new Handler();
+        addBtn.setVisibility(View.INVISIBLE);
         handler.postDelayed(() -> {
             animator.removeAllUpdateListeners();
             removeAndNotifyOtherItems(adapterPosition, run);

@@ -270,6 +270,10 @@ public interface Api {
     @GET("api/request/")
     Call<ServerListResponse<UserRequest>> getUserRequests(@Header("Authorization") String header, @Query("role") int role, @Query("page") int p);
 
+    @POST("api/request/")
+    @Headers({"Accept: application/json"})
+    Call<ServerItemResponse<UserRequest>> addUserRequests(@Header("Authorization") String header, @Body UserRequest message);
+
     @DELETE("api/request/{id}")
     Call<ResponseBody> deleteUserRequest(@Header("Authorization") String header, @Path("id") String id);
 

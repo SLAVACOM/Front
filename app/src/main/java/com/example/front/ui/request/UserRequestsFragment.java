@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,7 +29,6 @@ import com.example.front.helpers.CurrentToTopHelper;
 import com.example.front.helpers.SwipeHelper;
 import com.example.front.retrofit.Retrofit;
 import com.example.front.retrofit.call.ValidateCallback;
-import com.example.front.ui.news.NewsFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -102,7 +103,10 @@ public class UserRequestsFragment extends Fragment {
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "AdminREQFragment no action", Toast.LENGTH_SHORT).show();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.nav_host_fragment_content_main, UserRequestEditFragment.newInstance(null, role)).addToBackStack(null);
+                fragmentTransaction.commit();
             }
         });
         adapter.setLastItemListener((p) -> {

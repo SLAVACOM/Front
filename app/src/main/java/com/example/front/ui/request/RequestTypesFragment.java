@@ -113,14 +113,13 @@ public class RequestTypesFragment extends Fragment {
                 DataBASE.REQUEST_TYPEJSON_LIST.clear();
                 DataBASE.REQUEST_TYPEJSON_LIST.addAll(response.body().getData());
                 Log.d(CONST.SERVER_LOG, DataBASE.REQUEST_TYPEJSON_LIST.toString());
-                adapter.notifyDataSetChanged();
-                swipeRefreshLayout.setRefreshing(false);
+                afterLoad();
             }
 
             @Override
             public void onFailure(Call<ServerListResponse<UserRequestType>> call, Throwable t) {
                 t.printStackTrace();
-                swipeRefreshLayout.setRefreshing(false);
+                afterLoad();
             }
         });
     }
@@ -144,5 +143,10 @@ public class RequestTypesFragment extends Fragment {
                 Toast.makeText(getContext(), "Ошибка удаления", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void afterLoad() {
+        adapter.notifyDataSetChanged();
+        swipeRefreshLayout.setRefreshing(false);
     }
 }

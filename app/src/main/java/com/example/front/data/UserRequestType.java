@@ -23,9 +23,6 @@ public class UserRequestType {
 
     @Override
     public String toString() {
-        return "RequestTypeJSON{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
+        return name;
     }
 }
